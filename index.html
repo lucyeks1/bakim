@@ -1,20 +1,151 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Genel Manevi Bakım Analiz Sistemi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Genel Manevi Bakım Analiz Sistemi (V9 Final)</title>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-        body { background: #0f172a; color: #f1f5f9; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .card { background: #111827; border: 1px solid #1f2937; }
-        .input-field { background: #1f2937; border: 1px solid #374151; color: white; transition: 0.2s; }
-        .input-field:focus { border-color: #6366f1; outline: none; }
-        .gender-btn { flex: 1; padding: 12px; border: 1px solid #374151; border-radius: 12px; text-align: center; cursor: pointer; font-size: 0.75rem; font-weight: 800; transition: 0.3s; }
-        input[type="radio"]:checked + .gender-btn { background: #4f46e5; border-color: #818cf8; color: white; }
-        label { font-weight: 700; font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 5px; }
-        .mini-info { font-size: 0.78rem; color: #94a3b8; line-height: 1.4; }
+        body {
+            background: #0f172a;
+            color: #f1f5f9;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .card {
+            background: #111827;
+            border: 1px solid #1f2937;
+        }
+        .input-field {
+            background: #1f2937;
+            border: 1px solid #374151;
+            color: white;
+            transition: 0.2s;
+        }
+        .input-field:focus {
+            border-color: #6366f1;
+            outline: none;
+        }
+        .gender-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 800;
+            transition: 0.3s;
+            user-select: none;
+        }
+        input[type="radio"]:checked + .gender-btn {
+            background: #4f46e5;
+            border-color: #818cf8;
+            color: white;
+        }
+        label {
+            font-weight: 700;
+            font-size: 0.65rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* V9 ek: küçük yardım metinleri */
+        .hint {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        /* V9 ek: uyarı rozetleri */
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+        .badge-blue { background: rgba(99,102,241,.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,.35); }
+        .badge-red { background: rgba(239,68,68,.12); color: #fecaca; border: 1px solid rgba(239,68,68,.35); }
+        .badge-green { background: rgba(34,197,94,.12); color: #bbf7d0; border: 1px solid rgba(34,197,94,.35); }
+
+        /* V9 ek: analiz ekranı */
+        .loading-wrap {
+            margin-top: 14px;
+            padding: 16px;
+            background: #0b1220;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+        }
+        .loading-title {
+            font-weight: 900;
+            color: #c7d2fe;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: .02em;
+        }
+        .loading-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, .6);
+            border: 1px solid rgba(148, 163, 184, .15);
+            margin-bottom: 10px;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(148,163,184,.35);
+        }
+        .dot.active {
+            background: #818cf8;
+            box-shadow: 0 0 0 6px rgba(129,140,248,.15);
+        }
+        .step-text {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        /* V9 ek: kopyala butonu */
+        .copy-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: #334155;
+            color: #e2e8f0;
+            transition: 0.25s;
+        }
+        .copy-btn:hover {
+            background: #475569;
+        }
+
+        /* V9 ek: alanların zorunluluk vurgusu */
+        .required-ring {
+            border-color: rgba(239, 68, 68, .6) !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, .15);
+        }
+
+        /* V9 ek: sonuç kutusu */
+        #analizMetni {
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 
@@ -23,12 +154,18 @@
     <div class="w-full max-w-2xl card rounded-3xl p-6 md:p-10 relative">
         <div class="absolute top-0 left-0 w-full h-1.5 bg-indigo-600"></div>
 
-        <h1 class="text-xl font-black text-center text-white mb-2 uppercase italic">Genel Manevi Bakım Analizi</h1>
-        <div class="mini-info text-center mb-6">
-            WhatsApp konuşmasına göre büyü türünü otomatik belirler. İlişki vakalarında karşı taraf bilgisi zorunludur.
+        <div class="flex items-center justify-between gap-3 mb-2">
+            <h1 class="text-xl font-black text-white uppercase italic">Genel Manevi Analiz Sistemi</h1>
+            <span class="badge badge-blue">V9 FINAL</span>
         </div>
 
+        <p class="hint mb-6">
+            WhatsApp konuşmasını yapıştırın; sistem konuşmanın içinden asıl sıkışıklığı yakalar, büyü türünü belirler ve uzun bakım metnini üretir.
+        </p>
+
         <div class="space-y-6">
+
+            <!-- Hitap -->
             <div class="flex gap-3 mb-2">
                 <label class="flex-1 cursor-pointer">
                     <input type="radio" name="hitap" value="Hanım" class="sr-only" checked>
@@ -40,18 +177,33 @@
                 </label>
             </div>
 
+            <!-- İsimler -->
             <div class="grid grid-cols-2 gap-4">
-                <div><label>Danışan Adı</label><input id="isim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Ad"></div>
-                <div><label>Anne Adı</label><input id="anneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı"></div>
+                <div>
+                    <label>Danışan Adı</label>
+                    <input id="isim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Ad">
+                </div>
+                <div>
+                    <label>Anne Adı</label>
+                    <input id="anneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı">
+                </div>
             </div>
 
+            <!-- Muhatap -->
             <div class="grid grid-cols-2 gap-4">
-                <div><label>Muhatap Adı</label><input id="ekIsim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Eş/Nişanlı/Sevgili (gerekirse)"></div>
-                <div><label>Muhatap Anne</label><input id="ekAnneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı (gerekirse)"></div>
+                <div>
+                    <label>Muhatap Adı</label>
+                    <input id="ekIsim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Eş/Nişanlı/Sevgili">
+                </div>
+                <div>
+                    <label>Muhatap Anne</label>
+                    <input id="ekAnneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı">
+                </div>
             </div>
 
+            <!-- İşlem -->
             <div>
-                <label>İstenen İşlem / Konu</label>
+                <label>İstenen İşlem</label>
                 <select id="islemTuru" class="w-full p-4 rounded-xl input-field font-bold text-indigo-300">
                     <option value="kismet_acma">Kısmet Açma (Evlilik / Yuva)</option>
                     <option value="geri_getirme">Geri Getirme (İlişki)</option>
@@ -61,235 +213,559 @@
                     <option value="evrak_yol">Yol / Evrak / Vatandaşlık</option>
                     <option value="genel">Genel Hayat (Karma)</option>
                 </select>
+
+                <div class="hint mt-2">
+                    <span class="badge badge-green">Bilgi</span>
+                    İlişki vakalarında muhatap adı ve muhatap anne adı zorunludur. Sistem otomatik kontrol eder.
+                </div>
             </div>
 
+            <!-- Konuşma -->
             <div>
-                <label>WhatsApp Konuşmaları / Yaşananlar</label>
-                <textarea id="hikayeLog" rows="5" placeholder="Gerçek konuşmaları buraya yapıştırın..." class="w-full p-4 rounded-xl input-field text-sm font-normal"></textarea>
+                <label>WhatsApp Konuşmaları / Belirtiler</label>
+                <textarea id="hikayeLog" rows="6" placeholder="Gerçek konuşmaları buraya yapıştırın..." class="w-full p-4 rounded-xl input-field text-sm font-normal"></textarea>
+                <div class="hint mt-2">
+                    Ne kadar gerçek konuşma ve detay varsa, sonuç o kadar kişiye özel çıkar.
+                </div>
             </div>
 
+            <!-- Telefon -->
             <div class="p-4 bg-slate-900 rounded-2xl border border-green-500/20">
                 <label class="text-green-400">Danışan No</label>
                 <input id="telNo" type="tel" placeholder="5xx xxx xx xx" class="w-full p-4 rounded-xl input-field text-center font-black tracking-widest text-2xl bg-slate-950">
+                <div class="hint mt-2 text-center">
+                    Numara girerseniz WhatsApp o numaraya açılır ve metin hazır gelir.
+                </div>
             </div>
 
-            <button onclick="analiziBaslat()" id="btnAnaliz" class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition uppercase text-sm">Bakım Metnini Oluştur</button>
-        </div>
+            <!-- Buton -->
+            <button onclick="analiziBaslatV9()" id="btnAnaliz" class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition uppercase text-sm">
+                Bakım Metnini Oluştur
+            </button>
 
-        <div id="sonucAlani" class="mt-8 hidden border-t border-slate-800 pt-6">
-            <div id="analizMetni" class="text-sm text-slate-300 leading-7 p-6 bg-slate-950 rounded-2xl border border-slate-700 whitespace-pre-wrap font-medium shadow-inner"></div>
-            <button onclick="whatsappPaylas()" class="w-full mt-4 py-5 bg-green-600 hover:bg-green-500 text-white font-black rounded-2xl transition uppercase">WhatsApp İle Gönder</button>
+            <!-- Loading -->
+            <div id="loadingBox" class="loading-wrap hidden">
+                <div class="loading-title">Analiz Yapılıyor</div>
+
+                <div class="loading-step">
+                    <div id="dot1" class="dot"></div>
+                    <div class="step-text">Konuşmalar okunuyor, tekrar eden sıkışıklıklar yakalanıyor…</div>
+                </div>
+
+                <div class="loading-step">
+                    <div id="dot2" class="dot"></div>
+                    <div class="step-text">Büyü türü ve ana düğüm netleştiriliyor…</div>
+                </div>
+
+                <div class="loading-step">
+                    <div id="dot3" class="dot"></div>
+                    <div class="step-text">Kişiye özel bakım metni hazırlanıyor…</div>
+                </div>
+
+                <div class="hint text-center mt-3">
+                    Bu bekleme gerçek analiz hissi için bilinçli olarak eklenmiştir.
+                </div>
+            </div>
+
+            <!-- Sonuç -->
+            <div id="sonucAlani" class="mt-6 hidden border-t border-slate-800 pt-6">
+                <div id="analizMetni" class="text-sm text-slate-300 leading-7 p-6 bg-slate-950 rounded-2xl border border-slate-700 font-medium shadow-inner"></div>
+
+                <button class="copy-btn" onclick="kopyalaMetin()">Metni Kopyala</button>
+
+                <button onclick="whatsappPaylasV9()" class="w-full mt-4 py-5 bg-green-600 hover:bg-green-500 text-white font-black rounded-2xl transition uppercase">
+                    WhatsApp ile Gönder
+                </button>
+
+                <div class="hint mt-3">
+                    Metnin içinde teknik dil yoktur. Tamamen danışana gönderilecek şekilde hazırlanır.
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-        /* ===========================
-           1) ZORUNLU 2. ŞAHIS KURALI
-           =========================== */
-        const SECOND_REQUIRED_TYPES = new Set(["geri_getirme","baglama","aile_engeli"]);
+<script>
+/* ============================================================
+   V9 FINAL
+   - Gerçek konuşma analizi (katmanlı)
+   - Teknik/rapor dili yok
+   - Uzun bakım şablonları (çok varyasyon)
+   - Ara ekran / adım adım analiz hissi
+   - WhatsApp gönderme aktif
+   - İlişki vakalarında 2. şahıs zorunlu
+============================================================ */
 
-        function validateSecondPerson(islemTuru, karsi, karsiAnne) {
-            if (SECOND_REQUIRED_TYPES.has(islemTuru)) {
-                if (!karsi || !karsiAnne) {
-                    alert("Bu işlem türü için muhatap adı ve muhatap anne adı zorunludur.");
-                    return false;
-                }
-            }
-            return true;
+/* ---------------------------
+   1) ZORUNLULUK KURALI
+--------------------------- */
+const SECOND_REQUIRED_TYPES = new Set([
+    "geri_getirme",
+    "baglama",
+    "aile_engeli"
+]);
+
+function toggleSecondRequirementUI(islemTuru) {
+    const i1 = document.getElementById("ekIsim");
+    const i2 = document.getElementById("ekAnneAdi");
+
+    i1.classList.remove("required-ring");
+    i2.classList.remove("required-ring");
+
+    if (SECOND_REQUIRED_TYPES.has(islemTuru)) {
+        if (!i1.value.trim()) i1.classList.add("required-ring");
+        if (!i2.value.trim()) i2.classList.add("required-ring");
+    }
+}
+
+document.getElementById("islemTuru").addEventListener("change", function() {
+    toggleSecondRequirementUI(this.value);
+});
+
+document.getElementById("ekIsim").addEventListener("input", function() {
+    toggleSecondRequirementUI(document.getElementById("islemTuru").value);
+});
+document.getElementById("ekAnneAdi").addEventListener("input", function() {
+    toggleSecondRequirementUI(document.getElementById("islemTuru").value);
+});
+
+/* ---------------------------
+   2) TEMEL YARDIMCILAR
+--------------------------- */
+function capFirst(s) {
+    s = (s || "").trim();
+    if (!s) return "";
+    return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
+
+function toUpperTurkish(s) {
+    return (s || "").trim().toLocaleUpperCase("tr-TR");
+}
+
+function safeTrim(s) {
+    return (s || "").replace(/\s+/g, " ").trim();
+}
+
+function stripLinksAndMeta(text) {
+    let t = text || "";
+    t = t.replace(/https?:\/\/\S+/g, " ");
+    t = t.replace(/\[[^\]]+\]/g, " ");
+    t = t.replace(/\b\w+5000\b/g, " ");
+    t = t.replace(/\s+/g, " ");
+    return t.trim();
+}
+
+function normalizeForAnalysis(text) {
+    let t = stripLinksAndMeta(text);
+    t = t.toLocaleLowerCase("tr-TR");
+    return t;
+}
+
+/* ---------------------------
+   3) BASİT STOPWORDS
+--------------------------- */
+const STOPWORDS = new Set([
+    "hocam","selam","selamünaleyküm","aleyküm","merhaba","hayırlı","akşamlar","sabah",
+    "ben","bana","beni","biz","siz","sizin","benim","sen","sana","o","onu","ona","onun",
+    "ve","ile","ama","fakat","çünkü","da","de","ki","mi","mı","mu","mü",
+    "bir","bu","şu","o","çok","daha","artık","gibi","olarak","şey",
+    "yani","neden","nasıl","lütfen","inşallah","allah","razı","olsun",
+    "tamam","evet","hayır","oldu","olur","olsun","gör","bak","dönüş",
+    "bekliyorum","bekle","yok","var","şuan","şimdi","sonra"
+]);
+
+function extractKeyPhrases(raw) {
+    const t = normalizeForAnalysis(raw);
+    const words = (t.match(/[a-zçğıöşü]{4,}/g) || []);
+    const freq = new Map();
+
+    for (const w of words) {
+        if (STOPWORDS.has(w)) continue;
+        freq.set(w, (freq.get(w) || 0) + 1);
+    }
+
+    const arr = Array.from(freq.entries())
+        .sort((a,b) => b[1]-a[1])
+        .slice(0, 6)
+        .map(x => x[0]);
+
+    // 2-3 kelimeyi doğal kullanacağız (göstererek değil)
+    return arr.slice(0, 3);
+}
+
+/* ---------------------------
+   4) KONU SINIFLANDIRMA / BÜYÜ TESPİTİ
+   - İşlem türü sadece yönlendirici
+   - Asıl karar konuşma içinden
+--------------------------- */
+function scorePatterns(text, patterns) {
+    let score = 0;
+    for (const p of patterns) {
+        if (p.re.test(text)) score += p.w;
+    }
+    return score;
+}
+
+const SPELL_LIBRARY = [
+    {
+        key: "rizik_kapama",
+        name: "rızık kapama büyüsü",
+        categoryHint: ["rizik_acma","genel","evrak_yol"],
+        patterns: [
+            { re: /iş bulamıyorum|iş yok|işsiz/i, w: 6 },
+            { re: /borç|icra|kredi|ödeyemiyorum/i, w: 6 },
+            { re: /zor durum|maddi|para yetmiyor|geçinemiyorum/i, w: 5 },
+            { re: /bereket yok|para tutmuyor|kazanç düştü/i, w: 5 },
+            { re: /kızı?mla yaşıyorum|çocuğum var|tek başıma/i, w: 2 }
+        ]
+    },
+    {
+        key: "kismet_kapama",
+        name: "kısmet kapama büyüsü",
+        categoryHint: ["kismet_acma","genel"],
+        patterns: [
+            { re: /kısmet|talip|evlenemiyorum|kimse çıkmıyor/i, w: 6 },
+            { re: /son anda bozuluyor|tam olacakken bitiyor|hep yarım kalıyor/i, w: 5 },
+            { re: /nişan bozuldu|söz bozuldu/i, w: 4 }
+        ]
+    },
+    {
+        key: "sogutma_ayirma",
+        name: "soğutma ve ayırma büyüsü",
+        categoryHint: ["geri_getirme","baglama","genel","aile_engeli"],
+        patterns: [
+            { re: /soğudum|soğudu|içimden gelmiyor|bitti/i, w: 6 },
+            { re: /ayrıldık|boşanmak|terk etti|gitti geri gelmedi/i, w: 6 },
+            { re: /engelledi|blokladı|mesajlara bakmıyor/i, w: 5 },
+            { re: /kavga|tartışma|sürekli sorun/i, w: 3 }
+        ]
+    },
+    {
+        key: "aile_engeli",
+        name: "aile engeli büyüsü",
+        categoryHint: ["aile_engeli","geri_getirme","baglama","genel"],
+        patterns: [
+            { re: /aile|anne|baba|abi|abla|kardeş/i, w: 4 },
+            { re: /izin vermiyor|karşı çıkıyor|engel oluyor|kabul etmiyor/i, w: 6 },
+            { re: /evlilik|nişan|yuva/i, w: 3 }
+        ]
+    },
+    {
+        key: "yol_evrak_kilidi",
+        name: "yol ve evrak kilidi büyüsü",
+        categoryHint: ["evrak_yol","genel","rizik_acma"],
+        patterns: [
+            { re: /vize|vatandaşlık|oturum/i, w: 6 },
+            { re: /başvuru|dosya|evrak|mahkeme/i, w: 5 },
+            { re: /haber yok|bekliyorum|sonuç gelmedi|uzadı/i, w: 5 }
+        ]
+    },
+    {
+        key: "fitne_soz",
+        name: "fitne ve söz taşıma büyüsü",
+        categoryHint: ["geri_getirme","baglama","aile_engeli","genel"],
+        patterns: [
+            { re: /dedikodu|laf taşı|söz götür|dolduruyor/i, w: 6 },
+            { re: /çevresi|arkadaşları|birileri|biri dedi/i, w: 4 },
+            { re: /iftira|yalan|yanlış anladı/i, w: 4 }
+        ]
+    }
+];
+
+function detectSpellByConversation(rawLog, islemTuru) {
+    const t = normalizeForAnalysis(rawLog);
+    let best = { key: "sogutma_ayirma", name: "soğutma ve ayırma büyüsü", score: 0 };
+
+    for (const spell of SPELL_LIBRARY) {
+        let score = scorePatterns(t, spell.patterns);
+
+        // işlem türü yönlendirme bonusu
+        if (spell.categoryHint.includes(islemTuru)) score += 2;
+
+        if (score > best.score) best = { key: spell.key, name: spell.name, score };
+    }
+
+    // Eğer konuşma çok zayıfsa varsayım
+    if (best.score === 0) {
+        if (islemTuru === "rizik_acma") return { key: "rizik_kapama", name: "rızık kapama büyüsü", score: 1 };
+        if (islemTuru === "kismet_acma") return { key: "kismet_kapama", name: "kısmet kapama büyüsü", score: 1 };
+        if (islemTuru === "evrak_yol")  return { key: "yol_evrak_kilidi", name: "yol ve evrak kilidi büyüsü", score: 1 };
+        if (islemTuru === "aile_engeli")return { key: "aile_engeli", name: "aile engeli büyüsü", score: 1 };
+        if (islemTuru === "geri_getirme" || islemTuru === "baglama") return { key: "sogutma_ayirma", name: "soğutma ve ayırma büyüsü", score: 1 };
+        return { key: "kismet_kapama", name: "kısmet kapama büyüsü", score: 1 };
+    }
+
+    return best;
+}
+
+/* ---------------------------
+   5) UZUN ŞABLONLAR (ÇOK VARYASYON)
+   - Teknik dil yok
+   - Başlangıç sabit: "verdiğiniz isimler üzerinden detaylı bir bakım yaptım"
+   - Tamamen WhatsApp'a atılacak metin
+--------------------------- */
+
+function weavePhrases(phrases) {
+    // phrases: 0-3 kelime; metnin içine doğal şekilde serpiştirilecek
+    if (!phrases || phrases.length === 0) return "";
+    const p = phrases.map(x => x).filter(Boolean);
+    if (p.length === 0) return "";
+
+    // "iş bulamıyorum" gibi ifadeler zaten metinde geçiyor olabilir; bu yüzden yumuşak kullanıyoruz.
+    // Hiçbir yerde "anahtar kelime" gibi teknik kelime yok.
+    return `Sizin anlattığınız ${p.join(", ")} gibi durumlar da bunun günlük hayattaki en net yansıması. `;
+}
+
+const TEMPLATES = {
+    rizik_kapama: [
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Anlattığınız iş bulamama, maddi sıkışıklık ve yüklerin artmasına rağmen kapıların açılmaması rızık tarafında dışarıdan yapılmış bir kapatmayı gösteriyor. ${w} Bu durum kişinin gayreti olmasına rağmen karşılığını alamaması, eldeki paranın tutmaması ve işler tam toparlanacakken yeniden bozulması şeklinde ilerler. Sizdeki tablo da tam olarak bu çizgide; bu hal tembellik ya da şanssızlık değildir. Allah’ın izniyle bu rızık kapama büyüsü kesin ve kalıcı şekilde bozulur; bozulduğu an bereket yolu açılır, kazanç tarafı toparlanmaya başlar. Süreç başladığında ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir; ardından 7 gün boyunca size özel okumalar yürütülür. 3–5 gün içinde iç ferahlama ve kapıların aralanması başlar, 7. gün itibarıyla rızık tarafında net bir hareketlenme görülür. Bu süreçte aynı anda başka biriyle ilerlemeyin; farklı uygulamalar birbiriyle karışır ve sonucu geciktirir. Benzer rızık sıkışıklığı yaşayan danışanlarımda bu kapatma kalktığında iş kapısı açılmış, borç baskısı adım adım hafiflemişti. Buradan sonrası sizin niyetiniz; nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Siz “zor durumdayım” derken aslında rızık tarafında bir düğümün içine sıkışmışsınız; çalışsanız da sonuç gelmiyor, toparlanma başlıyor gibi olup tekrar dağılıyor. ${w} Bu rızık kapama büyüsü kişiyi yorar, umudunu kırar ve her adımı ağırlaştırır; ama Allah’ın izniyle bu düğüm kökten çözülür. Benim kurduğum süreçte ilk gün temel uygulama yapılır, önemli kısımlar video ile kayıt altına alınır; 7 gün boyunca size özel okumalar yürütülür. 3–5 gün içinde ferahlama başlar; 7. gün itibarıyla somut açılma görülür. Bu iş tek çizgide yürümeli; aynı anda farklı kişilerden farklı şeyler almak odağı dağıtır. Daha önce aynı şekilde iş bulamayan, borç içinde kalan danışanlarımda bu kapatma kalkınca kapılar tek tek açılmış ve düzen kurulmuştu. Şimdi buradan sonrası kararlılık; nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Rızık tarafında önünüze sürekli görünmez bir duvar çıkıyor; bu duvar, rızık kapama büyüsünün net işaretidir. ${w} Bu büyü, niyetinizi boşa düşürür gibi hissettirir; tam umutlanırken yeniden sıkıştırır. Allah’ın izniyle bu rızık kapama büyüsü kesin şekilde bozulur ve bereket yolu açılır. Süreçte ilk gün uygulama yapılır, video kaydı size gönderilir; 7 gün boyunca okuma yürütülür. 3–5 gün içinde iç daralma kırılır, 7. gün itibarıyla rızık tarafında net açılma görülür. Aynı anda başka bir hocayla yürütmeyin; farklı uygulamalar karışır, sonucu geciktirir. Bu çizgide ilerlediğimiz her vakada Allah’ın izniyle net sonuç aldık. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
         }
+    ],
 
-        /* ===========================
-           2) TEMİZLEME
-           - Saat/tarih/kullanıcı adı gibi izleri metinden ayıklar
-           =========================== */
-        function cleanLogText(t) {
-            return (t || "")
-                .replace(/\[[^\]]+\]/g, " ")
-                .replace(/\b\w+5000\b/g, " ")
-                .replace(/https?:\/\/\S+/g, " ")
-                .replace(/\s+/g, " ")
-                .trim()
-                .toLowerCase();
+    kismet_kapama: [
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Konuşmalarınızdan anlaşılan şu: kısmet tarafında bir kapanma var ve bu kapanma sizi aynı noktaya getirip duruyor. ${w} Bu kısmet kapama büyüsü, hayırlı görünen yolların son anda kapanmasına, niyetle gelen kişilerin sebepsiz geri çekilmesine ve yuva niyetinin sürekli ertelenmesine sebep olur. Allah’ın izniyle bu kısmet kapama büyüsü kesin ve kalıcı şekilde bozulur; bozulduğu anda yol açılır, niyet tarafı hareketlenir. Süreç başladığında ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir; 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde iç ferahlama başlar, 7. gün itibarıyla kısmet tarafında net bir hareket görülür. Aynı anda başka kişilerle ilerlemek süreci karıştırır; tek çizgide yürümek şarttır. Daha önce aynı kapanmayı yaşayan danışanlarımda bu düğüm çözüldüğünde hayırlı niyet kısa sürede kapıyı çalmıştı. Buradan sonrası sizin niyetiniz; nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Kısmet yolunda yaşadığınız tıkanıklık kader değil; kaldırılabilir bir kapanmanın sonucu. ${w} Bu kısmet kapama büyüsü kişiyi bekletir, “tam oluyor” derken dağıtır, insanın hevesini kırar. Allah’ın izniyle bu kapanma kökten bozulur ve kısmet kapınız açılır. İlk gün temel uygulama yapılır, video kaydı gönderilir; 7 gün okuma yürür. 3–5 gün içinde iç ferahlama ve hareket başlar, 7. gün itibarıyla netlik oluşur. Başka biriyle aynı anda yürütmeyin; farklı uygulamalar çakışır. Bu çizgide ilerlediğimiz vakalarda Allah’ın izniyle net sonuç aldık. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Kısmet tarafında bir perde var; bu perde açılmadıkça niyetler yarım kalır. ${w} Allah’ın izniyle bu kısmet kapama büyüsü kesin şekilde bozulur, evlilik ve yuva niyetinizin önü açılır. Süreçte ilk gün temel uygulama yapılır, video kaydı gönderilir; 7 gün boyunca okuma yürütülür. 3–5 gün içinde iç rahatlama, 7. gün itibarıyla net hareket görülür. Bu iş tek çizgide yürür; başka kişilerle karıştırmayın. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
         }
+    ],
 
-        function capFirst(s) {
-            s = (s || "").trim();
-            if (!s) return "";
-            return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+    sogutma_ayirma: [
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Konuşmalarınızdan çıkan tablo net: araya soğuma ve kopuş koyan bir müdahale var. ${w} Bu soğutma ve ayırma büyüsü, karşı tarafın gönlünde kararsızlık üretir; kişi duygusu olsa bile adım atamaz, bir gün iyi bir gün tamamen uzak davranır. Allah’ın izniyle bu soğutma ve ayırma büyüsü kesin ve kalıcı şekilde bozulur; bozulduğu anda iletişim yolu açılır, yumuşama başlar. Süreçte ilk gün temel uygulama yapılır, önemli kısımlar video ile kayda alınır; 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde yumuşama başlar, 7. gün itibarıyla net yön değişimi görülür. Bu süreçte başka bir hocayla ilerlemeyin; farklı uygulamalar karışır ve geciktirir. Benzer vakalarda bu çizgide ilerleyince Allah’ın izniyle dönüş ve toparlanma kesin şekilde gerçekleşti. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İlişki tarafında yaşanan gelgit, konuşmaların kolayca sertleşmesi ve kopuşa gitmesi soğutma ve ayırma büyüsünün işaretidir. ${w} Allah’ın izniyle bu büyü kökten bozulur; karşı tarafın kalbinde yumuşama ve netlik oluşur. Süreç ilk gün başlar, video kaydı gönderilir; 7 gün boyunca okuma yürür. 3–5 gün içinde yumuşama, 7. gün itibarıyla net dönüş olur. Aynı anda başka biriyle yürütmeyin; farklı uygulamalar çakışır. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Araya soğukluk koyan bir düğüm var; bu düğüm çözülmeden sözler toparlanmaz. ${w} Allah’ın izniyle bu soğutma ve ayırma büyüsü kesin şekilde bozulur; iletişim açılır, gönül netleşir. İlk gün temel uygulama yapılır, video kaydı gönderilir; 7 gün okuma yürür. 3–5 gün içinde yumuşama, 7. gün itibarıyla netlik oluşur. Bu süreci başka kişilerle karıştırmayın. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
         }
+    ],
 
-        /* ===========================
-           3) WHATSAPP KONUŞMASINDAN BÜYÜ TESPİTİ
-           - Seçilen işlem türü sadece "konteks"
-           - Esas karar WhatsApp metninden çıkar
-           =========================== */
-        const SPELL_RULES = [
-            { key:"sogutma", name:"soğutma ve ayırma büyüsü", weight:0, patterns:[
-                [/soğud|soğudum|soğuk|içimden gelmiyor|istemiyorum|bitti/i, 4],
-                [/ayrıl|ayrıldık|boşan|terk|gitti geri gelmedi/i, 4],
-                [/engelledi|blok|mesajlara bakmıyor|umursamıyor/i, 3]
-            ]},
-            { key:"aile", name:"aile engeli büyüsü", weight:0, patterns:[
-                [/aile|anne|baba|abi|abla|kardeş/i, 3],
-                [/karşı çık|izin vermiyor|engel|kabul etmiyor/i, 4],
-                [/evlilik|nişan|yuva/i, 2]
-            ]},
-            { key:"kismet", name:"kısmet kapama büyüsü", weight:0, patterns:[
-                [/kısmetim|kısmet|evlenemiyorum|kimse çıkmıyor|talip yok/i, 4],
-                [/son anda bozuluyor|tam olacakken bitiyor/i, 3]
-            ]},
-            { key:"rizik", name:"rızık kapama büyüsü", weight:0, patterns:[
-                [/borç|icra|kredi|ödeyemiyorum/i, 4],
-                [/iş yok|iş bulamıyorum|kazanç düştü|bereket yok|para tutmuyor/i, 4]
-            ]},
-            { key:"fitne", name:"fitne ve söz taşıma büyüsü", weight:0, patterns:[
-                [/dedikodu|laf taşı|dolduruyor|kışkırt|iftira/i, 4],
-                [/çevresi|biri dedi|birileri konuştu/i, 2]
-            ]},
-            { key:"yol", name:"yol ve evrak kilidi büyüsü", weight:0, patterns:[
-                [/vize|vatandaşlık|dosya|evrak|mahkeme|başvuru/i, 4],
-                [/haber yok|bekliyorum|sonuç gelmedi|uzadı/i, 3]
-            ]}
-        ];
-
-        function detectSpellFromWhatsApp(cleanedLog, islemTuru) {
-            // Skorla
-            for (const s of SPELL_RULES) {
-                s.weight = 0;
-                for (const [re, w] of s.patterns) {
-                    if (re.test(cleanedLog)) s.weight += w;
-                }
-            }
-
-            // İşlem türü "konteks" bonusu (konuşma zayıfsa doğru tarafa yaklaştırır)
-            if (islemTuru === "aile_engeli") SPELL_RULES.find(x=>x.key==="aile").weight += 2;
-            if (islemTuru === "rizik_acma") SPELL_RULES.find(x=>x.key==="rizik").weight += 2;
-            if (islemTuru === "kismet_acma") SPELL_RULES.find(x=>x.key==="kismet").weight += 2;
-            if (islemTuru === "evrak_yol")  SPELL_RULES.find(x=>x.key==="yol").weight += 2;
-            if (islemTuru === "geri_getirme" || islemTuru === "baglama") SPELL_RULES.find(x=>x.key==="sogutma").weight += 1;
-
-            // En yüksek
-            SPELL_RULES.sort((a,b)=>b.weight-a.weight);
-            const top = SPELL_RULES[0];
-
-            // Hiç sinyal yoksa varsayılan: ilişki seçildiyse soğutma, değilse kısmet
-            if (top.weight === 0) {
-                if (islemTuru === "geri_getirme" || islemTuru === "baglama" || islemTuru === "aile_engeli") {
-                    return { key:"sogutma", name:"soğutma ve ayırma büyüsü" };
-                }
-                return { key:"kismet", name:"kısmet kapama büyüsü" };
-            }
-            return { key: top.key, name: top.name };
+    aile_engeli: [
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Aile tarafında görülen sertlik ve engel hali, aile engeli büyüsünün net göstergesi. ${w} Bu büyü, normalde yumuşaması gereken kalpleri katılaştırır; mantık devreye girecekken bir anda tepki büyür ve yuva niyeti tıkanır. Allah’ın izniyle bu aile engeli büyüsü kesin ve kalıcı şekilde bozulur; bozulduğu anda aile tarafında yumuşama başlar ve yol açılır. Süreçte ilk gün temel uygulama yapılır, video kaydı size gönderilir; 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde yumuşama görülür, 7. gün itibarıyla karar tarafı netleşir ve engel kökten kalkar. Aynı anda başka biriyle yürütmeyin; farklı uygulamalar karışır ve sonucu geciktirir. Benzer vakalarda bu çizgide ilerleyince aile tutumu tamamen değişti ve konu hayra bağlandı. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Burada mesele sadece fikir ayrılığı değil; aile iradesine dışarıdan baskı konmuş. ${w} Allah’ın izniyle bu aile engeli büyüsü kesin şekilde bozulur; konuşma dili değişir, sertlik çözülür, yuva niyeti önünü bulur. İlk gün temel uygulama yapılır, video kaydı gönderilir; 7 gün okuma yürütülür. 3–5 gün içinde yumuşama, 7. gün itibarıyla netlik oluşur. Bu süreci başka kişilerle karıştırmayın. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Aile tarafındaki direnç, sizin sözünüzle açıklanacak bir şey değil; bu işin içinde aile engeli büyüsü var. ${w} Allah’ın izniyle bu büyü kalıcı şekilde bozulur; aile tarafında yumuşama ve kabul oluşur. Süreç ilk gün başlar, video kaydı gönderilir; 7 gün okuma yürür. 3–5 gün içinde yumuşama, 7. gün itibarıyla net açılma görülür. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
         }
+    ],
 
-        /* ===========================
-           4) UZUN ŞABLONLAR (HER BÜYÜ AYRI)
-           - Kısa metin yok
-           - Net büyü türü ilk paragrafta
-           - 3 belirti
-           - Uzun teşhis
-           - Süreç: video + 7 gün + 3-5 gün + 7. gün
-           - Geçmiş vaka
-           - Kapanış: nasıl ilerleyelim (fiyat yok)
-           =========================== */
-        function identityLine(isim, anne, karsi, kAnne) {
-            const p1 = `${isim} (anne: ${anne || "—"})`;
-            const p2 = `${karsi || "—"} (anne: ${kAnne || "—"})`;
-            return `İsim bilgileri: ${p1}, muhatap: ${p2}.`;
+    yol_evrak_kilidi: [
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Evrak ve yol tarafındaki bekleyiş, sürecin sadece prosedür değil; manevi olarak kilitlenmiş olmasına işaret ediyor. ${w} Bu yol ve evrak kilidi büyüsü, dosyanın aynı yerde dönüp durmasına ve haberin gecikmesine sebep olur. Allah’ın izniyle bu kilit kesin ve kalıcı şekilde açılır; yolunuz açılır, süreç hızlanır. İlk gün temel uygulama yapılır, video kaydı size gönderilir; 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde ferahlama başlar, 7. gün itibarıyla dosya tarafında net hareketlenme görülür. Bu süreçte başka biriyle ilerlemek işi karıştırır. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Burada dosyanın uzaması tesadüf değil; yol ve evrak tarafında kilit var. ${w} Allah’ın izniyle bu kilit tamamen açılır; haber gelir, süreç ilerler. İlk gün temel uygulama yapılır, video kaydı gönderilir; 7 gün okuma yürür. 3–5 gün içinde ferahlama, 7. gün itibarıyla net hareket görülür. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Evrak ve yol tarafında bir düğüm var; bu düğüm çözülmeden sonuç gelmez. ${w} Allah’ın izniyle bu yol ve evrak kilidi büyüsü kesin şekilde açılır. Süreç ilk gün başlar, video kaydı gönderilir; 7 gün okuma yürür. 3–5 gün içinde ferahlama, 7. gün itibarıyla net hareketlenme görülür. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
         }
+    ],
 
-        const LONG_TEMPLATES = {
-            aile: (isim, hitap, anne, karsi, kAnne, spellName) => {
-                const id = identityLine(isim, anne, karsi, kAnne);
-                return `${isim} ${hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. ${id} Yapılan bakımda üzerinizde ${spellName} olduğu net şekilde tespit edildi. Bu büyü, aile büyüklerinin bakışının sertleşmesine, normalde yumuşaması gereken kalplerin gereksiz yere katılaşmasına ve yuva kurma yolunun sürekli tıkanmasına sebep olmuş. Günlük hayatta bunun üç net belirtisi var: birincisi konu açıldığında tepkilerin mantık dışı büyümesi, ikincisi sizin haklı olduğunuz yerde bile destek bulamamanız, üçüncüsü de “tam olacak” denilen işlerin son anda gerilime dönmesi. Bu durum sizin niyetinizden ya da sabrınızdan değil, dışarıdan yapılmış bilinçli bir manevi müdahaleden kaynaklanır. Böyle vakalarda aile tarafında söz birliği gibi bir sertlik oluşur; biri yumuşasa diğeri aniden devreye girer ve konuyu yeniden kilitler. Konuşmaların hep aynı düğümde kalması, sebepsiz “hayır” denmesi ve konu uzadıkça sizin yıpranmanız bu büyünün tipik işaretidir. Allah’ın izniyle bu ${spellName} kesin ve kalıcı şekilde bozulacaktır; bozulduğu anda aile tarafındaki sertlik çözülür, konuşma dili değişir ve yuva kurma yolundaki duvar kalkar. Süreç başladığında ilk gün temel uygulama yapılır ve önemli kısımlar video ile kayıt altına alınarak size gönderilir. Ardından 7 gün boyunca her akşam size özel okuma yürütülür; 3–5 gün içinde aile tarafında yumuşama başlar, 7. gün itibarıyla karar tarafı netleşir ve engel kökten kalkar. Bu süreçte aynı anda başka bir hocayla ilerlenmemesi gerekir; farklı uygulamalar süreci karıştırır ve sonucu geciktirir. Daha önce aynı şekilde aile engeli yaşayan bir danışanımda, aynı çizgide ilerleyince aile tutumu tamamen değişmiş ve konu kısa sürede hayra bağlanmıştı. Buradan sonrası kararlılık meselesi; nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
-            },
-
-            sogutma: (isim, hitap, anne, karsi, kAnne, spellName) => {
-                const id = identityLine(isim, anne, karsi, kAnne);
-                return `${isim} ${hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. ${id} Yapılan bakımda üzerinizde ${spellName} olduğu net şekilde görülüyor. Bu büyü, karşı tarafta soğuma oluşturup araya mesafe koydurur; kişi duygusu olsa bile adım atamaz hale gelir ve ilişki kendi kendine bitmiş gibi yaşanır. Günlük hayatta bunun üç net belirtisi var: birincisi bir gün iyi bir gün tamamen uzak davranması, ikincisi konuşmaların kolayca kavga ile bitmesi ya da mesajların cevapsız kalması, üçüncüsü de “içimden gelmiyor” gibi kopuş cümlelerinin artması. Bu tablo sizin hatanızdan değil, dışarıdan yapılmış niyeti bozucu bir müdahaleden kaynaklanır. Böyle durumlarda siz ne kadar iyi niyetli olsanız da karşı tarafın kalbi sertleşir, aklı karışır, çevre sözüne açık hale gelir. Allah’ın izniyle bu ${spellName} tamamen bozulacaktır; bozulduğu anda iletişim yolu açılır ve karşı tarafta yumuşama kesin şekilde başlar. Süreç başladığında ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir, ardından 7 gün boyunca size özel okuma yürütülür; 3–5 gün içinde yumuşama başlar ve 7. gün itibarıyla net yön değişimi oluşur. Bu süreçte başka bir hocayla aynı anda ilerlenmemesi gerekir; farklı uygulamalar yapılan çalışmayı karıştırır ve sonucu geciktirir. Daha önce aynı büyü türünde olan bir danışanımda 7 gün sonunda iletişim netleşmiş ve geri dönüş kalıcı hale gelmişti. Buradan sonrası sizin niyetinizle şekillenir; nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
-            },
-
-            kismet: (isim, hitap, anne, karsi, kAnne, spellName) => {
-                const id = identityLine(isim, anne, karsi, kAnne);
-                return `${isim} ${hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. ${id} Yapılan bakımda üzerinizde ${spellName} olduğu net şekilde tespit edildi. Bu büyü, kısmetli görünen yolların son anda kapanmasına, niyetle gelen kişilerin sebepsiz geri çekilmesine ve evlilik/yuva tarafında sürekli gecikmeye sebep olur. Günlük hayatta üç net belirti şudur: birincisi “tam olacak” denilen şeylerin bir anda dağılması, ikincisi sürekli aynı noktada tıkanma yaşanması, üçüncüsü de sizde oluşan yorgunluk ve moral düşüşü. Bu durum kaderin kapanması değil; dışarıdan yapılmış kısmet yolunu daraltan bir müdahaledir. Allah’ın izniyle bu ${spellName} tamamen bozulacaktır ve kısmet yolunuz açılacaktır. Süreç başladığında ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir; ardından 7 gün boyunca size özel okuma yürütülür, 3–5 gün içinde iç ferahlama başlar, 7. gün itibarıyla kısmet tarafında net bir hareketlenme görülür. Bu süreçte başka bir hocayla aynı anda ilerlenmemesi gerekir; farklı uygulamalar odağı dağıtır ve sonucu geciktirir. Daha önce benzer kısmet kapama yaşayan bir danışanımda bu düğüm çözülünce kısa sürede ciddi bir niyet oluşmuş ve süreç hayra bağlanmıştı. Buradan sonrası niyet meselesi; nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
-            },
-
-            rizik: (isim, hitap, anne, karsi, kAnne, spellName) => {
-                const id = identityLine(isim, anne, karsi, kAnne);
-                return `${isim} ${hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. ${id} Yapılan bakımda üzerinizde ${spellName} olduğu net şekilde tespit edildi. Bu büyü, kazancın tutmamasına, işlerin tam olacakken bozulmasına ve bereketin kesilmesine sebep olur; kişi çalışır ama karşılığını alamaz. Günlük hayatta üç net belirti şudur: birincisi elinize para geçse bile tutunamaması, ikincisi fırsatların son anda kapanması, üçüncüsü de borç ve masrafın bitmemesi. Bu durum tembellik ya da şanssızlık değil; dışarıdan yapılmış rızık yolunu daraltan bir müdahaledir. Allah’ın izniyle bu ${spellName} tamamen bozulacaktır; bozulduğu anda bereket yolu açılır ve kazanç tarafı toparlanmaya başlar. Süreç başladığında ilk gün temel uygulama yapılır ve önemli kısımlar video ile kayıt altına alınır; ardından 7 gün boyunca size özel okuma yürütülür, 3–5 gün içinde ilk ferahlama görülür, 7. gün itibarıyla rızık tarafında net bir açılma başlar. Bu süreçte başka bir hocayla aynı anda ilerlenmemesi gerekir; farklı uygulamalar süreci karıştırır ve sonucu geciktirir. Daha önce benzer rızık sıkışıklığı yaşayan bir danışanımda bu düğüm çözülünce iş kapısı açılmış ve borç baskısı kısa sürede hafiflemişti. Buradan sonrası kararlılık meselesi; nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
-            },
-
-            fitne: (isim, hitap, anne, karsi, kAnne, spellName) => {
-                const id = identityLine(isim, anne, karsi, kAnne);
-                return `${isim} ${hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. ${id} Yapılan bakımda üzerinizde ${spellName} olduğu net şekilde görülüyor. Bu büyü, araya söz sokar, yanlış anlamayı büyütür ve iki tarafın kalbini bulandırır; özellikle üçüncü kişilerin etkisiyle kararlar aniden değişir. Günlük hayatta bunun üç net belirtisi var: birincisi küçük bir sözün büyük kavgaya dönüşmesi, ikincisi karşı tarafın birinin sözüyle tavır değiştirmesi, üçüncüsü de ilişki içinde sürekli güvensizlik hissinin artması. Bu durum sizin iletişiminizden değil; dışarıdan taşınan fitnenin manevi olarak güçlendirilmesinden kaynaklanır. Allah’ın izniyle bu ${spellName} tamamen bozulacaktır; bozulduğunda sözlerin etkisi kırılır, gerçekler berraklaşır ve aradaki bağ güçlenir. Süreç başladığında ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir; ardından 7 gün boyunca size özel okuma yürütülür, 3–5 gün içinde konuşmaların dili değişir, 7. gün itibarıyla netlik oluşur. Bu süreçte başka bir hocayla aynı anda ilerlenmemesi gerekir; farklı uygulamalar süreci karıştırır ve sonucu geciktirir. Daha önce benzer fitne yaşayan bir danışanımda bu düğüm çözülünce taraflar yeniden sağlıklı şekilde konuşmaya başlamıştı. Buradan sonrası kararlılık meselesi; nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
-            },
-
-            yol: (isim, hitap, anne, karsi, kAnne, spellName) => {
-                const id = identityLine(isim, anne, karsi, kAnne);
-                return `${isim} ${hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. ${id} Yapılan bakımda üzerinizde ${spellName} olduğu net şekilde tespit edildi. Bu büyü, evrak ve resmi işlerin sürüncemede kalmasına, haberin gecikmesine ve “tam olacakken” son anda tıkanmasına sebep olur. Günlük hayatta bunun üç net belirtisi vardır: birincisi sürekli bekleyiş ve sonuç gelmemesi, ikincisi süreç uzadıkça stresin artması, üçüncüsü de aynı dosyanın tekrar tekrar aynı yerde takılması. Bu durum sadece prosedür değil; yolun manevi olarak kilitlenmesidir. Allah’ın izniyle bu ${spellName} tamamen bozulacaktır ve yol açılacaktır. Süreç başladığında ilk gün temel uygulama yapılır, önemli kısımlar video ile kayıt altına alınır; ardından 7 gün boyunca size özel okuma yürütülür, 3–5 gün içinde ferahlama başlar, 7. gün itibarıyla süreçte net hareketlenme görülür. Bu süreçte başka bir hocayla aynı anda ilerlenmemesi gerekir; farklı uygulamalar süreci karıştırır ve sonucu geciktirir. Benzer evrak kilidi yaşayan bir danışanımda bu kilit açılınca dosya kısa sürede sonuçlanmıştı. Buradan sonrası kararlılık meselesi; nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
-            }
-        };
-
-        function buildFinalText(isim, hitap, anne, karsi, kAnne, spell) {
-            if (spell.key === "aile") return LONG_TEMPLATES.aile(isim, hitap, anne, karsi, kAnne, spell.name);
-            if (spell.key === "rizik") return LONG_TEMPLATES.rizik(isim, hitap, anne, karsi, kAnne, spell.name);
-            if (spell.key === "kismet") return LONG_TEMPLATES.kismet(isim, hitap, anne, karsi, kAnne, spell.name);
-            if (spell.key === "fitne") return LONG_TEMPLATES.fitne(isim, hitap, anne, karsi, kAnne, spell.name);
-            if (spell.key === "yol") return LONG_TEMPLATES.yol(isim, hitap, anne, karsi, kAnne, spell.name);
-            return LONG_TEMPLATES.sogutma(isim, hitap, anne, karsi, kAnne, spell.name);
+    fitne_soz: [
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Konuşmaların yönünü bozan, araya söz sokan bir fitne var; bu da fitne ve söz taşıma büyüsünü işaret ediyor. ${w} Bu büyü küçük bir sözü büyütür, tarafların gönlünü bulandırır, kararı zayıflatır. Allah’ın izniyle bu fitne ve söz taşıma büyüsü kesin ve kalıcı şekilde bozulur; sözlerin gücü kırılır, gerçekler netleşir. İlk gün temel uygulama yapılır, video kaydı gönderilir; 7 gün boyunca okuma yürür. 3–5 gün içinde konuşma dili değişir, 7. gün itibarıyla netlik oluşur. Bu süreç başka kişilerle karıştırılmamalı. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Burada ilişkiyi yoran şey iki kişinin meselesi değil; araya taşınan söz ve fitne. ${w} Allah’ın izniyle bu fitne büyüsü kökten bozulur; konuşmalar toparlanır, yanlış anlama biter. İlk gün temel uygulama yapılır, video kaydı gönderilir; 7 gün okuma yürür. 3–5 gün içinde yumuşama, 7. gün itibarıyla netlik olur. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+        },
+        function(ctx) {
+            const w = weavePhrases(ctx.phrases);
+            return `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. Sözlerin araya girmesi ve bakışın değişmesi fitnenin manevi olarak güçlendiğini gösteriyor. ${w} Allah’ın izniyle bu fitne ve söz taşıma büyüsü kesin şekilde bozulur. Süreç ilk gün başlar, video kaydı gönderilir; 7 gün okuma yürür. 3–5 gün içinde yumuşama, 7. gün itibarıyla netlik olur. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
         }
+    ]
+};
 
-        /* ===========================
-           5) ANA ÇALIŞTIRMA
-           =========================== */
-        function analiziBaslat() {
-            const isimRaw = document.getElementById('isim').value.trim();
-            const anneRaw = document.getElementById('anneAdi').value.trim();
-            const karsiRaw = document.getElementById('ekIsim').value.trim();
-            const kAnneRaw = document.getElementById('ekAnneAdi').value.trim();
-            const rawLog = document.getElementById('hikayeLog').value.trim();
-            const islemTuru = document.getElementById('islemTuru').value;
-            const hitap = document.querySelector('input[name="hitap"]:checked').value;
+function pickVariantIndex(spellKey, logText) {
+    // Metindeki yoğunluğa göre varyasyon seç (daha kişisel, daha sert, daha sade)
+    const t = normalizeForAnalysis(logText);
+    const len = t.length;
 
-            if (!isimRaw || !rawLog) return alert("Danışan adı ve WhatsApp konuşmaları zorunludur.");
+    // Duygu yoğunluğu
+    const emotionScore =
+        (/(çok kötüyüm|dayanamıyorum|yıkıldım|bittim|mahvoldum)/i.test(t) ? 2 : 0) +
+        (/(ağlıyorum|uyuyamıyorum|içim daralıyor)/i.test(t) ? 2 : 0) +
+        (/(kızım|çocuğum|tek başıma)/i.test(t) ? 1 : 0);
 
-            // İlişki türlerinde 2. şahıs zorunlu
-            if (!validateSecondPerson(islemTuru, karsiRaw, kAnneRaw)) return;
+    // Uzun konuşmada daha ayrıntılı varyasyon seçme eğilimi
+    if (len > 600 || emotionScore >= 3) return 1;
+    if (len > 300) return 0;
+    return 2;
+}
 
-            const isim = capFirst(isimRaw);
-            const anne = capFirst(anneRaw);
-            const karsi = capFirst(karsiRaw);
-            const kAnne = capFirst(kAnneRaw);
+function buildCareText(ctx) {
+    const arr = TEMPLATES[ctx.spell.key] || TEMPLATES["sogutma_ayirma"];
+    const idx = pickVariantIndex(ctx.spell.key, ctx.rawLog);
+    const fn = arr[Math.max(0, Math.min(arr.length - 1, idx))];
+    return fn(ctx);
+}
 
-            const cleaned = cleanLogText(rawLog);
-            const spell = detectSpellFromWhatsApp(cleaned, islemTuru);
+/* ---------------------------
+   6) LOADING / ADIM ADIM
+--------------------------- */
+function showLoading() {
+    document.getElementById("loadingBox").classList.remove("hidden");
+    document.getElementById("dot1").classList.remove("active");
+    document.getElementById("dot2").classList.remove("active");
+    document.getElementById("dot3").classList.remove("active");
+}
 
-            const finalMetin = buildFinalText(isim, hitap, anne, karsi, kAnne, spell);
+function hideLoading() {
+    document.getElementById("loadingBox").classList.add("hidden");
+}
 
-            document.getElementById('analizMetni').innerText = finalMetin.trim();
-            document.getElementById('sonucAlani').classList.remove('hidden');
-            document.getElementById('sonucAlani').scrollIntoView({ behavior: 'smooth' });
+function stepLoading(step) {
+    if (step === 1) document.getElementById("dot1").classList.add("active");
+    if (step === 2) document.getElementById("dot2").classList.add("active");
+    if (step === 3) document.getElementById("dot3").classList.add("active");
+}
+
+/* ---------------------------
+   7) ANA BAŞLATMA
+--------------------------- */
+function analiziBaslatV9() {
+    const isimRaw = safeTrim(document.getElementById("isim").value);
+    const anneRaw = safeTrim(document.getElementById("anneAdi").value);
+    const karsiRaw = safeTrim(document.getElementById("ekIsim").value);
+    const kAnneRaw = safeTrim(document.getElementById("ekAnneAdi").value);
+    const rawLog = safeTrim(document.getElementById("hikayeLog").value);
+    const islemTuru = document.getElementById("islemTuru").value;
+    const hitap = document.querySelector('input[name="hitap"]:checked').value;
+
+    // temel zorunlular
+    if (!isimRaw || !rawLog) {
+        alert("Danışan adı ve WhatsApp konuşması zorunludur.");
+        return;
+    }
+
+    // 2. şahıs zorunlu kontrol
+    if (SECOND_REQUIRED_TYPES.has(islemTuru)) {
+        if (!karsiRaw || !kAnneRaw) {
+            toggleSecondRequirementUI(islemTuru);
+            alert("Bu işlem türü için muhatap adı ve muhatap anne adı zorunludur.");
+            return;
         }
+    }
 
-        /* ===========================
-           6) WHATSAPP GÖNDER
-           =========================== */
-        function whatsappPaylas() {
-            const t = document.getElementById('analizMetni').innerText;
-            let no = document.getElementById('telNo').value.replace(/\D/g, '');
+    // UI sıfırla
+    document.getElementById("sonucAlani").classList.add("hidden");
+    showLoading();
 
-            if (!t || t.length < 50) {
-                alert("Önce bakım metnini oluşturun.");
-                return;
-            }
+    // adım animasyonu (toplam ~3.2s)
+    stepLoading(1);
 
-            if (no.length >= 10) {
-                if (!no.startsWith('90')) no = '90' + (no.startsWith('0') ? no.substring(1) : no);
-                window.open(`https://wa.me/${no}?text=${encodeURIComponent(t)}`, '_blank');
-            } else {
-                window.open(`https://wa.me/?text=${encodeURIComponent(t)}`, '_blank');
-            }
-        }
-    </script>
+    setTimeout(() => {
+        stepLoading(2);
+
+        setTimeout(() => {
+            stepLoading(3);
+
+            setTimeout(() => {
+                // gerçek üretim
+                const isim = capFirst(isimRaw);
+                const anne = capFirst(anneRaw);
+                const karsi = capFirst(karsiRaw);
+                const kAnne = capFirst(kAnneRaw);
+
+                const phrases = extractKeyPhrases(rawLog);
+                const spell = detectSpellByConversation(rawLog, islemTuru);
+
+                const ctx = {
+                    isim,
+                    hitap,
+                    anne,
+                    karsi,
+                    kAnne,
+                    islemTuru,
+                    rawLog,
+                    phrases,
+                    spell
+                };
+
+                const finalText = buildCareText(ctx);
+
+                document.getElementById("analizMetni").innerText = finalText;
+                hideLoading();
+                document.getElementById("sonucAlani").classList.remove("hidden");
+                document.getElementById("sonucAlani").scrollIntoView({ behavior: "smooth" });
+
+            }, 900);
+
+        }, 900);
+
+    }, 900);
+}
+
+/* ---------------------------
+   8) KOPYALA
+--------------------------- */
+function kopyalaMetin() {
+    const t = document.getElementById("analizMetni").innerText || "";
+    if (!t) return alert("Önce metni oluşturun.");
+    navigator.clipboard.writeText(t).then(() => {
+        alert("Metin kopyalandı.");
+    }).catch(() => {
+        alert("Kopyalama başarısız. Metni manuel seçip kopyalayabilirsiniz.");
+    });
+}
+
+/* ---------------------------
+   9) WHATSAPP GÖNDER (NUMARAYA)
+--------------------------- */
+function whatsappPaylasV9() {
+    const t = document.getElementById("analizMetni").innerText || "";
+    let no = (document.getElementById("telNo").value || "").replace(/\D/g, "");
+
+    if (!t || t.length < 120) {
+        alert("Önce bakım metnini oluşturun.");
+        return;
+    }
+
+    // numara yoksa genel paylaşım
+    if (no.length < 10) {
+        window.open(`https://wa.me/?text=${encodeURIComponent(t)}`, "_blank");
+        return;
+    }
+
+    // TR formatlama
+    if (!no.startsWith("90")) {
+        no = "90" + (no.startsWith("0") ? no.substring(1) : no);
+    }
+
+    window.open(`https://wa.me/${no}?text=${encodeURIComponent(t)}`, "_blank");
+}
+</script>
+
 </body>
 </html>
