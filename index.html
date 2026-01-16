@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Manevi Analiz Sistemi</title>
+    <title>Manevi Analiz ve Teşhis Paneli</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -11,124 +11,105 @@
         .input-field { background: #1e293b; border: 1px solid #334155; color: white; font-weight: 500; transition: all 0.3s; }
         .input-field:focus { border-color: #6366f1; outline: none; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
         label { font-weight: 700; font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; display: block; }
-        .section-header { border-bottom: 1px solid #334155; padding-bottom: 8px; margin-bottom: 16px; margin-top: 10px; }
+        .section-header { border-bottom: 1px solid #334155; padding-bottom: 8px; margin-bottom: 16px; margin-top: 15px; }
         .section-title { color: #818cf8; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; }
-        /* Mobil Kaydırma Düzeltmesi */
-        html, body { overflow-x: hidden; }
+        select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-2 md:p-6 bg-slate-950">
+<body class="min-h-screen flex items-center justify-center p-3 md:p-6 bg-slate-950">
 
-    <div class="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl p-5 md:p-8 shadow-2xl relative overflow-hidden">
+    <div class="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl relative">
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500"></div>
 
-        <h1 class="text-xl md:text-2xl font-bold text-center text-white mb-1 tracking-tight uppercase">Manevi Analiz Paneli</h1>
-        <p class="text-center text-[9px] md:text-[10px] text-slate-500 mb-6 uppercase tracking-widest font-bold">Profesyonel 7 Katmanlı Teşhis Algoritması</p>
+        <h1 class="text-xl md:text-2xl font-black text-center text-white mb-2 tracking-tighter uppercase italic">Manevi Analiz Merkezi</h1>
+        <p class="text-center text-[10px] text-slate-500 mb-8 uppercase tracking-[0.2em] font-bold">Gelişmiş Teşhis ve İşlem Algoritması</p>
         
-        <div class="space-y-4 md:space-y-6">
-            <div class="p-3 md:p-4 bg-slate-800/40 rounded-xl border border-indigo-500/30">
-                <label class="text-indigo-400">WhatsApp Numarası (Mesaj Buraya Gider)</label>
-                <input id="telNo" type="tel" placeholder="5xx xxx xx xx" class="w-full p-3 rounded-lg input-field text-center font-bold tracking-widest text-lg md:text-xl">
-            </div>
-
+        <div class="space-y-6">
             <div>
-                <div class="section-header"><h3 class="section-title">DANIŞAN BİLGİLERİ</h3></div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div><label>İsim</label><input id="isim" type="text" class="w-full p-3 rounded-lg input-field uppercase" placeholder="İSİM"></div>
-                    <div><label>Anne Adı</label><input id="anneAdi" type="text" class="w-full p-3 rounded-lg input-field uppercase" placeholder="ANNE ADI"></div>
+                <div class="section-header"><h3 class="section-title">1. DANIŞAN BİLGİLERİ</h3></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label>İsim</label><input id="isim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="İsim"></div>
+                    <div><label>Anne Adı</label><input id="anneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı"></div>
                 </div>
             </div>
 
             <div>
-                <div class="section-header"><h3 class="section-title">MUHATAP / EŞ BİLGİLERİ</h3></div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div><label>İsim</label><input id="ekIsim" type="text" class="w-full p-3 rounded-lg input-field uppercase" placeholder="İSİM"></div>
-                    <div><label>Anne Adı</label><input id="ekAnneAdi" type="text" class="w-full p-3 rounded-lg input-field uppercase" placeholder="ANNE ADI"></div>
+                <div class="section-header"><h3 class="section-title">2. MUHATAP BİLGİLERİ</h3></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label>Muhatap İsim</label><input id="ekIsim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Eş / Sevgili"></div>
+                    <div><label>Anne Adı</label><input id="ekAnneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı"></div>
                 </div>
             </div>
 
             <div>
-                <div class="section-header"><h3 class="section-title">ANALİZ VE ŞİKAYET</h3></div>
-                <textarea id="hikayeLog" rows="4" placeholder="Danışanın yaşadığı durumu buraya yapıştırın; sistem 7 büyü türünden en baskın olanı seçecektir..." class="w-full p-3 rounded-lg input-field text-sm font-normal"></textarea>
+                <div class="section-header"><h3 class="section-title">3. YAPILACAK ANALİZ / İŞLEM TÜRÜ</h3></div>
+                <select id="islemTuru" class="w-full p-4 rounded-xl input-field font-bold text-indigo-300">
+                    <option value="genel">Genel Bakım ve Aura Taraması</option>
+                    <option value="geri_getirme">Geri Getirme ve Pişman Etme</option>
+                    <option value="buyu_bozma">Ağır Büyü Bozma (Papaz/Domuz Yağı)</option>
+                    <option value="kismet_acma">Kısmet ve Yıldız Yükseltme</option>
+                    <option value="rizik_acma">Rızık ve Bereket Kilidi Açma</option>
+                    <option value="baglama">Muhabbet ve Sadakat Bağlama</option>
+                </select>
+            </div>
+
+            <div>
+                <div class="section-header"><h3 class="section-title">4. DURUM VE WHATSAPP KAYITLARI</h3></div>
+                <textarea id="hikayeLog" rows="5" placeholder="Danışanın anlattıklarını veya mesajları buraya yapıştırın..." class="w-full p-4 rounded-xl input-field text-sm font-normal leading-relaxed"></textarea>
+            </div>
+
+            <div class="p-5 bg-slate-800/50 rounded-2xl border border-green-500/20">
+                <label class="text-green-400">WhatsApp Numarası (Müşterinin Numarası)</label>
+                <input id="telNo" type="tel" placeholder="5xx xxx xx xx" class="w-full p-4 rounded-xl input-field text-center font-bold tracking-widest text-xl bg-slate-900 border-green-500/30">
+                <p class="text-[10px] text-slate-500 mt-2 text-center uppercase tracking-widest italic">Analiz sonucu bu numaraya iletilecektir.</p>
             </div>
             
-            <button onclick="analiziBaslat()" id="btnAnaliz" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-extrabold rounded-xl transition shadow-lg shadow-indigo-500/20 uppercase text-xs md:text-sm tracking-widest">ANALİZİ OLUŞTUR VE TEŞHİS KOY</button>
+            <button onclick="analiziBaslat()" id="btnAnaliz" class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-black rounded-2xl transition shadow-xl shadow-indigo-500/20 uppercase tracking-widest">Analizi Başlat ve Teşhis Koy</button>
         </div>
 
-        <div id="sonucAlani" class="mt-8 hidden border-t border-slate-800 pt-6">
-            <div class="flex items-center justify-center gap-2 mb-4">
-                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span class="text-[10px] font-bold text-green-500 uppercase tracking-widest">Manevi Teşhis Raporu Hazırlandı</span>
-            </div>
+        <div id="sonucAlani" class="mt-10 hidden border-t border-slate-800 pt-8 animate-fade-in">
+            <div id="analizMetni" class="text-xs md:text-sm text-slate-300 leading-7 p-6 bg-slate-950/50 rounded-2xl border border-slate-700 whitespace-pre-wrap font-medium shadow-inner italic"></div>
             
-            <div id="analizMetni" class="text-[11px] md:text-sm text-slate-300 leading-relaxed p-5 bg-slate-950/50 rounded-xl border border-slate-700 whitespace-pre-wrap font-medium"></div>
-            
-            <button onclick="whatsappPaylas()" class="w-full mt-4 py-4 bg-green-600 hover:bg-green-500 active:bg-green-700 text-white font-extrabold rounded-xl transition uppercase flex items-center justify-center gap-2 shadow-xl text-xs md:text-sm">
-                WhatsApp İle Müşteriye Gönder
+            <button onclick="whatsappPaylas()" class="w-full mt-6 py-5 bg-green-600 hover:bg-green-500 active:scale-95 text-white font-black rounded-2xl transition uppercase flex items-center justify-center gap-3 shadow-2xl">
+                <span>ANALİZİ WHATSAPP İLE GÖNDER</span>
             </button>
         </div>
     </div>
 
     <script>
-        // --- 7 TAM MODÜL VE KESİN BÜYÜ İSİMLERİ ---
-        const MODUL_SISTEMI = [
-            {
-                id: "gonul_kilidi",
-                anahtar: ["ani", "soğu", "bitti", "gitti", "uzak", "sebepsiz", "istemiyor", "ayrıl"],
-                teshis: "GÖNÜL KİLİDİ BÜYÜSÜ",
-                belirti: "duyguların bir gün var bir gün yok gibi yaşanmasına, karşı tarafın size karşı netlik gösterememesine ve sürekli içsel kararsızlık yaşamasına neden olmuş.",
-                cozum: "bu kilidi açmaya ve kalbin yönünü yeniden size sabitlemeye odaklıdır."
+        const MODUL_VERILERI = {
+            genel: {
+                teshis: "AĞIR NAZAR VE YILDIZ DÜŞÜKLÜĞÜ",
+                icerik: "Genel aura taramanızda, enerjinizin tamamen sömürüldüğünü ve üzerinizde katmanlaşmış bir nazar tabakası olduğunu görüyorum. Bu durum sizde sürekli bir yorgunluk, kafa karışıklığı ve 'her şey ters gidiyor' hissi yaratıyor. Yıldızınız o kadar düşük ki, her türlü negatif frekansı sünger gibi çekiyorsunuz. Bu blokaj temizlenmeden hayatınızdaki düğümler çözülmez."
             },
-            {
-                id: "igne_sabun",
-                anahtar: ["evden", "kaçıyor", "gelmiyor", "daralıyor", "huzursuz", "eve girmek"],
-                teshis: "İĞNE-SABUN (EVDEN SOĞUTMA) BÜYÜSÜ",
-                belirti: "kişinin evine girdiği anda göğsüne bir ağırlık çökmesine ve evde durmak yerine sürekli dışarı kaçma isteği duymasına neden olmuş.",
-                cozum: "evin enerjisini temizlemeye ve haneye tekrar ısınmasını sağlamaya odaklıdır."
+            geri_getirme: {
+                teshis: "İRADE BAĞLAMA VE PAPAZ BÜYÜSÜ",
+                icerik: "WhatsApp konuşmalarınızda karşı tarafın sergilediği o ani soğukluk ve anlamsız nefret, normal bir ayrılık değil. Karşı tarafın iradesi üzerine 'Papaz Büyüsü' dediğimiz çok ağır bir perdeleme yapılmış. Kişi aslında sizi seviyor ama manevi bir kilit yüzünden size adım atamıyor, ayakları geri gidiyor. Bu mühür sökülmeden o kişinin kendi iradesiyle size dönmesi imkansızdır."
             },
-            {
-                id: "dugumlu_dil",
-                anahtar: ["kavga", "bağır", "tartışma", "ses", "hakaret", "susmuyor", "dil"],
-                teshis: "DÜĞÜMLÜ DİL VE FİTNE BÜYÜSÜ",
-                belirti: "aranızdaki muhabbet dilinin kilitlenmesine, en basit konunun bile büyük bir savaşa dönüşmesine neden olmuş.",
-                cozum: "aradaki bu negatif frekansı susturmaya ve muhabbet dilini tekrar açmaya odaklıdır."
+            buyu_bozma: {
+                teshis: "DOMUZ YAĞI VE SABUN BÜYÜSÜ",
+                icerik: "Evinizdeki huzursuzluğun ve aranızdaki tahammülsüzlüğün sebebi, haneye sürülmüş olan 'Domuz Yağı' işlemidir. Bu işlem haneyi soğutmak, kişileri birbirinden iğrendirmek için yapılmış. Göğsünüzde hissettiğiniz o sebepsiz daralma ve evden kaçma isteği tamamen bu kara enerjinin sonucudur. Çok acil bir manevi arınma ve koruma kalkanı şart."
             },
-            {
-                id: "rizik_kapama",
-                anahtar: ["para", "iş", "borç", "bereket", "işsiz", "maddi"],
-                teshis: "RIZIK KAPAMA VE BEREKET DÜĞÜMÜ BÜYÜSÜ",
-                belirti: "elinize geçen paranın bereketsizleşmesine ve kısmet kapılarınızın manevi olarak kilitlenmesine neden olmuş.",
-                cozum: "rızık damarlarındaki tıkanıklığı açmaya ve bereketi tekrar sağlamaya odaklıdır."
+            kismet_acma: {
+                teshis: "KISMET KİLİDİ VE YILDIZNAME ENGELİ",
+                icerik: "Yıldızname haritanızda, kısmet damarlarınızın 'Düğümlü İşlem' ile bağlandığını tespit ettim. Tam olacak denilen işlerin son anda bozulması, ikili ilişkilerde hep aynı noktada tıkanmanız bu kilidin sonucudur. Sizin nasip kapınızın önünde manevi bir duvar örülmüş. Bu duvar yıkılmadan ne yaparsanız yapın sonuç hep aynı hüsran olacaktır."
             },
-            {
-                id: "ev_esik",
-                anahtar: ["aile", "anne", "izin", "baskı", "akraba", "istemiyorlar", "kaynana"],
-                teshis: "EV-EŞİK SERPİŞTİRME (AİLE ENGELİ) BÜYÜSÜ",
-                belirti: "iki taraf birbirini istese bile, dış etkenlerin ve ailelerin sürekli bir duvar gibi araya girmesine neden olmuş.",
-                cozum: "ailelerin kalbini yumuşatmaya ve bu keskin engelleri manevi yolla kaldırmaya odaklıdır."
+            rizik_acma: {
+                teshis: "BEREKET KİLİDİ VE RIZIK BAĞLAMA",
+                icerik: "Elinize geçen paranın bereketsizleşmesi ve rızkınızın bıçak gibi kesilmesi, doğrudan iş ve kazanç kapınıza yapılan bir 'Bağlama' işleminden kaynaklanıyor. Çevrenizdeki haset enerjisi o kadar yoğun ki, rızık damarlarınızı manevi olarak tıkamış. Bu işlem sadece maddi değil, manevi olarak da sizi çökertmeye odaklı yapılmış."
             },
-            {
-                id: "karar_zayiflatma",
-                anahtar: ["kararsız", "bilmiyor", "gitgel", "belirsiz", "emin değil"],
-                teshis: "KARAR ZAYIFLATMA VE İRADE BÜYÜSÜ",
-                belirti: "kişinin net bir karar verememesine, sabah seviyorum deyip akşam yapamıyorum demesine yol açmış.",
-                cozum: "kişinin iradesini güçlendirmeye ve size karşı net bir karar vermesini sağlamaya odaklıdır."
-            },
-            {
-                id: "ucuncu_kisi",
-                anahtar: ["başka", "kadın", "adam", "üçüncü", "aldat", "görüşüyor", "sevgili"],
-                teshis: "FİTNE VE SOĞUTMA HARMANI BÜYÜSÜ",
-                belirti: "araya giren üçüncü şahısların etkisiyle, partnerinizin gözüne perde inmesine ve sizi değersiz görmesine neden olmuş.",
-                cozum: "üçüncü şahısları uzaklaştırmaya ve sadece size odaklanmasını sağlamaya odaklıdır."
+            baglama: {
+                teshis: "MUHABBET SOĞUKLUĞU VE FİTNE İŞLEMİ",
+                icerik: "Aranızdaki o eski sıcaklığın yerini sessizliğe ve kavgaya bırakması, araya sokulan 'Fitne ve Soğutma' harmanından kaynaklanıyor. İsimlerinizin arasındaki muhabbet frekansı dışarıdan gelen negatif bir parazitle bozulmuş. Sadakat bağlarınız gevşetilmiş. Karşı tarafın aklı ve kalbi manevi bir baskı altında dağıtılmış."
             }
-        ];
+        };
 
         function analiziBaslat() {
             const isim = document.getElementById('isim').value.trim();
             const anne = document.getElementById('anneAdi').value.trim();
-            const log = document.getElementById('hikayeLog').value.toLowerCase();
             const ekIsim = document.getElementById('ekIsim').value.trim();
-            const ekAnne = document.getElementById('ekAnneAdi').value.trim();
+            const log = document.getElementById('hikayeLog').value.trim();
+            const tur = document.getElementById('islemTuru').value;
 
             if(!isim || !anne || !log) return alert("Lütfen Danışan İsim, Anne Adı ve Durum metnini giriniz!");
 
@@ -136,39 +117,63 @@
             const sonucAlani = document.getElementById('sonucAlani');
             const sonucMetni = document.getElementById('analizMetni');
             
-            sonucAlani.classList.remove('hidden');
-            sonucMetni.innerText = "Yıldızname ve Somut Yaşantı Analiz Ediliyor...\nLütfen Bekleyiniz...";
+            sonucAlani.classList.add('hidden');
+            btn.innerText = "YILDIZNAME VE EBCED ANALİZİ YAPILIYOR...";
             btn.disabled = true;
 
             setTimeout(() => {
-                // Varsayılan Büyü
-                let secilen = MODUL_SISTEMI[0]; 
+                const data = MODUL_VERILERI[tur];
+                const dIsim = isim.toUpperCase();
+                const mIsim = ekIsim ? ekIsim.toUpperCase() : "MUHATAP";
 
-                // Algoritma: Tek Büyü Kuralı
-                for (let m of MODUL_SISTEMI) {
-                    if (m.anahtar.some(k => log.includes(k))) {
-                        secilen = m;
-                        break;
-                    }
-                }
+                const finalMetin = `
+KONTROL ŞABLONU VE MANEVİ TESPİT RAPORU
 
-                const dIsim = isim.charAt(0).toUpperCase() + isim.slice(1).toLowerCase();
-                const mIsim = ekIsim ? ekIsim.charAt(0).toUpperCase() + ekIsim.slice(1).toLowerCase() : "karşı taraf";
+DANIŞAN: ${dIsim} (Anne: ${anne.toUpperCase()})
+MUHATAP: ${mIsim}
+İŞLEM TÜRÜ: ${document.getElementById('islemTuru').options[document.getElementById('islemTuru').selectedIndex].text}
 
-                const finalMetin = `${dIsim} Hanım/Bey, isimleriniz ve anne adlarınız üzerinden yaptığım detaylı bakıma göre sizle ${mIsim} arasında uzun süredir etkisini sürdüren bir **${secilen.teshis}** bulunuyor.\n\nBu büyü, özellikle ${secilen.belirti}\n\nBu durum sizin hatanızdan kaynaklı değil; dışarıdan yapılmış, niyeti bozucu bir müdahalenin sonucudur. Allah’ın izniyle bu büyüyü tamamen ortadan kaldırmak mümkündür ve yapılacak çalışma yalnızca ${secilen.cozum}\n\nÇalışmaya başlandığında ilk gün uygulamanın önemli kısımları video kaydıyla size iletilir, ardından 7 gün boyunca size özel okuma yapılır ve 3–5 gün içinde karşı tarafta yumuşama başlar, 7. gün itibarıyla yön netleşir.\n\nBu süreçte dışarıdan başka bir hocayla görüşülmemesi çok önemlidir; farklı dualar ve uygulamalar süreci karıştırır ve sonucu geciktirir. Geçtiğimiz ay benzer bir durumda olan bir danışanımda aynı kilit açılmış ve Allah’ın izniyle 6. günde net geri dönüş yaşanmıştı. Buradan sonrası sizin niyetinizle şekillenecek; niyetiniz netse biz de üzerimize düşeni en sağlam şekilde yaparız. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+GÖZLEMLER VE ANALİZ:
+Gönderdiğiniz WhatsApp kayıtlarını ve verdiğiniz bilgileri Ebced hesabı ile yıldızname üzerinden derinlemesine taradım. Çıkan tablo maalesef beklediğimden daha ciddi.
 
-                sonucMetni.innerText = finalMetin;
+TESPİT EDİLEN DURUM: **${data.teshis}**
+
+${data.icerik}
+
+WhatsApp konuşmalarınızdaki o tavırlar, duraksamalar ve sebepsiz çıkışlar bu manevi baskının günlük hayattaki yansımalarıdır. Bu sizin hatanız değil, tamamen dışarıdan gelen kirli bir niyetin sonucudur. Sert konuşuyorum çünkü durum pembe tablo çizecek kadar basit değil; üzerinizdeki bu ağırlık temizlenmeden huzur bulmanız mümkün görünmüyor.
+
+MANEVİ REÇETE VE ÇÖZÜM:
+Allah’ın izniyle bu durumu tamamen ortadan kaldırmak mümkündür. Yapılacak çalışma doğrudan bu ${data.teshis.toLowerCase()} etkisini bozmaya ve enerjinizi koruma altına almaya odaklıdır. 
+
+Süreç Şöyledir:
+- İlk gün uygulamanın önemli kısımları video ile tarafınıza iletilir.
+- 7 gün boyunca size özel okuma ve frekans sabitleme yapılır.
+- 3. günden itibaren etkiler görülmeye başlar, 7. günde netice sabitlenir.
+
+Bu süreçte başka kimseyle görüşmemeniz ve süreci karıştırmamanız elzemdir. Niyetiniz netse, biz de üzerimize düşeni en sağlam şekilde yaparız. Rahmani usullerle çalışılır. Nasıl ilerlemek istediğinizi söylemeniz kafidir.
+`;
+
+                sonucMetni.innerText = finalMetin.trim();
+                sonucAlani.classList.remove('hidden');
+                btn.innerText = "Analizi Başlat ve Teşhis Koy";
                 btn.disabled = false;
-            }, 2000);
+                
+                // Sayfayı sonuca kaydır
+                sonucAlani.scrollIntoView({ behavior: 'smooth' });
+
+            }, 2500);
         }
 
         function whatsappPaylas() {
             const t = document.getElementById('analizMetni').innerText;
             let no = document.getElementById('telNo').value.replace(/\D/g, ''); 
+
             if (no.length < 10) {
                 window.open(`https://wa.me/?text=${encodeURIComponent(t)}`, '_blank');
             } else {
-                if (!no.startsWith('90')) no = '90' + (no.startsWith('0') ? no.substring(1) : no);
+                if (!no.startsWith('90')) {
+                    no = '90' + (no.startsWith('0') ? no.substring(1) : no);
+                }
                 window.open(`https://wa.me/${no}?text=${encodeURIComponent(t)}`, '_blank');
             }
         }
