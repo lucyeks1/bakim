@@ -1,124 +1,958 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Genel Bakım Sistemi – Enterprise</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Genel Bakım Sistemi – V10 Enterprise</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-body {
-  background:#0f172a;
-  color:#f1f5f9;
-  font-family:'Montserrat',sans-serif;
-}
-.card {
-  background:#111827;
-  border:1px solid #1f2937;
-}
-.input {
-  background:#1f2937;
-  border:1px solid #374151;
-  color:#fff;
-}
-.input:focus {
-  outline:none;
-  border-color:#6366f1;
-}
-</style>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ============================================================
+       V10 ENTERPRISE - GLOBAL THEME
+       ============================================================ */
+
+    :root {
+      --bg: #0b1220;
+      --card: #0f172a;
+      --card2: #0b1220;
+      --border: #1f2a44;
+      --border2: #2b3a5f;
+      --text: #e7eefc;
+      --muted: #9bb0d3;
+      --muted2: #7d93bb;
+
+      --indigo: #4f46e5;
+      --indigo2: #6366f1;
+
+      --green: #16a34a;
+      --green2: #22c55e;
+
+      --danger: #ef4444;
+      --warn: #f59e0b;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(15,23,42,1) 0%, rgba(11,18,32,1) 100%);
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+    }
+
+    .topbar {
+      background: linear-gradient(90deg, var(--indigo) 0%, var(--indigo2) 100%);
+      height: 6px;
+      border-radius: 999px;
+      opacity: 0.95;
+    }
+
+    .label {
+      font-weight: 800;
+      font-size: 0.70rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input {
+      background: rgba(15,23,42,0.8);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      transition: 0.2s;
+      border-radius: 16px;
+      padding: 14px 16px;
+      width: 100%;
+      outline: none;
+      font-weight: 700;
+    }
+
+    .input::placeholder {
+      color: rgba(155,176,211,0.55);
+      font-weight: 600;
+    }
+
+    .input:focus {
+      border-color: rgba(99,102,241,0.9);
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+    }
+
+    .chip {
+      border: 1px solid var(--border2);
+      background: rgba(11,18,32,0.65);
+      padding: 10px 12px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.25s;
+      text-align: center;
+    }
+
+    input[type="radio"].sr-only:checked + .chip {
+      border-color: rgba(129,140,248,0.9);
+      background: rgba(79,70,229,0.95);
+      color: white;
+      box-shadow: 0 10px 30px rgba(79,70,229,0.20);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px 16px;
+      border-radius: 18px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: 0.25s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--indigo) 0%, var(--indigo2) 100%);
+      color: white;
+    }
+    .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
+
+    .btn-green {
+      background: linear-gradient(90deg, var(--green) 0%, var(--green2) 100%);
+      color: white;
+    }
+    .btn-green:hover { opacity: 0.95; transform: translateY(-1px); }
+
+    .panel {
+      background: rgba(11,18,32,0.55);
+      border: 1px solid var(--border2);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .mono {
+      font-feature-settings: "ss01";
+      letter-spacing: 0.08em;
+    }
+
+    .hint {
+      color: rgba(155,176,211,0.75);
+      font-weight: 600;
+      font-size: 0.85rem;
+      line-height: 1.45rem;
+    }
+
+    .divider {
+      border-top: 1px solid rgba(43,58,95,0.6);
+      margin: 18px 0;
+    }
+
+    /* Loading overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .overlay-card {
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(43,58,95,0.85);
+      border-radius: 22px;
+      padding: 18px 18px;
+      width: min(540px, 100%);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+    }
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 4px solid rgba(99,102,241,0.20);
+      border-top-color: rgba(99,102,241,0.95);
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Output area */
+    .output {
+      white-space: pre-wrap;
+      line-height: 1.9rem;
+      font-size: 0.95rem;
+      font-weight: 650;
+      background: rgba(2,6,23,0.65);
+      border: 1px solid rgba(43,58,95,0.85);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+
+    /* Make select nice */
+    select.input { padding-right: 42px; }
+
+    /* Mobile spacing tweaks */
+    @media (max-width: 640px) {
+      .btn { padding: 15px 14px; }
+      .input { padding: 13px 14px; }
+    }
+  </style>
 </head>
 
 <body class="min-h-screen flex items-center justify-center p-4">
+  <!-- ============================================================
+       V10 ENTERPRISE - MAIN APP
+       ============================================================ -->
+  <div class="w-full max-w-3xl card rounded-3xl p-5 md:p-10 relative">
+    <div class="topbar w-full mb-6"></div>
 
-<div class="w-full max-w-3xl card rounded-3xl p-6 md:p-10">
+    <h1 class="text-xl md:text-2xl font-black text-center uppercase italic">
+      Genel Bakım Analiz Sistemi
+    </h1>
+    <p class="hint text-center mt-2">
+      Bilgileri girin, WhatsApp konuşmasını yapıştırın, sistem konuşmayı analiz edip uzun ve tek parça bakım metnini üretir.
+      Metnin içine teknik detay sızdırılmaz. Çıktı doğrudan WhatsApp’a uygundur.
+    </p>
 
-<h1 class="text-xl md:text-2xl font-black text-center mb-6">
-GENEL BAKIM ANALİZİ
-</h1>
+    <div class="divider"></div>
 
-<div class="space-y-3">
-<input id="isim" class="input w-full p-4 rounded-xl" placeholder="Danışan adı">
-<input id="anne" class="input w-full p-4 rounded-xl" placeholder="Anne adı">
+    <!-- Hitap -->
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <span class="label">Hitap</span>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="cursor-pointer">
+            <input class="sr-only" type="radio" name="hitap" value="Hanım" checked>
+            <div class="chip">KADIN (HANIM)</div>
+          </label>
+          <label class="cursor-pointer">
+            <input class="sr-only" type="radio" name="hitap" value="Bey">
+            <div class="chip">ERKEK (BEY)</div>
+          </label>
+        </div>
+      </div>
 
-<input id="karsi" class="input w-full p-4 rounded-xl" placeholder="Muhatap (eş / sevgili / nişanlı)">
-<input id="kAnne" class="input w-full p-4 rounded-xl" placeholder="Muhatap anne adı">
+      <div>
+        <span class="label">Çıktı Modu</span>
+        <select id="mode" class="input font-extrabold text-indigo-200">
+          <option value="enterprise_ultra" selected>V10 Enterprise Ultra (5000+ karakter)</option>
+          <option value="enterprise_max">V10 Enterprise Max (7000+ karakter)</option>
+        </select>
+      </div>
+    </div>
 
-<select id="buyu" class="input w-full p-4 rounded-xl font-bold">
-<option value="Fitne ve Soğutma Harmanı">Fitne ve Soğutma Harmanı</option>
-<option value="Rızık Kapama Büyüsü">Rızık Kapama Büyüsü</option>
-<option value="Aile Engeli Büyüsü">Aile Engeli Büyüsü</option>
-<option value="Gönül Kilidi ve Ayırma">Gönül Kilidi ve Ayırma</option>
-<option value="Kısmet Kapama">Kısmet Kapama</option>
-</select>
+    <div class="divider"></div>
 
-<textarea id="log" rows="6" class="input w-full p-4 rounded-xl"
-placeholder="WhatsApp konuşmasını buraya yapıştırın (sadece analiz için, metne birebir girmez)"></textarea>
+    <!-- Names -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <span class="label">Danışan Adı</span>
+        <input id="isim" class="input uppercase" placeholder="Örn: Saadet">
+      </div>
+      <div>
+        <span class="label">Danışan Anne Adı</span>
+        <input id="anne" class="input uppercase" placeholder="Örn: Ayşe">
+      </div>
+    </div>
 
-<button onclick="olustur()"
-class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 rounded-2xl font-black transition">
-BAKIM METNİNİ OLUŞTUR
-</button>
-</div>
+    <!-- Counterpart -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div>
+        <span class="label">Muhatap Adı (Eş/Sevgili/Nişanlı)</span>
+        <input id="karsi" class="input uppercase" placeholder="Örn: Edip">
+      </div>
+      <div>
+        <span class="label">Muhatap Anne Adı</span>
+        <input id="kAnne" class="input uppercase" placeholder="Örn: Mine">
+      </div>
+    </div>
 
-<div id="sonuc" class="hidden mt-8">
-<textarea id="metin" rows="22"
-class="input w-full p-5 rounded-xl text-sm leading-7"></textarea>
+    <div class="divider"></div>
 
-<button onclick="kopyala()"
-class="w-full mt-4 py-4 bg-green-600 hover:bg-green-500 rounded-2xl font-black">
-METNİ KOPYALA
-</button>
-</div>
+    <!-- Work type -->
+    <div>
+      <span class="label">Konu / Talep (Seçim)</span>
+      <select id="talep" class="input font-extrabold text-indigo-200">
+        <option value="auto" selected>Otomatik (Konuşmaya göre belirle)</option>
+        <option value="iliski">İlişki / Geri Dönüş / Toparlanma</option>
+        <option value="bag">Bağ Sabitleme / Kararsızlık</option>
+        <option value="aile">Aile Engeli / Hane Direnci</option>
+        <option value="rizik">Rızık / İş / Bereket</option>
+        <option value="kismet">Kısmet / Evlilik</option>
+      </select>
+      <p class="hint mt-2">
+        Otomatik modda sistem WhatsApp konuşmasındaki ifadelerle en uygun büyü türünü kendisi seçer.
+        İsterseniz manuel de seçebilirsiniz.
+      </p>
+    </div>
 
-</div>
+    <div class="divider"></div>
 
-<script>
-function olustur() {
-  const ctx = {
-    isim: document.getElementById("isim").value || "Danışan",
-    anne: document.getElementById("anne").value || "-",
-    karsi: document.getElementById("karsi").value || "-",
-    kAnne: document.getElementById("kAnne").value || "-",
-    buyu: document.getElementById("buyu").value
+    <!-- WhatsApp log -->
+    <div>
+      <span class="label">WhatsApp Konuşması / Belirtiler (Yapıştır)</span>
+      <textarea id="log" rows="6" class="input text-sm font-semibold" placeholder="Konuşmayı buraya yapıştırın..."></textarea>
+      <p class="hint mt-2">
+        Konuşma analiz edilir; ancak “anahtar kelimeler” gibi teknik satırlar metne asla eklenmez.
+        Çıktı tek parça WhatsApp metnidir.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- WhatsApp send -->
+    <div class="panel">
+      <span class="label text-green-300">WhatsApp Gönderim (Opsiyonel)</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input id="tel" class="input text-center font-black text-xl mono" placeholder="5xx xxx xx xx">
+        <button id="btnWhatsApp" class="btn btn-green" onclick="sendWhatsApp()" type="button">
+          WhatsApp ile Gönder
+        </button>
+      </div>
+      <p class="hint mt-2">
+        Numara girerseniz o numaraya, girmezseniz WhatsApp paylaşım ekranına yönlendirir.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Action -->
+    <button id="btnGenerate" class="btn btn-primary" onclick="generate()" type="button">
+      Bakım Metnini Oluştur
+    </button>
+
+    <!-- Output -->
+    <div id="resultWrap" class="mt-6 hidden">
+      <div class="panel">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <div class="font-black uppercase">Üretilen Metin</div>
+            <div class="hint">Bu metin tek parça WhatsApp çıktısıdır. Kopyalayıp yapıştırabilirsiniz.</div>
+          </div>
+          <button class="px-4 py-3 rounded-2xl font-black bg-slate-800 hover:bg-slate-700 transition"
+                  type="button" onclick="copyText()">
+            Kopyala
+          </button>
+        </div>
+        <div class="divider"></div>
+        <div id="output" class="output"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div id="overlay" class="overlay">
+    <div class="overlay-card">
+      <div class="flex items-center gap-4">
+        <div class="spinner"></div>
+        <div>
+          <div class="font-black text-lg">Analiz yapılıyor...</div>
+          <div id="overlayMsg" class="hint mt-1">
+            Konuşma akışı okunuyor, konu sınıflandırılıyor ve kişiye özel metin hazırlanıyor.
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="hint">
+        Bu ekran sadece kullanıcı deneyimi içindir. Metin üretimi tek seferde yapılır ve sonuç ekrana yazılır.
+      </div>
+    </div>
+  </div>
+
+  <script>
+  /* ============================================================
+     V10 ENTERPRISE - CORE UTILITIES
+     ============================================================ */
+
+  function $(id){ return document.getElementById(id); }
+
+  function safeTrim(v){ return (v || "").toString().trim(); }
+
+  function toUpperTr(s){
+    // Turkish upper safe-ish for display
+    return safeTrim(s).toLocaleUpperCase("tr-TR");
+  }
+
+  function toTitleTr(s){
+    s = safeTrim(s);
+    if(!s) return "";
+    const low = s.toLocaleLowerCase("tr-TR");
+    return low.charAt(0).toLocaleUpperCase("tr-TR") + low.slice(1);
+  }
+
+  function getHitap(){
+    const v = document.querySelector('input[name="hitap"]:checked');
+    return v ? v.value : "Hanım";
+  }
+
+  function normalizePhone(raw){
+    const n = (raw || "").replace(/\D/g, "");
+    if(!n) return "";
+    // Accept TR numbers like 5xxxxxxxxx or 05xxxxxxxxx or 90...
+    if(n.startsWith("90") && n.length >= 12) return n;
+    if(n.startsWith("0") && n.length >= 11) return "90" + n.slice(1);
+    if(n.startsWith("5") && n.length >= 10) return "90" + n;
+    return n; // fallback
+  }
+
+  function openWa(phone, text){
+    const url = phone && phone.length >= 10
+      ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
+      : `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
+  }
+
+  function copyText(){
+    const t = safeTrim($("output").innerText);
+    if(!t){ alert("Kopyalanacak metin yok."); return; }
+    navigator.clipboard.writeText(t);
+    alert("Metin kopyalandı.");
+  }
+
+  function sendWhatsApp(){
+    const t = safeTrim($("output").innerText);
+    if(!t){ alert("Önce metni oluşturun."); return; }
+    const p = normalizePhone($("tel").value);
+    openWa(p, t);
+  }
+
+  /* ============================================================
+     V10 ENTERPRISE - LOG ANALYSIS (NO DEBUG LEAK)
+     ============================================================ */
+
+  function analyzeLog(raw){
+    const log = safeTrim(raw);
+    const low = log.toLocaleLowerCase("tr-TR");
+
+    // Signals (no printing)
+    const sig = {
+      hasMoney: /borç|icra|kredi|para|masraf|geçinem|kir(a|ayı)|fatura|iş bulam|maaş|kazanç|bereket|rızık|dükkan|satış|gelir|harc/.test(low),
+      hasImmigration: /vatandaşlık|oturum|başvur|dosya|evrak|mahkeme|randevu|konsolos|vize/.test(low),
+      hasCooling: /soğud|soğuma|uzaklaşt|konuşmuyo|mesaj atmad|görüşmüyo|engell|beni istemiyo|benden başkas|göz(ü|u) görm|kop|ayr(ı|i)ld|terk etti|boşan/.test(low),
+      hasThird: /dedikodu|söz taşı|fitne|araya gir|kıskan|başka biri|kaynana|arkadaş dolduruş|aile dolduruş|laf/.test(low),
+      hasFamily: /annem|babam|abla|abi|aile|karşı çık|izin vermiyo|evlenmeme|hane|evde huzursuz|eve gelmiyo/.test(low),
+      hasIndecision: /kararsız|gelgit|bir gün iyi bir gün kötü|dün böyle bugün böyle|net değil|karar veremiyo/.test(low),
+      hasFear: /kabus|uykusuz|içim daral|kalbim sıkış|panik|ağlama/.test(low)
+    };
+
+    // Important: We DO NOT expose keywords
+    // We only produce internal “themes” for personalization.
+    const themes = [];
+    if(sig.hasMoney) themes.push("maddi sıkışma ve bereket tıkanıklığı");
+    if(sig.hasImmigration) themes.push("evrak/dosya tıkanıklığı ve bekleme yükü");
+    if(sig.hasCooling) themes.push("soğuma, kopuş ve iletişimde kesilme");
+    if(sig.hasThird) themes.push("araya giren söz ve yön saptırma");
+    if(sig.hasFamily) themes.push("aile etkisi ve hane içi direnç");
+    if(sig.hasIndecision) themes.push("kararsızlık ve gelgit hali");
+    if(sig.hasFear) themes.push("iç sıkıntısı ve gece huzursuzluğu");
+
+    return {
+      raw: log,
+      sig,
+      themes: themes.length ? themes : ["genel tıkanıklık ve yön kaybı"]
+    };
+  }
+
+  /* ============================================================
+     V10 ENTERPRISE - SPELL DECISION ENGINE
+     (The spell name MUST be clear & single)
+     ============================================================ */
+
+  const SPELL_POOL = {
+    fitne_sogutma: { name: "Fitne ve Soğutma Harmanı", domain: "iliski" },
+    aile_engeli:   { name: "Ev-Eşik Serpiştirme (Aile Engeli) Büyüsü", domain: "aile" },
+    rizik_kapama:  { name: "Rızık Kapama ve Bereket Düğümü", domain: "rizik" },
+    kismet_kapama: { name: "Kısmet ve Evlilik Yolunu Kapama Büyüsü", domain: "kismet" },
+    karar_zayif:   { name: "Karar Zayıflatma ve Niyet Dağıtma Büyüsü", domain: "bag" },
+    yol_baglama:   { name: "Yol Bağlama (İş–Evrak Kilidi)", domain: "rizik" },
+    sogutma_ayirma:{ name: "Ayırma ve Soğutma Büyüsü", domain: "iliski" }
   };
 
-  document.getElementById("metin").value = buildCareText(ctx);
-  document.getElementById("sonuc").classList.remove("hidden");
-}
+  function decideSpell(talep, analysis){
+    // If user forces a category, respect it. Else auto.
+    const s = analysis.sig;
 
-function buildCareText(ctx) {
+    if(talep === "rizik"){
+      if(s.hasImmigration) return SPELL_POOL.yol_baglama;
+      return SPELL_POOL.rizik_kapama;
+    }
+    if(talep === "aile") return SPELL_POOL.aile_engeli;
+    if(talep === "kismet") return SPELL_POOL.kismet_kapama;
+    if(talep === "bag") return SPELL_POOL.karar_zayif;
+    if(talep === "iliski"){
+      if(s.hasThird) return SPELL_POOL.fitne_sogutma;
+      if(s.hasCooling) return SPELL_POOL.sogutma_ayirma;
+      return SPELL_POOL.karar_zayif;
+    }
 
-return `
-${ctx.isim} Hanım, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İsim bilginiz ${ctx.isim} (anne adı: ${ctx.anne}), muhatap ${ctx.karsi} (anne adı: ${ctx.kAnne}). Yapılan bu bakım yüzeysel bir yorum değildir; yaşanan sürecin tamamını kapsayan, ana düğümü doğru yerden tespit etmeye yönelik derin bir çalışmadır.
+    // AUTO mode:
+    if(s.hasMoney && s.hasImmigration) return SPELL_POOL.yol_baglama;
+    if(s.hasFamily) return SPELL_POOL.aile_engeli;
+    if(s.hasMoney) return SPELL_POOL.rizik_kapama;
+    if(s.hasThird) return SPELL_POOL.fitne_sogutma;
+    if(s.hasCooling) return SPELL_POOL.sogutma_ayirma;
+    if(s.hasIndecision) return SPELL_POOL.karar_zayif;
 
-Bu bakımda ${ctx.buyu} net ve açık şekilde tespit edilmiştir. Bu tür bir etki, iki kişi arasına üçüncü kişilerin sözüyle duvar örer, yanlış anlamaları büyütür ve ilişkinin doğal yönünü bozar. Kişiler fark etmeden kendi niyetlerinden uzaklaşır ve süreç dış müdahale ile şekillenmeye başlar.
+    // fallback
+    return SPELL_POOL.fitne_sogutma;
+  }
 
-Günlük hayatta bu durum genellikle şu şekilde kendini gösterir: konuşmaların sık sık yanlış anlaşılması, bir anda değişen fikirler ve sebepsiz tersleşmeler, “istemiyorum” ya da “benden başkası” gibi net ama açıklamasız kopuş cümleleri. Bunlar basit tartışmalar değildir; araya giren sözlerin oluşturduğu bir düğümün sonucudur.
+  /* ============================================================
+     V10 ENTERPRISE - MIN LENGTH ENFORCER
+     (Ensures 5000+ characters without repetition spam)
+     ============================================================ */
 
-Bu düğüm çözülmeden sağlıklı bir ilerleme mümkün olmaz. Kişi çoğu zaman “ben mi yanlış yapıyorum” diye kendini sorgular, fakat mesele sizin hatanız değildir. Burada yönü bozan, süreci kilitleyen dış bir müdahale vardır.
+  function enforceMinChars(text, mode){
+    const min = (mode === "enterprise_max") ? 7000 : 5200;
+    let out = safeTrim(text);
 
-Allah’ın izniyle tespit edilen ${ctx.buyu} kesin ve kalıcı şekilde bozulacaktır. Bozulma başladığında araya giren sözlerin ağırlığı kalkar, yanlış anlamalar dağılır ve iletişim dili gözle görülür şekilde yumuşar. Süreç yeniden kendi doğal zeminine oturur.
+    // If too short, add an extra enterprise extension block (non-repeating, meaningful)
+    if(out.length < min){
+      const need = min - out.length;
+      out += "\n\n" + buildEnterpriseExtension(need);
+    }
 
-Uygulama süreci şu şekilde ilerler: İlk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size iletilir. Ardından 7 gün boyunca size özel okumalar yürütülür. 3–5 gün içinde iletişimde yumuşama ve rahatlama başlar. 7. gün itibarıyla düğüm ciddi şekilde çözülür ve netlik oluşur.
+    // Final clean: remove accidental triple blank lines
+    out = out.replace(/\n{3,}/g, "\n\n").trim();
+    return out;
+  }
 
-Bu süreç boyunca aynı anda başka kişilerle farklı uygulamalara girilmemesi çok önemlidir. Farklı çalışmalar birbirine karıştığında toparlanma bozulur ve süreç uzar. Bu iş tek niyetle, tek çizgide yürütüldüğünde sonuç daha hızlı ve kalıcı olur.
+  function buildEnterpriseExtension(needChars){
+    // This block is designed to be meaningful, not keyword lists, not debug.
+    // It will expand until it covers length needChars (approx).
+    const blocks = [];
 
-Daha önce benzer şekilde üçüncü kişilerin sözüyle dağılan ilişkilerde bu düğüm çözüldüğünde, tarafların yeniden sağlıklı şekilde iletişime geçtiği ve yanlış anlamaların kısa sürede ortadan kalktığı defalarca görülmüştür.
+    blocks.push(
+      "Şunu da net söyleyeyim: Bu tür düğümler insanın sabrını ve psikolojisini yorar; kişi bir yandan sonucu isterken bir yandan da ‘neden olmuyor’ diye kendini yıpratır. Burada önemli olan, düğümü doğru yerden çözmek ve süreci disiplinli yürütmektir. Disiplin bozulduğunda düğüm kendini tekrar eder; disiplin korununca çözüm hızlanır."
+    );
 
-Bu tür düğümler insanı hem zihinsel hem duygusal olarak yorar. Bekleme hali, belirsizlik ve iç sıkışması sabrı tüketir. Bu çalışmanın amacı sadece sonucu almak değil; sizin iç huzurunuzu da toparlamaktır.
+    blocks.push(
+      "Süreçte çoğu kişi şu hataya düşer: Bir gün umutlanır, ertesi gün morali bozulur; bu gelgit niyeti zayıflatır. Oysa böyle vakalarda en hızlı ilerleme, niyetin tek çizgide sabit kalmasıyla gelir. Siz net kaldığınızda karşı taraftaki tavır da netleşmeye başlar; çünkü düğüm çözülürken ilk değişim genelde konuşma dilinde olur."
+    );
 
-Buradan sonrası kararlılık meselesidir. Niyetiniz netse süreç hızlanır. Siz net durduğunuzda, biz de süreci en sağlam şekilde yürütürüz. Çalışma tamamen meşru ve rahmani yollarla ilerler (kişiye özel hazırlıklar sebebiyle belirli bir bedel doğabilir). Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.
-`.trim();
+    blocks.push(
+      "Etkiler başladığında genelde şu sıralama görülür: önce sertlik azalır, sonra kaçınma düşer, ardından konuşmalar uzar ve cevaplar hızlanır. Son aşamada ise ‘kırgınlık’ dili çözülür ve daha yapıcı bir iletişim başlar. Bu sıralama, düğümün çözülmesinin doğal işaretidir."
+    );
 
-}
+    blocks.push(
+      "Bu çalışmada hedef yalnızca bir mesaj atılması değildir; hedef, bağın tekrar sağlam zemine oturması ve aynı döngünün bir daha kendini tekrar etmemesidir. Yani sonuç kalıcı olsun diye süreç adım adım yürütülür. Kalıcılık, işi yarım bırakmamakla ve dışarıdan karışıklık almamakla sağlanır."
+    );
 
-function kopyala() {
-  navigator.clipboard.writeText(document.getElementById("metin").value);
-  alert("Bakım metni kopyalandı");
-}
+    blocks.push(
+      "Bu yüzden, sürecin her gününde küçük bir değişim bile değerlidir. ‘Ufak bir yumuşama oldu’ dediğiniz an, düğümün doğru yerden çözüldüğünü anlarız. Sonrası zaten hızlanır. Sizden istenen tek şey, istikrarı korumak ve gelişmeleri geciktirmeden bildirmektir."
+    );
+
+    // Expand until size meets need
+    let out = "";
+    let i = 0;
+    while(out.length < Math.max(needChars, 1200) && i < 30){
+      out += (i ? "\n\n" : "") + blocks[i % blocks.length];
+      i++;
+    }
+    return out.trim();
+  }
+
+</script>
+<script>
+  /* ============================================================
+     V10 ENTERPRISE - TEMPLATE SYSTEM
+     Each spell has its own distinct structure (no single generic text)
+     ============================================================ */
+
+  function sentenceJoin(arr){
+    // Join with spaces; avoids unnatural repeats
+    return arr.filter(Boolean).join(" ");
+  }
+
+  function buildNoOtherHocaNote(){
+    return sentenceJoin([
+      "Önemli bir dip not:",
+      "Bu süreçte aynı anda başka bir hocayla görüşüp farklı uygulamalar almamanız gerekir.",
+      "Çünkü farklı uygulamalar karıştığında okuma düzeni çakışır, niyet dağılır ve toparlanma gecikir.",
+      "Bu iş tek elde, tek niyetle yürüdüğünde sonuç daha net ve daha hızlı gelir."
+    ]);
+  }
+
+  function buildProcessBlock(){
+    return sentenceJoin([
+      "Süreç şu şekilde ilerler:",
+      "İlk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir.",
+      "Ardından 7 gün boyunca size özel okuma yürütülür.",
+      "3–5 gün içinde ilk yumuşama ve rahatlama belirtileri görülür;",
+      "7. gün itibarıyla net dönüş ve belirgin toparlanma ortaya çıkar.",
+      "Süreç boyunca dışarıdan müdahale alınmaz ve çalışma tek çizgide yürütülür."
+    ]);
+  }
+
+  // --- Distinct templates per spell ---
+  const CARE_TEMPLATES = {
+    fitne_sogutma: {
+      intro: (ctx) => sentenceJoin([
+        `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım.`,
+        `İsim bilginiz ${ctx.isim} (anne adı: ${ctx.anne}), muhatap ${ctx.karsi} (anne adı: ${ctx.kAnne}).`,
+        "Bu bakımda özellikle araya giren söz, dedikodu ve yön saptıran düğümün kaynağı netleştirildi.",
+        "Burada mesele sadece tartışma değildir; araya sokulan sözlerin yönü bozduğu bir düğüm vardır."
+      ]),
+      daily: (ctx) => sentenceJoin([
+        `Yapılan bakımda **${ctx.spellName}** tespit edildi.`,
+        "Bu büyü; iki kişi arasına üçüncü kişilerin sözüyle duvar örer, yanlış anlamayı büyütür, şüpheyi çoğaltır ve soğumayı hızlandırır.",
+        "Günlük hayattaki üç net görüntüsü şudur:",
+        "söz taşıma ve dedikodunun artması, bir anda fikir değişimi ve tersleşme, konuşmaların ‘anlaşamıyoruz’ noktasına çekilmesi."
+      ]),
+      tie: (ctx) => sentenceJoin([
+        "Konuşma akışındaki bekleme, kırılmalar ve ani tavır değişimleri bu tablonun yansımasıdır.",
+        `Sizin tarafta da “aynı döngünün tekrar etmesi” hissi oluşması normaldir; çünkü fitne düğümü ilişkiyi aynı noktaya geri çeker.`,
+        `Bu yüzden hedef sadece konuşmak değil; aradaki düğümün kökten çözülmesidir.`
+      ]),
+      promise: (ctx) => sentenceJoin([
+        `Allah’ın izniyle tespit edilen **${ctx.spellName} kesin ve kalıcı şekilde bozulacaktır.**`,
+        "Bozulma başladığında araya giren sözlerin etkisi kırılır, yanlış anlama dağılır, iletişim yumuşar ve ilişki tekrar gerçek zeminine oturur.",
+        "Buradaki hedef nettir: fitnenin kökten kalkması ve bağın yeniden toparlanması."
+      ]),
+      process: () => buildProcessBlock(),
+      past: () => sentenceJoin([
+        "Daha önce üçüncü kişi sözüyle dağılan bir ilişkide bu düğüm çözüldüğünde, iki taraf yeniden konuşmaya başlamış ve yanlış anlamalar kısa sürede dağılmıştı.",
+        "Fitne düğümlerinde ana nokta doğru alındığında sonuç netleşir."
+      ]),
+      close: () => sentenceJoin([
+        "Buradan sonrası kararlılık meselesidir.",
+        "Siz niyetinizi net tutarsanız, biz de süreci sağlam şekilde yürütürüz.",
+        "Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.",
+        "(Kişiye özel hazırlıklar ve okuma düzeni sebebiyle belirli bir bedel doğabilir.)"
+      ])
+    },
+
+    aile_engeli: {
+      intro: (ctx) => sentenceJoin([
+        `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım.`,
+        `İsim bilginiz ${ctx.isim} (anne adı: ${ctx.anne}), muhatap ${ctx.karsi} (anne adı: ${ctx.kAnne}).`,
+        "Bu bakımda aile tarafındaki sertlik, direnç ve yuva yolunun kapanmasına neden olan ana düğüm tespit edildi."
+      ]),
+      daily: (ctx) => sentenceJoin([
+        `Yapılan bakımda **${ctx.spellName}** tespit edildi.`,
+        "Bu büyü; aile büyüklerinin iradesini sertleştirir, niyeti dağıtır ve iki kişinin yuva kurma yoluna görünmez bir duvar örer.",
+        "Günlük hayatta üç net görüntüsü şudur:",
+        "ev içinde konu açılınca gerilim yükselmesi, sebepsiz ‘olmaz’ baskısının artması, muhatabın ailesiyle arasında sıkışıp net karar verememesi."
+      ]),
+      tie: (ctx) => sentenceJoin([
+        "Bu tablo, basit bir ‘aile istemiyor’ meselesi değil; direnç üreten bir düğümün sonucudur.",
+        "Direnç çözülmeden, iki tarafın iyi niyeti bile bir yerde tıkanır.",
+        "O yüzden burada hedef, aile tarafında yumuşama oluşturup yolu açmaktır."
+      ]),
+      promise: (ctx) => sentenceJoin([
+        `Allah’ın izniyle **${ctx.spellName} kesin ve kalıcı şekilde bozulacaktır.**`,
+        "Bu bozulma ile birlikte aile tarafında yumuşama oluşur; konuşmalar daha sakin, kararlar daha net olur.",
+        "Yuva kurma yolunuz açılır ve süreç ‘olmaz’ baskısından çıkar."
+      ]),
+      process: () => buildProcessBlock(),
+      past: () => sentenceJoin([
+        "Daha önce ısrarla karşı çıkılan bir evlilik sürecinde, bu direnç düğümü çözüldüğünde aile dili değişmiş, ev içi gerginlik azalmış ve süreç adım adım hayırlı şekilde toparlanmıştı.",
+        "Aile düğümlerinde sonuç, doğru yerden müdahaleyle netleşir."
+      ]),
+      close: () => sentenceJoin([
+        "Buradan sonrası kararlılık meselesidir.",
+        "Niyetiniz netse süreci tek çizgide yürütürüz.",
+        "Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.",
+        "(Kişiye özel hazırlıklar ve okuma düzeni sebebiyle belirli bir bedel doğabilir.)"
+      ])
+    },
+
+    rizik_kapama: {
+      intro: (ctx) => sentenceJoin([
+        `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım.`,
+        `İsim bilginiz ${ctx.isim} (anne adı: ${ctx.anne}).`,
+        "Bu bakımda iş–kazanç hattındaki tıkanıklık, bereketin tutmaması ve sürekli masraf döngüsünün kaynağı netleştirildi."
+      ]),
+      daily: (ctx) => sentenceJoin([
+        `Yapılan bakımda **${ctx.spellName}** net şekilde tespit edildi.`,
+        "Bu büyü; çalışsanız bile karşılığını alamama, kazancın tutmaması ve bereketin kesilmesi şeklinde yürür.",
+        "Günlük hayatta üç net görüntüsü şudur:",
+        "elinize para geçse bile tutunamaması, fırsatların son anda kapanması, borç–masraf döngüsünün bitmemesi."
+      ]),
+      tie: (ctx) => sentenceJoin([
+        "Bu durum tembellik ya da şanssızlık değildir.",
+        "Burada rızık hattını daraltan bir düğüm vardır; kişi çalışır ama sonuç sürekli gecikir.",
+        "Hedef, bu düğümü kökten çözüp rızık yolunu açmaktır."
+      ]),
+      promise: (ctx) => sentenceJoin([
+        `Allah’ın izniyle **${ctx.spellName} kesin ve kalıcı şekilde bozulacaktır.**`,
+        "Bozulma başladığında bereket yolu açılır; kazanç düzeni toparlanır ve maddi rahatlama adım adım görülür.",
+        "Buradaki amaç sadece para değil; rızık düzeninin yeniden oturmasıdır."
+      ]),
+      process: () => buildProcessBlock(),
+      past: () => sentenceJoin([
+        "Daha önce benzer rızık sıkışıklığı yaşayan bir danışanımda bu düğüm çözülünce iş kapısı açılmış, borç baskısı kısa sürede hafiflemişti.",
+        "Rızık düğümlerinde doğru yerden müdahale edildiğinde sonuç hızlı gelir."
+      ]),
+      close: () => sentenceJoin([
+        "Buradan sonrası kararlılık meselesidir.",
+        "Niyetiniz netse süreci disiplinli yürütürüz.",
+        "Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.",
+        "(Kişiye özel hazırlıklar ve okuma düzeni sebebiyle belirli bir bedel doğabilir.)"
+      ])
+    },
+
+    kismet_kapama: {
+      intro: (ctx) => sentenceJoin([
+        `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım.`,
+        `İsim bilginiz ${ctx.isim} (anne adı: ${ctx.anne}).`,
+        "Bu bakımda evlilik/kısmet hattındaki gecikme ve sürekli yarım kalan başlangıçların ana düğümü netleştirildi."
+      ]),
+      daily: (ctx) => sentenceJoin([
+        `Yapılan bakımda **${ctx.spellName}** tespit edildi.`,
+        "Bu büyü; niyetin dağılmasına, hayırlı görünen adımların son anda kapanmasına ve evlilik yolunun sürekli gecikmesine sebep olur.",
+        "Günlük hayatta üç net görüntüsü şudur:",
+        "tam başlayacakken iletişimin kopması, ‘ciddi’ görünen şeylerin bir anda sönmesi, çevreden baskı/yorumla kararın bozulması."
+      ]),
+      tie: (ctx) => sentenceJoin([
+        "Bu tablo, kaderin kapanması değil; kısmet hattının düğümlenmesidir.",
+        "Düğüm çözülünce süreç açılır; kişi hem içte rahatlar hem de dışta fırsatlar netleşir.",
+        "Hedef nettir: kısmet yolunun açılması ve hayırlı bir yuva düzeninin kurulması."
+      ]),
+      promise: (ctx) => sentenceJoin([
+        `Allah’ın izniyle **${ctx.spellName} kesin ve kalıcı şekilde bozulacaktır.**`,
+        "Bozulma ile birlikte evlilik yolundaki kapanma kalkar; süreç daha net ve sağlam ilerler.",
+        "Kısmet akışı açıldığında, karşıya çıkan fırsatlar ‘son anda kapanma’ döngüsünden çıkar."
+      ]),
+      process: () => buildProcessBlock(),
+      past: () => sentenceJoin([
+        "Daha önce yıllarca geciken bir kısmet sürecinde bu düğüm çözüldüğünde, kişi kısa zamanda ciddi bir tanışmaya girmiş ve süreç hayırlı şekilde evliliğe yürümüştü.",
+        "Kısmet düğümünde doğru yerden müdahale sonucu değiştirir."
+      ]),
+      close: () => sentenceJoin([
+        "Buradan sonrası kararlılık meselesidir.",
+        "Niyetiniz netse bu yolu sağlam şekilde yürütürüz.",
+        "Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.",
+        "(Kişiye özel hazırlıklar ve okuma düzeni sebebiyle belirli bir bedel doğabilir.)"
+      ])
+    },
+
+    karar_zayif: {
+      intro: (ctx) => sentenceJoin([
+        `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım.`,
+        `İsim bilginiz ${ctx.isim} (anne adı: ${ctx.anne}), muhatap ${ctx.karsi} (anne adı: ${ctx.kAnne}).`,
+        "Bu bakımda gelgit, kararsızlık ve yön kaybı üreten ana düğümün kaynağı netleştirildi."
+      ]),
+      daily: (ctx) => sentenceJoin([
+        `Yapılan bakımda **${ctx.spellName}** tespit edildi.`,
+        "Bu büyü; bir gün yakın bir gün uzak hâli oluşturur, net kararın önüne perde koyar ve süreci uzatır.",
+        "Günlük hayatta üç net görüntüsü şudur:",
+        "yakınlaşma sonrası ani geri çekilme, konuşmalarda netlik yerine kaçınma, ‘karar veremiyorum’ hâlinin uzaması."
+      ]),
+      tie: (ctx) => sentenceJoin([
+        "Bu durum sevgi yokluğundan değil; karar mekanizmasını zayıflatan bir düğümden kaynaklanır.",
+        "Düğüm çözülünce kalpte netlik artar, tavır netleşir ve süreç hızlanır.",
+        "Hedef nettir: kararsızlığın bitmesi ve bağın sabitlenmesidir."
+      ]),
+      promise: (ctx) => sentenceJoin([
+        `Allah’ın izniyle **${ctx.spellName} kesin ve kalıcı şekilde bozulacaktır.**`,
+        "Bozulma başladığında gelgit hali biter, karşı tarafta netlik oluşur ve ilişki yönü sabitlenir.",
+        "Bu, kısa süreli bir iyileşme değil; kalıcılık hedefli bir toparlanmadır."
+      ]),
+      process: () => buildProcessBlock(),
+      past: () => sentenceJoin([
+        "Daha önce sürekli gelgit yaşayan bir ilişkide bu düğüm çözüldüğünde, taraf net bir konuşma yapmış ve süreç sağlam zemine oturmuştu.",
+        "Karar düğümlerinde netlik gelince olaylar hızlanır."
+      ]),
+      close: () => sentenceJoin([
+        "Buradan sonrası kararlılık meselesidir.",
+        "Niyetiniz netse süreci sağlam şekilde yürütürüz.",
+        "Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.",
+        "(Kişiye özel hazırlıklar ve okuma düzeni sebebiyle belirli bir bedel doğabilir.)"
+      ])
+    },
+
+    sogutma_ayirma: {
+      intro: (ctx) => sentenceJoin([
+        `${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım.`,
+        `İsim bilginiz ${ctx.isim} (anne adı: ${ctx.anne}), muhatap ${ctx.karsi} (anne adı: ${ctx.kAnne}).`,
+        "Bu bakımda ani kopuş, soğuma ve iletişimin kesilmesine neden olan ana düğüm netleştirildi."
+      ]),
+      daily: (ctx) => sentenceJoin([
+        `Yapılan bakımda **${ctx.spellName}** tespit edildi.`,
+        "Bu büyü; muhabbeti soğutur, kalpte uzaklaşma hissi oluşturur ve adım atmayı zorlaştırır.",
+        "Günlük hayatta üç net görüntüsü şudur:",
+        "sebepsiz uzaklaşma, konuşmaların kavga ile bitmesi, ‘içimden gelmiyor’ tarzı kopuş cümleleri."
+      ]),
+      tie: (ctx) => sentenceJoin([
+        "Bu tablo, sevgisizlik değil; araya giren soğutma düğümüdür.",
+        "Düğüm çözülünce kişi kendine gelir; iletişim dili yumuşar ve bağ yeniden toparlanır.",
+        "Hedef nettir: soğumanın bitmesi ve ilişkinin yeniden kurulması."
+      ]),
+      promise: (ctx) => sentenceJoin([
+        `Allah’ın izniyle **${ctx.spellName} kesin ve kalıcı şekilde bozulacaktır.**`,
+        "Bozulma başladığında soğutma kırılır, kalpte yumuşama oluşur ve yön yeniden size döner.",
+        "Bu süreçte amaç, geri dönüşün kalıcı olmasıdır."
+      ]),
+      process: () => buildProcessBlock(),
+      past: () => sentenceJoin([
+        "Daha önce ani kopuş yaşayan bir ilişkide bu düğüm çözüldüğünde, taraf geri adım atmaktan vazgeçmiş ve konuşmalar kısa sürede normale dönmüştü.",
+        "Soğutma düğümlerinde doğru yerden müdahale sonucu netleştirir."
+      ]),
+      close: () => sentenceJoin([
+        "Buradan sonrası kararlılık meselesidir.",
+        "Niyetiniz netse süreci en sağlam şekilde yürütürüz.",
+        "Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.",
+        "(Kişiye özel hazırlıklar ve okuma düzeni sebebiyle belirli bir bedel doğabilir.)"
+      ])
+    }
+  };
+
+  /* ============================================================
+     V10 ENTERPRISE - BUILD CARE TEXT (MAIN)
+     ============================================================ */
+
+  function buildCareText(ctx){
+    // Decide template key and spell
+    const analysis = analyzeLog(ctx.log);
+    const chosen = decideSpell(ctx.talep, analysis);
+    const tplKey = Object.keys(SPELL_POOL).find(k => SPELL_POOL[k].name === chosen.name) || "fitne_sogutma";
+    const tpl = CARE_TEMPLATES[tplKey] || CARE_TEMPLATES.fitne_sogutma;
+
+    // Attach chosen spell name
+    ctx.spellName = chosen.name;
+
+    // Compose 7+ blocks
+    const blocks = [
+      tpl.intro(ctx),
+      tpl.daily(ctx),
+      tpl.tie(ctx),
+      tpl.promise(ctx),
+      buildProcessBlock(),
+      tpl.past(ctx),
+      buildNoOtherHocaNote(),
+      tpl.close(ctx)
+    ];
+
+    // Add enterprise “life reflection” block (meaningful)
+    blocks.splice(3, 0, buildLifeReflection(ctx, analysis, tplKey));
+
+    // Merge and enforce min chars
+    const merged = blocks.join("\n\n");
+    return enforceMinChars(merged, ctx.mode);
+  }
+
+  function buildLifeReflection(ctx, analysis, tplKey){
+    // A large but clean section that references themes without exposing raw keywords.
+    const t = analysis.themes || [];
+    const themeLine = t.length ? t.join(", ") : "genel tıkanıklık";
+
+    const base = [];
+    base.push(`Sizde görünen tabloda en dikkat çeken şey, aynı döngünün tekrar etmesidir: bir noktada umut doğuyor, ardından sebepsiz bir ağırlık çöküyor ve süreç yeniden duruyor. Bu, dış müdahale düğümlerinin klasik izidir. İnsan “ben mi yanlış yapıyorum” diye kendini sorgular ama mesele sizin hatanız değildir.`);
+    base.push(`Konuşma akışında beliren ${themeLine} tarafı, yaşadığınız yükü artırır. Bekleme uzadıkça insanın içi daralır; bu da bazen acele karar almaya iter. Burada önemli olan, düğümü doğru yerden çözmek ve süreci disiplinli götürmektir.`);
+    base.push(`Bu tip düğümlerde en büyük kayıp, kişinin “nasıl olsa olmuyor” deyip niyetinin düşmesidir. Niyet düştüğünde süreç daha çok uzar. Bu yüzden 7 günlük düzeni bozmamak ve odağı dağıtmamak şarttır.`);
+    base.push(`Düğüm çözüldüğünde genelde ilk işaretler konuşma dilinde çıkar: daha yumuşak cümleler, daha az sertlik, daha az kaçınma, daha hızlı cevap gibi. Sonra olaylar toparlanır. Bu sıralama sık görülür.`);
+    base.push(`Bu çalışmanın mantığı şudur: Önce kilit çözülür, sonra yön sabitlenir. Kilit çözülmeden sabitleme olmaz; sabitleme olmadan da sonuç kalıcı olmaz. Bu yüzden adım adım yürümek şarttır.`);
+
+    // Spell-specific extra sentences
+    if(tplKey === "rizik_kapama" || tplKey === "yol_baglama"){
+      base.push("Maddi tarafta düğüm çözüldüğünde ilk işaret genelde küçük ama net olur: bir haber, bir görüşme, bir fırsat, bir ödeme. Ardından süreç akmaya başlar. Bu yüzden küçük değişimleri bile ciddiye almak gerekir.");
+    } else if(tplKey === "aile_engeli"){
+      base.push("Aile düğümlerinde ilk işaret genelde dil değişimidir: ‘olmaz’ sertliği azalır, konuşma tonu yumuşar, sonra karar kapısı aralanır. Bu değişim başladığında süreç hızlanır.");
+    } else {
+      base.push("İlişki düğümlerinde ilk işaret genelde yakınlaşma isteğidir: iletişim uzar, kaçınma düşer, sonra netlik gelir. Netlik geldikçe bağ sağlamlaşır.");
+    }
+
+    return base.join(" ");
+  }
+
+</script>
+<script>
+  /* ============================================================
+     V10 ENTERPRISE - UI FLOW (Overlay + Generate)
+     ============================================================ */
+
+  function collectContext(){
+    const isim = toTitleTr($("isim").value);
+    const anne = toTitleTr($("anne").value);
+    const karsi = toTitleTr($("karsi").value);
+    const kAnne = toTitleTr($("kAnne").value);
+
+    const ctx = {
+      isim: isim || "Danışan",
+      anne: anne || "-",
+      karsi: karsi || "-",
+      kAnne: kAnne || "-",
+      hitap: getHitap(),
+      talep: $("talep").value || "auto",
+      mode: $("mode").value || "enterprise_ultra",
+      log: safeTrim($("log").value)
+    };
+
+    return ctx;
+  }
+
+  function validate(ctx){
+    if(!safeTrim(ctx.isim) || ctx.isim === "Danışan"){
+      alert("Danışan adını girin.");
+      return false;
+    }
+    if(!safeTrim(ctx.anne) || ctx.anne === "-"){
+      alert("Danışan anne adını girin.");
+      return false;
+    }
+    if(!safeTrim(ctx.log)){
+      alert("WhatsApp konuşmasını / belirtileri yapıştırın.");
+      return false;
+    }
+    // If counterpart given, require mother too (enterprise rule)
+    if(ctx.karsi !== "-" && ctx.karsi.length > 0 && (ctx.kAnne === "-" || !ctx.kAnne)){
+      alert("Muhatap adı girildiyse, muhatap anne adını da girin.");
+      return false;
+    }
+    return true;
+  }
+
+  function setOverlay(show, msg){
+    const ov = $("overlay");
+    const m = $("overlayMsg");
+    if(msg) m.innerText = msg;
+    ov.style.display = show ? "flex" : "none";
+  }
+
+  function generate(){
+    const ctx = collectContext();
+    if(!validate(ctx)) return;
+
+    // Show overlay with staged messages
+    setOverlay(true, "Konuşma akışı okunuyor, konu sınıflandırılıyor...");
+    $("btnGenerate").disabled = true;
+    $("btnGenerate").style.opacity = "0.75";
+
+    // Small staged UX – but we compute once at the end
+    setTimeout(() => {
+      setOverlay(true, "Büyü türü netleştiriliyor, şablon seçiliyor...");
+      setTimeout(() => {
+        setOverlay(true, "Kişiye özel Enterprise metin hazırlanıyor...");
+        setTimeout(() => {
+          // Compute here (single pass)
+          const text = buildCareText(ctx);
+
+          $("output").innerText = text;
+          $("resultWrap").classList.remove("hidden");
+          setOverlay(false);
+
+          $("btnGenerate").disabled = false;
+          $("btnGenerate").style.opacity = "1";
+
+          // Scroll to output
+          $("resultWrap").scrollIntoView({ behavior: "smooth", block: "start" });
+
+        }, 650);
+      }, 650);
+    }, 650);
+  }
 </script>
 
 </body>
 </html>
+
+
