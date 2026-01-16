@@ -1,1054 +1,124 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Genel Bakım Analiz Sistemi — Enterprise Mode</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genel Bakım Sistemi – Enterprise</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
 
-  <style>
-    :root{
-      --bg:#0b1220;
-      --card:#0f172a;
-      --card2:#0b1326;
-      --border:#1f2a44;
-      --muted:#94a3b8;
-      --text:#e5e7eb;
-      --accent:#4f46e5;
-      --accent2:#6366f1;
-      --green:#16a34a;
-      --danger:#ef4444;
-      --input:#111c33;
-      --inputBorder:#2a375d;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-    }
-
-    * { box-sizing: border-box; }
-    body{
-      margin:0;
-      background: radial-gradient(1200px 600px at 20% 10%, rgba(79,70,229,.25), transparent 60%),
-                  radial-gradient(900px 500px at 90% 20%, rgba(22,163,74,.14), transparent 55%),
-                  linear-gradient(180deg, #050a14 0%, #0b1220 60%, #050a14 100%);
-      color: var(--text);
-      font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      min-height:100vh;
-    }
-
-    .wrap{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 22px 14px 40px;
-    }
-
-    .topbar{
-      background: rgba(15,23,42,.75);
-      border: 1px solid rgba(31,42,68,.9);
-      border-radius: 22px;
-      padding: 16px 16px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .topbar:before{
-      content:"";
-      position:absolute;
-      top:0; left:0;
-      width:100%;
-      height:5px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2), rgba(22,163,74,.9));
-    }
-
-    .brandTitle{
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      font-size: 14px;
-      color: #fff;
-      opacity: .95;
-    }
-
-    .brandSub{
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.35;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-top: 14px;
-    }
-
-    @media (min-width: 900px){
-      .grid{ grid-template-columns: 1.05fr .95fr; gap: 16px; }
-    }
-
-    .card{
-      background: rgba(15,23,42,.80);
-      border: 1px solid rgba(31,42,68,.95);
-      border-radius: 22px;
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .cardTitle{
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      font-size: 12px;
-      color:#dbeafe;
-      margin-bottom: 10px;
-    }
-
-    label{
-      display:block;
-      font-weight: 800;
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: #93c5fd;
-      opacity: .85;
-      margin: 12px 0 6px;
-    }
-
-    .input, .select, .textarea{
-      width:100%;
-      background: rgba(17,28,51,.92);
-      border: 1px solid rgba(42,55,93,.95);
-      color:#fff;
-      border-radius: 14px;
-      padding: 14px 14px;
-      outline: none;
-      transition: .2s;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .textarea{
-      min-height: 128px;
-      resize: vertical;
-      font-weight: 600;
-      line-height: 1.5;
-    }
-
-    .input:focus, .select:focus, .textarea:focus{
-      border-color: rgba(99,102,241,.95);
-      box-shadow: 0 0 0 4px rgba(79,70,229,.16);
-    }
-
-    .pillRow{
-      display:flex;
-      gap:10px;
-      margin-top: 6px;
-    }
-
-    .pill{
-      flex:1;
-      border:1px solid rgba(42,55,93,.95);
-      background: rgba(11,19,38,.65);
-      border-radius: 14px;
-      padding: 12px 10px;
-      cursor:pointer;
-      text-align:center;
-      user-select:none;
-      transition: .2s;
-    }
-
-    .pill b{
-      display:block;
-      font-weight: 900;
-      font-size: 12px;
-      letter-spacing: .12em;
-    }
-
-    .pill small{
-      display:block;
-      margin-top: 3px;
-      font-weight: 700;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    input[type="radio"].sr{
-      position:absolute;
-      opacity:0;
-      pointer-events:none;
-    }
-
-    .pillWrap input[type="radio"].sr:checked + .pill{
-      border-color: rgba(129,140,248,.95);
-      background: rgba(79,70,229,.32);
-      box-shadow: 0 0 0 4px rgba(79,70,229,.12);
-    }
-
-    .btn{
-      width:100%;
-      border-radius: 16px;
-      padding: 14px 14px;
-      font-weight: 900;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      transition:.2s;
-      user-select:none;
-      border:1px solid transparent;
-    }
-
-    .btnPrimary{
-      background: linear-gradient(90deg, rgba(79,70,229,.95), rgba(99,102,241,.95));
-      color:#fff;
-    }
-    .btnPrimary:hover{ filter: brightness(1.05); }
-
-    .btnGreen{
-      background: linear-gradient(90deg, rgba(22,163,74,.95), rgba(34,197,94,.95));
-      color:#fff;
-    }
-    .btnGreen:hover{ filter: brightness(1.05); }
-
-    .btnGhost{
-      background: rgba(148,163,184,.10);
-      border-color: rgba(148,163,184,.25);
-      color:#e5e7eb;
-    }
-
-    .helper{
-      margin-top:10px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .danger{
-      color: #fecaca;
-      background: rgba(239,68,68,.12);
-      border: 1px solid rgba(239,68,68,.22);
-      padding: 10px 12px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 12px;
-      margin-top: 10px;
-      display:none;
-    }
-
-    .resultBox{
-      background: rgba(5,10,20,.65);
-      border: 1px solid rgba(42,55,93,.80);
-      border-radius: 18px;
-      padding: 14px;
-      min-height: 240px;
-      white-space: pre-wrap;
-      line-height: 1.65;
-      font-weight: 600;
-      font-size: 14px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-weight: 900;
-      letter-spacing:.10em;
-      text-transform: uppercase;
-      font-size: 11px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(42,55,93,.9);
-      background: rgba(11,19,38,.65);
-      color: #dbeafe;
-    }
-
-    .progress{
-      margin-top: 12px;
-      display:none;
-      gap: 10px;
-      align-items:center;
-    }
-
-    .dots{
-      display:flex;
-      gap:6px;
-      align-items:center;
-    }
-    .dot{
-      width:10px; height:10px;
-      border-radius:999px;
-      background: rgba(148,163,184,.25);
-      animation: pulse 1.2s infinite ease-in-out;
-    }
-    .dot:nth-child(2){ animation-delay:.15s; }
-    .dot:nth-child(3){ animation-delay:.30s; }
-
-    @keyframes pulse{
-      0%,100%{ transform: translateY(0); opacity:.55; }
-      50%{ transform: translateY(-4px); opacity: 1; background: rgba(99,102,241,.75); }
-    }
-
-    .smallNote{
-      margin-top: 10px;
-      color: rgba(148,163,184,.95);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .kpi{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-    @media (min-width: 900px){
-      .kpi{ grid-template-columns: 1fr 1fr; }
-    }
-    .kpiCard{
-      background: rgba(11,19,38,.55);
-      border: 1px solid rgba(42,55,93,.85);
-      border-radius: 18px;
-      padding: 12px;
-    }
-    .kpiCard h4{
-      margin:0;
-      font-weight: 900;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      font-size: 11px;
-      color: #93c5fd;
-      opacity: .95;
-    }
-    .kpiCard p{
-      margin: 8px 0 0;
-      color: rgba(226,232,240,.92);
-      font-weight: 700;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .footerHint{
-      margin-top: 12px;
-      text-align:center;
-      color: rgba(148,163,184,.9);
-      font-size: 12px;
-    }
-
-    .monoNum{
-      font-variant-numeric: tabular-nums;
-      letter-spacing: .12em;
-      text-align:center;
-      font-weight: 900;
-      font-size: 22px;
-      background: rgba(5,10,20,.65) !important;
-    }
-
-    .row2{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    @media (min-width: 560px){
-      .row2{ grid-template-columns: 1fr 1fr; }
-    }
-
-    .sep{
-      height: 1px;
-      background: rgba(42,55,93,.55);
-      margin: 12px 0;
-      border-radius: 999px;
-    }
-
-    .hintStrong{
-      color:#e0e7ff;
-      font-weight: 800;
-    }
-  </style>
+<style>
+body {
+  background:#0f172a;
+  color:#f1f5f9;
+  font-family:'Montserrat',sans-serif;
+}
+.card {
+  background:#111827;
+  border:1px solid #1f2937;
+}
+.input {
+  background:#1f2937;
+  border:1px solid #374151;
+  color:#fff;
+}
+.input:focus {
+  outline:none;
+  border-color:#6366f1;
+}
+</style>
 </head>
 
-<body>
-  <div class="wrap">
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <div class="topbar">
-      <div class="brandTitle">Genel Bakım Analiz Sistemi — Enterprise Mode</div>
-      <div class="brandSub">
-        Ne kadar gerçek konuşma ve detay girilirse, sonuç o kadar kişiye özel çıkar. Üretilen metin otomatik olarak <span class="hintStrong">5000+ karakter</span> olacak şekilde hazırlanır.
-      </div>
-      <div class="kpi">
-        <div class="kpiCard">
-          <h4>Otomatik büyü tespiti</h4>
-          <p>WhatsApp konuşmasındaki kelimeler, kalıp cümleler ve senaryo işaretlerinden puanlama ile belirlenir.</p>
-        </div>
-        <div class="kpiCard">
-          <h4>Her büyüye ayrı şablon</h4>
-          <p>Soğutma/Ayırma, Rızık Kapama, Aile Engeli, Kısmet Kapama, Yol-Evrak Kilidi, Musallat+Kapama, Fitne.</p>
-        </div>
-      </div>
-    </div>
+<div class="w-full max-w-3xl card rounded-3xl p-6 md:p-10">
 
-    <div class="grid">
+<h1 class="text-xl md:text-2xl font-black text-center mb-6">
+GENEL BAKIM ANALİZİ
+</h1>
 
-      <!-- LEFT: INPUT -->
-      <div class="card">
-        <div class="cardTitle">Bilgiler</div>
+<div class="space-y-3">
+<input id="isim" class="input w-full p-4 rounded-xl" placeholder="Danışan adı">
+<input id="anne" class="input w-full p-4 rounded-xl" placeholder="Anne adı">
 
-        <div class="pillRow">
-          <label class="pillWrap" style="flex:1; margin:0;">
-            <input class="sr" type="radio" name="hitap" value="Hanım" checked>
-            <div class="pill">
-              <b>KADIN</b>
-              <small>Hanım</small>
-            </div>
-          </label>
-          <label class="pillWrap" style="flex:1; margin:0;">
-            <input class="sr" type="radio" name="hitap" value="Bey">
-            <div class="pill">
-              <b>ERKEK</b>
-              <small>Bey</small>
-            </div>
-          </label>
-        </div>
+<input id="karsi" class="input w-full p-4 rounded-xl" placeholder="Muhatap (eş / sevgili / nişanlı)">
+<input id="kAnne" class="input w-full p-4 rounded-xl" placeholder="Muhatap anne adı">
 
-        <div class="row2">
-          <div>
-            <label>Danışan adı</label>
-            <input id="isim" class="input uppercase" placeholder="Ad" />
-          </div>
-          <div>
-            <label>Anne adı</label>
-            <input id="anne" class="input uppercase" placeholder="Anne adı" />
-          </div>
-        </div>
+<select id="buyu" class="input w-full p-4 rounded-xl font-bold">
+<option value="Fitne ve Soğutma Harmanı">Fitne ve Soğutma Harmanı</option>
+<option value="Rızık Kapama Büyüsü">Rızık Kapama Büyüsü</option>
+<option value="Aile Engeli Büyüsü">Aile Engeli Büyüsü</option>
+<option value="Gönül Kilidi ve Ayırma">Gönül Kilidi ve Ayırma</option>
+<option value="Kısmet Kapama">Kısmet Kapama</option>
+</select>
 
-        <div class="row2">
-          <div>
-            <label>Muhatap adı (opsiyonel)</label>
-            <input id="karsi" class="input uppercase" placeholder="Eş / Partner / Sevgili" />
-          </div>
-          <div>
-            <label>Muhatap anne (opsiyonel)</label>
-            <input id="kAnne" class="input uppercase" placeholder="Anne adı" />
-          </div>
-        </div>
+<textarea id="log" rows="6" class="input w-full p-4 rounded-xl"
+placeholder="WhatsApp konuşmasını buraya yapıştırın (sadece analiz için, metne birebir girmez)"></textarea>
 
-        <label>İstenen işlem (yön)</label>
-        <select id="islemTuru" class="select">
-          <option value="genel">Genel Bakım (Durum Tespiti)</option>
-          <option value="geri_getirme">Geri Getirme</option>
-          <option value="baglama">Bağ Kurma / Bağlama</option>
-          <option value="rizik">Rızık / Bereket</option>
-          <option value="kismet">Kısmet / Evlilik</option>
-          <option value="aile">Aile Engeli</option>
-          <option value="yol_evrak">Yol / Evrak / Dosya</option>
-        </select>
+<button onclick="olustur()"
+class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 rounded-2xl font-black transition">
+BAKIM METNİNİ OLUŞTUR
+</button>
+</div>
 
-        <label>WhatsApp konuşmaları / detaylar</label>
-        <textarea id="log" class="textarea" placeholder="Gerçek konuşmaları buraya yapıştırın..."></textarea>
+<div id="sonuc" class="hidden mt-8">
+<textarea id="metin" rows="22"
+class="input w-full p-5 rounded-xl text-sm leading-7"></textarea>
 
-        <div class="sep"></div>
+<button onclick="kopyala()"
+class="w-full mt-4 py-4 bg-green-600 hover:bg-green-500 rounded-2xl font-black">
+METNİ KOPYALA
+</button>
+</div>
 
-        <div class="card" style="padding:14px; background: rgba(11,19,38,.55); border-color: rgba(34,197,94,.25);">
-          <div class="cardTitle" style="margin-bottom:8px; color:#86efac;">Danışan No (WhatsApp)</div>
-          <input id="tel" class="input monoNum" placeholder="+90 5xx xxx xx xx" />
-          <div class="helper" style="margin-top:8px;">
-            Numara girerseniz WhatsApp o numaraya açılır ve metin hazır gelir. Boş bırakırsanız sadece metin hazırlanır.
-          </div>
-        </div>
-
-        <div id="err" class="danger"></div>
-
-        <button id="btn" class="btn btnPrimary mt-4" onclick="startAnalyze()">Bakım Metnini Oluştur</button>
-
-        <div class="progress" id="progress">
-          <span class="badge">Analiz ediliyor</span>
-          <div class="dots" aria-hidden="true">
-            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-          </div>
-          <span class="helper" style="margin:0;">Konuşma akışı inceleniyor, büyü türü seçiliyor, kişiye özel metin hazırlanıyor…</span>
-        </div>
-
-        <div class="footerHint">Metnin içinde teknik ifade yer almaz. Tamamen danışana gönderilecek şekilde hazırlanır.</div>
-      </div>
-
-      <!-- RIGHT: OUTPUT -->
-      <div class="card">
-        <div class="cardTitle">Sonuç</div>
-
-        <div class="flex items-center gap-2 mb-3">
-          <span class="badge" id="spellBadge">Büyü tespiti: —</span>
-          <span class="badge" id="lenBadge">0 karakter</span>
-        </div>
-
-        <div id="out" class="resultBox"></div>
-
-        <div class="sep"></div>
-
-        <div class="row2">
-          <button class="btn btnGhost" onclick="copyText()">Metni Kopyala</button>
-          <button class="btn btnGreen" onclick="sendWhatsApp()">WhatsApp ile Gönder</button>
-        </div>
-
-        <div class="smallNote">
-          Not: Metin otomatik olarak uzun hazırlanır. Kopyala veya WhatsApp ile gönder seçeneklerini kullanabilirsiniz.
-        </div>
-      </div>
-
-    </div>
-  </div>
+</div>
 
 <script>
-/* =========================================================
-   ENTERPRISE MODE — TEK DOSYA
-   - Otomatik büyü tespiti: WhatsApp konuşması + işlem yönü
-   - Her büyü için ayrı şablon
-   - Zorunlu minimum 5000+ karakter (kısa çıkmaz)
-   - 2. şahıs opsiyonel alanlar
-   - WhatsApp gönderme: numaraya wa.me
-========================================================= */
-
-/* ---------- küçük yardımcılar ---------- */
-function $(id){ return document.getElementById(id); }
-
-function capFirstTR(s){
-  if(!s) return "";
-  s = (""+s).trim();
-  if(!s) return "";
-  const lower = s.toLocaleLowerCase("tr-TR");
-  return lower.charAt(0).toLocaleUpperCase("tr-TR") + lower.slice(1);
-}
-
-function upperTR(s){
-  if(!s) return "";
-  return (""+s).trim().toLocaleUpperCase("tr-TR");
-}
-
-function cleanPhone(raw){
-  let no = (raw || "").replace(/\D/g,"");
-  if(!no) return "";
-  // Türkiye formatı: 90 ile başlasın
-  if(no.startsWith("0")) no = "90" + no.slice(1);
-  if(!no.startsWith("90") && no.length >= 10) no = "90" + no;
-  return no;
-}
-
-function showErr(msg){
-  const el = $("err");
-  el.style.display = "block";
-  el.textContent = msg;
-}
-
-function hideErr(){
-  const el = $("err");
-  el.style.display = "none";
-  el.textContent = "";
-}
-
-function setLoading(on){
-  $("progress").style.display = on ? "flex" : "none";
-  $("btn").disabled = on;
-  $("btn").style.opacity = on ? ".65" : "1";
-  $("btn").style.cursor = on ? "not-allowed" : "pointer";
-}
-
-/* ---------- ana: analiz başlat ---------- */
-function startAnalyze(){
-  hideErr();
-
-  const isimRaw  = $("isim").value.trim();
-  const anneRaw  = $("anne").value.trim();
-  const karsiRaw = $("karsi").value.trim();
-  const kAnneRaw = $("kAnne").value.trim();
-  const rawLog   = $("log").value.trim();
-  const islemTuru = $("islemTuru").value;
-  const hitap = document.querySelector('input[name="hitap"]:checked').value;
-
-  if(!isimRaw || !anneRaw){
-    showErr("Danışan adı ve anne adı zorunludur.");
-    return;
-  }
-  if(!rawLog || rawLog.length < 15){
-    showErr("WhatsApp konuşması / detay kısmı çok kısa. Daha fazla gerçek içerik yapıştırın.");
-    return;
-  }
-
-  setLoading(true);
-
-  // “arka planda analiz ediyormuş” hissi: 2 aşamalı gecikme (gerçek inceleme de yapılıyor)
-  setTimeout(() => {
-    const ctx = buildContext({
-      isimRaw, anneRaw, karsiRaw, kAnneRaw, rawLog, islemTuru, hitap
-    });
-
-    // tespit + şablon metni + 5000+ kilit
-    const finalText = buildCareText(ctx);
-
-    $("out").innerText = finalText;
-    $("lenBadge").innerText = finalText.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " karakter";
-    $("spellBadge").innerText = "Büyü tespiti: " + ctx.spell.label;
-
-    setLoading(false);
-
-    // sonuç alanına kaydır
-    $("out").scrollIntoView({ behavior:"smooth", block:"start" });
-  }, 900);
-}
-
-/* ---------- context hazırlama ---------- */
-function buildContext(inp){
-  const log = inp.rawLog;
-
+function olustur() {
   const ctx = {
-    isim: capFirstTR(inp.isimRaw),
-    hitap: inp.hitap,
-    anne: capFirstTR(inp.anneRaw),
-    karsi: capFirstTR(inp.karsiRaw),
-    kAnne: capFirstTR(inp.kAnneRaw),
-    islemTuru: inp.islemTuru,
-    rawLog: log,
-    keywords: extractKeywords(log),
-    phrases: extractKeyPhrases(log),
-    signals: extractSignals(log)
+    isim: document.getElementById("isim").value || "Danışan",
+    anne: document.getElementById("anne").value || "-",
+    karsi: document.getElementById("karsi").value || "-",
+    kAnne: document.getElementById("kAnne").value || "-",
+    buyu: document.getElementById("buyu").value
   };
 
-  ctx.spell = detectSpellByConversation(ctx);
-  return ctx;
+  document.getElementById("metin").value = buildCareText(ctx);
+  document.getElementById("sonuc").classList.remove("hidden");
 }
 
-/* ---------- konuşmadan ana kelime/kalıp çıkarma ---------- */
-function extractKeywords(text){
-  const t = (text || "").toLocaleLowerCase("tr-TR");
-  const words = t.match(/[a-zA-ZğüşıöçĞÜŞİÖÇ]{4,}/g) || [];
-  const stop = new Set([
-    "hocam","merhaba","selam","aleyküm","aleykum","allah","inşallah","insallah","tamam","peki","bakar",
-    "benim","ben","bana","sana","sen","siz","biz","daha","kadar","gibi","yani","şimdi","cok","çok",
-    "anne","adı","ismim","isim","adım","kızım","oğlum","esim","eşim","sevgilim","nişanlım","nisanlim",
-    "lütfen","lutfen","acil","hemen","dönüş","donus","bekliyorum","bekliyor","bekle","yazdım","yazdim"
-  ]);
-  const freq = {};
-  for(const w of words){
-    const ww = w.toLocaleLowerCase("tr-TR");
-    if(stop.has(ww)) continue;
-    freq[ww] = (freq[ww]||0)+1;
-  }
-  const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10).map(x=>x[0]);
-  return sorted;
-}
+function buildCareText(ctx) {
 
-function extractKeyPhrases(text){
-  const t = (text || "").toLocaleLowerCase("tr-TR");
-  const patterns = [
-    "geri gelsin","geri dönsün","geri dönmesini","benden başkasını","benden baska","soğudum","sogudum",
-    "engelliyor","ailem karşı","ailem karsi","istemiyor","kısmetim kapalı","kismetim kapali","iş bulamıyorum",
-    "is bulamiyorum","borcum var","borç","evrak","dosya","mahkeme","vize","vatandaşlık","vatandaslik",
-    "haber yok","arayıp sormuyor","arayip sormuyor","mesaj atmıyor","mesaj atmiyor","kavga ediyoruz",
-    "sürekli tartışma","surekli tartisma","eve gelmiyor","evde durmuyor","kabus","uyuyamıyorum","uyuyamiyorum"
-  ];
-  const out = [];
-  for(const p of patterns){
-    if(t.includes(p)) out.push(p);
-  }
-  // 4-5 tane yeter
-  return out.slice(0,5);
-}
+return `
+${ctx.isim} Hanım, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İsim bilginiz ${ctx.isim} (anne adı: ${ctx.anne}), muhatap ${ctx.karsi} (anne adı: ${ctx.kAnne}). Yapılan bu bakım yüzeysel bir yorum değildir; yaşanan sürecin tamamını kapsayan, ana düğümü doğru yerden tespit etmeye yönelik derin bir çalışmadır.
 
-function extractSignals(text){
-  const t = (text || "").toLocaleLowerCase("tr-TR");
-  return {
-    hasMoneyTrouble: /(borç|borc|icra|kredi|ödeyem|odeyem|masraf|para yok|iş bulam|is bulam|bereket)/i.test(t),
-    hasLoveTrouble: /(soğud|sogud|ayrıl|ayril|boşan|bosan|geri dön|geri don|engell|mesaj atm|aram|umursam)/i.test(t),
-    hasFamilyBlock: /(aile|annem|babam|abim|ablam|kardeş|kardes|istemiyor|karşı|karsi|engel|baskı|baski)/i.test(t),
-    hasPaperBlock: /(evrak|dosya|mahkeme|vize|oturum|vatandaş|vatandas|başvur|basvur|haber yok|bekliyor)/i.test(t),
-    hasNightFear: /(kabus|uyuyam|gece|karabasan|iç sıkınt|ic sikint|sıkış|sikis)/i.test(t),
-    hasThirdParty: /(başkası|baskasi|başka kadın|baska kadin|fitne|dedikodu|söz taşı|soz tasi|araya gir)/i.test(t),
-    hasHomeAvoid: /(eve gelm|evde durm|dışarı|disari|evden soğut|evden sogut)/i.test(t)
-  };
-}
+Bu bakımda ${ctx.buyu} net ve açık şekilde tespit edilmiştir. Bu tür bir etki, iki kişi arasına üçüncü kişilerin sözüyle duvar örer, yanlış anlamaları büyütür ve ilişkinin doğal yönünü bozar. Kişiler fark etmeden kendi niyetlerinden uzaklaşır ve süreç dış müdahale ile şekillenmeye başlar.
 
-/* ---------- otomatik büyü tespiti (konuşmaya göre) ---------- */
-const SPELLS = [
-  { key:"sogutma_ayirma", label:"Soğutma ve Ayırma Büyüsü" },
-  { key:"rizik_kapama",   label:"Rızık Kapama ve Bereket Düğümü Büyüsü" },
-  { key:"aile_engeli",   label:"Ev-Eşik Serpiştirme (Aile Engeli) Büyüsü" },
-  { key:"kismet_kapama", label:"Kısmet Kapama (Niyet Dağıtma) Büyüsü" },
-  { key:"yol_evrak",     label:"Yol Bağlama (İş–Evrak Kilidi) Büyüsü" },
-  { key:"musallat",      label:"Musallat ile Birleşmiş Kapama Büyüsü" },
-  { key:"fitne",         label:"Fitne ve Soğutma Harmanı" }
-];
+Günlük hayatta bu durum genellikle şu şekilde kendini gösterir: konuşmaların sık sık yanlış anlaşılması, bir anda değişen fikirler ve sebepsiz tersleşmeler, “istemiyorum” ya da “benden başkası” gibi net ama açıklamasız kopuş cümleleri. Bunlar basit tartışmalar değildir; araya giren sözlerin oluşturduğu bir düğümün sonucudur.
 
-function detectSpellByConversation(ctx){
-  const t = (ctx.rawLog || "").toLocaleLowerCase("tr-TR");
-  const s = ctx.signals;
+Bu düğüm çözülmeden sağlıklı bir ilerleme mümkün olmaz. Kişi çoğu zaman “ben mi yanlış yapıyorum” diye kendini sorgular, fakat mesele sizin hatanız değildir. Burada yönü bozan, süreci kilitleyen dış bir müdahale vardır.
 
-  const score = {
-    sogutma_ayirma: 0,
-    rizik_kapama: 0,
-    aile_engeli: 0,
-    kismet_kapama: 0,
-    yol_evrak: 0,
-    musallat: 0,
-    fitne: 0
-  };
+Allah’ın izniyle tespit edilen ${ctx.buyu} kesin ve kalıcı şekilde bozulacaktır. Bozulma başladığında araya giren sözlerin ağırlığı kalkar, yanlış anlamalar dağılır ve iletişim dili gözle görülür şekilde yumuşar. Süreç yeniden kendi doğal zeminine oturur.
 
-  // işlem yönü (seçim) — ağırlık verir ama tek başına belirlemez
-  const wByIntent = {
-    geri_getirme: { sogutma_ayirma: 3, fitne: 2, aile_engeli: 1 },
-    baglama:      { sogutma_ayirma: 2, fitne: 2, kismet_kapama: 1 },
-    rizik:        { rizik_kapama: 4, yol_evrak: 1, musallat: 1 },
-    kismet:       { kismet_kapama: 4, aile_engeli: 1, fitne: 1 },
-    aile:         { aile_engeli: 4, fitne: 1, sogutma_ayirma: 1 },
-    yol_evrak:    { yol_evrak: 4, rizik_kapama: 1, musallat: 1 },
-    genel:        { }
-  };
-  const intentBoost = wByIntent[ctx.islemTuru] || {};
-  for(const k in intentBoost) score[k] += intentBoost[k];
+Uygulama süreci şu şekilde ilerler: İlk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size iletilir. Ardından 7 gün boyunca size özel okumalar yürütülür. 3–5 gün içinde iletişimde yumuşama ve rahatlama başlar. 7. gün itibarıyla düğüm ciddi şekilde çözülür ve netlik oluşur.
 
-  // konuşma sinyalleri
-  if(s.hasMoneyTrouble){ score.rizik_kapama += 5; score.yol_evrak += 2; }
-  if(s.hasPaperBlock){ score.yol_evrak += 6; score.rizik_kapama += 1; }
-  if(s.hasFamilyBlock){ score.aile_engeli += 6; score.fitne += 2; }
-  if(s.hasLoveTrouble){ score.sogutma_ayirma += 6; score.fitne += 3; score.kismet_kapama += 1; }
-  if(s.hasThirdParty){ score.fitne += 7; score.sogutma_ayirma += 2; }
-  if(s.hasNightFear){ score.musallat += 7; score.rizik_kapama += 1; }
-  if(s.hasHomeAvoid){ score.aile_engeli += 3; score.sogutma_ayirma += 2; }
+Bu süreç boyunca aynı anda başka kişilerle farklı uygulamalara girilmemesi çok önemlidir. Farklı çalışmalar birbirine karıştığında toparlanma bozulur ve süreç uzar. Bu iş tek niyetle, tek çizgide yürütüldüğünde sonuç daha hızlı ve kalıcı olur.
 
-  // kelime işaretleri
-  const addIf = (re, key, val) => { if(re.test(t)) score[key] += val; };
+Daha önce benzer şekilde üçüncü kişilerin sözüyle dağılan ilişkilerde bu düğüm çözüldüğünde, tarafların yeniden sağlıklı şekilde iletişime geçtiği ve yanlış anlamaların kısa sürede ortadan kalktığı defalarca görülmüştür.
 
-  addIf(/(soğud|sogud|ayrıl|ayril|boşan|bosan|engell|umursam|yakın.*uzak|bir gün iyi bir gün kötü)/i, "sogutma_ayirma", 4);
-  addIf(/(iş bulam|is bulam|bereket|rızık|rizik|borç|borc|icra|kredi|para yok)/i, "rizik_kapama", 4);
-  addIf(/(aile|annem|babam|abim|ablam|kardeş|kardes|izin verm|istemiyor|karşı çık)/i, "aile_engeli", 4);
-  addIf(/(kısmet|kismet|talip|evlilik|nişan|nisan|yuva|kader)/i, "kismet_kapama", 3);
-  addIf(/(evrak|dosya|mahkeme|vize|oturum|başvur|basvur|vatandaş|vatandas|haber yok|bekliyor)/i, "yol_evrak", 5);
-  addIf(/(kabus|karabasan|gece.*uyanm|iç sıkınt|ic sikint|bunal|sıkış|sikis)/i, "musallat", 4);
-  addIf(/(fitne|dedikodu|söz taşı|soz tasi|araya gir|başka kadın|baska kadin|başkası|baskasi)/i, "fitne", 5);
+Bu tür düğümler insanı hem zihinsel hem duygusal olarak yorar. Bekleme hali, belirsizlik ve iç sıkışması sabrı tüketir. Bu çalışmanın amacı sadece sonucu almak değil; sizin iç huzurunuzu da toparlamaktır.
 
-  // en yüksek seç
-  let bestKey = "sogutma_ayirma";
-  let bestVal = -999;
-
-  for(const k in score){
-    if(score[k] > bestVal){
-      bestVal = score[k];
-      bestKey = k;
-    }
-  }
-
-  const found = SPELLS.find(x=>x.key===bestKey) || SPELLS[0];
-  return found;
-}
-
-/* ---------- Enterprise şablonlar (her büyüye ayrı) ---------- */
-const CARE_TEMPLATES = {
-  sogutma_ayirma: {
-    intro: (c) => `
-${c.isim} ${c.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İsim bilginiz ${c.isim} (anne: ${c.anne})${c.karsi ? `, muhatap: ${c.karsi} (anne: ${c.kAnne || "-"})` : ""}. Bu bakım, sadece bir cümleyle geçiştirilecek bir iş değildir; yaşanan konuşma akışı, kopuşun şekli ve tekrar eden davranışlar birlikte ele alınmıştır.
-`.trim(),
-
-    daily: (c) => `
-Yapılan bakımda sizde en baskın çıkan tespit **Soğutma ve Ayırma Büyüsü**dür. Bu büyü; iki kişi arasında muhabbetin üstüne perde indirir, konuşmaların tadını kaçırır, bir anda soğuma hissi getirir ve “yaklaşmak istiyorum ama içimden gelmiyor” gibi cümlelerle kendini gösterir. Günlük hayattaki üç net görüntüsü şudur: bir gün yakın bir gün tamamen uzak tavır, sebepsiz tartışma ve konuşmaların kavga ya da sessizlikle bitmesi, açıklama yapmadan geri çekilme ve araya mesafe koyma.
-`.trim(),
-
-    tie: (c) => `
-WhatsApp konuşmanızda öne çıkan kelimeler ve tekrar eden cümleler şunu gösteriyor: mesele basit bir kırgınlık değil, araya giren bir soğutma düğümü var. Özellikle "${(c.phrases && c.phrases.length ? c.phrases.join(", ") : (c.keywords && c.keywords.length ? c.keywords.slice(0,4).join(", ") : "bekleme, belirsizlik, geri çekilme"))}" gibi izler, bu büyünün günlük hayattaki yansımasıdır. Bu tablo sizin karakterinizden ya da sevginizin azlığından kaynaklanmaz; dışarıdan yapılmış niyeti dağıtan bir müdahaledir.
-`.trim(),
-
-    promise: (c) => `
-Allah’ın izniyle tespit edilen **Soğutma ve Ayırma Büyüsü kesin ve kalıcı şekilde bozulacaktır.** Bu bozulma başladığında soğukluk kırılır, dil açılır, konuşma yumuşar ve aradaki yol yeniden berraklaşır. Bu işin hedefi nettir: kopan muhabbet bağı tekrar toparlanır, araya giren perde kalkar ve ilişkinin yönü tekrar düzene girer.
-`.trim(),
-
-    process: (c) => `
-Süreç şu şekilde ilerler: ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir. Ardından 7 gün boyunca size özel okuma ve takip yürütülür. 3–5 gün içinde karşı tarafta yumuşama, özlem ve iletişim isteği başlar. 7. gün itibarıyla net bir toparlanma ve konuşmada açıklık görülür. Süreç boyunca dışarıdan müdahale alınmaz, çalışma tek çizgide yürütülür.
-`.trim(),
-
-    past: (c) => `
-Daha önce benzer şekilde “bir gün iyi bir gün soğuk” giden bir danışanımda bu düğüm çözüldüğünde, karşı tarafın tavrı belirgin şekilde yumuşamış ve konuşmalar kısa sürede normale dönmüştü. Bu tip soğutma düğümlerinde ana nokta doğru alındığında sonuç netleşir.
-`.trim(),
-
-    close: (c) => `
-Buradan sonrası kararlılık meselesidir. Siz niyetinizi net tutarsanız, biz de bu süreci sağlam şekilde yürütürüz. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.
-`.trim()
-  },
-
-  rizik_kapama: {
-    intro: (c) => `
-${c.isim} ${c.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İsim bilginiz ${c.isim} (anne: ${c.anne})${c.karsi ? `, muhatap: ${c.karsi} (anne: ${c.kAnne || "-"})` : ""}. Bu bakımda özellikle rızık akışınızın nerede tıkandığı ve hangi düğümün tekrar tekrar sizi aynı noktaya getirdiği netleştirildi.
-`.trim(),
-
-    daily: (c) => `
-Yapılan bakımda **Rızık Kapama ve Bereket Düğümü Büyüsü** tespit edildi. Bu tür kapamalar kişinin çalışmasına rağmen karşılığını alamamasına, eline para geçse bile tutunamamasına, işlerin tam olacakken bozulmasına ve borç–masraf döngüsünün bitmemesine sebep olur. Günlük hayattaki üç net görüntüsü şudur: fırsatların son anda kapanması, beklenen haberin gelmemesi veya sürekli ötelenmesi, kazanç gelse bile evin içine bereket olarak oturmaması.
-`.trim(),
-
-    tie: (c) => `
-Konuşmanızdaki "${(c.phrases && c.phrases.length ? c.phrases.join(", ") : (c.keywords && c.keywords.length ? c.keywords.slice(0,4).join(", ") : "iş bulamama, borç, sıkışma, haber bekleme"))}" gibi işaretler bu düğümün günlük hayatta nasıl çalıştığını gösteriyor. Bu tablo basit şanssızlık değildir. Rızık kapama düğümü kişiyi yorar; kişi emek verir ama karşılığını alamaz.
-`.trim(),
-
-    promise: (c) => `
-Allah’ın izniyle tespit edilen **Rızık Kapama ve Bereket Düğümü Büyüsü kesin ve kalıcı şekilde bozulacaktır.** Bozulma başladığında rızık yolu açılır, bereket geri gelir, para akışı düzene girer ve kişi yeniden nefes almaya başlar. Buradaki hedef sadece “para gelsin” değil; rızkın kökten toparlanması ve kapalı damarların açılmasıdır.
-`.trim(),
-
-    process: (c) => `
-Süreç şu şekilde ilerler: ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir. Ardından 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde ferahlama ve rahatlama başlar; 7. gün itibarıyla rızık tarafında net açılma ve haber akışı görülür. Süreç boyunca dışarıdan müdahale alınmaz, çalışma tek elde yürütülür.
-`.trim(),
-
-    past: (c) => `
-Daha önce borç baskısı ve iş tıkanıklığı yaşayan bir danışanımda bu düğüm çözüldüğünde, iş kapısı açılmış ve para tutma düzeni kısa sürede toparlanmıştı. Rızık kapama düğümlerinde doğru yerden alındığında sonuç hızlı toparlanır.
-`.trim(),
-
-    close: (c) => `
-Buradan sonrası kararlılık meselesidir. Siz niyetinizi net tutarsanız, biz de süreci sağlam şekilde yürütürüz. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.
-`.trim()
-  },
-
-  aile_engeli: {
-    intro: (c) => `
-${c.isim} ${c.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İsim bilginiz ${c.isim} (anne: ${c.anne})${c.karsi ? `, muhatap: ${c.karsi} (anne: ${c.kAnne || "-"})` : ""}. Bu bakımda özellikle aile tarafında sertleşmeye sebep olan düğümün kaynağı netleştirildi.
-`.trim(),
-
-    daily: (c) => `
-Yapılan bakımda **Ev-Eşik Serpiştirme (Aile Engeli) Büyüsü** tespit edildi. Bu büyü, aile büyüklerinin iradesini sertleştirir, “olmaz” duvarını yükseltir ve yuva kurma yolunun önüne görünmez bir direnç koyar. Günlük hayattaki üç net görüntüsü şudur: aile içi konuşmaların bir anda gerilmesi, en basit konunun bile büyüyüp kavga çıkarması, aynı kişiye karşı sebepsiz önyargı oluşması ve “ne olursa olsun istemiyorum” gibi katı cümlelerin artması.
-`.trim(),
-
-    tie: (c) => `
-Konuşma akışında geçen "${(c.phrases && c.phrases.length ? c.phrases.join(", ") : (c.keywords && c.keywords.length ? c.keywords.slice(0,4).join(", ") : "aile, engel, istemiyor, karşı çıkma"))}" gibi izler, bu etkinin günlük hayattaki en net yansımalarıdır. Burada mesele sadece fikir ayrılığı değil; aile içinde karar zayıflatma ve direnç yükseltme düğümü var.
-`.trim(),
-
-    promise: (c) => `
-Allah’ın izniyle tespit edilen **Ev-Eşik Serpiştirme (Aile Engeli) Büyüsü kesin ve kalıcı şekilde bozulacaktır.** Bozulma başladığında aile tarafında yumuşama olur, konuşmalar normale döner ve yuva kurma yolunun önündeki direnç kırılır. Buradaki hedef nettir: aile içinde sertleşme kalkar, yol açılır ve karar berraklaşır.
-`.trim(),
-
-    process: (c) => `
-Süreç şu şekilde ilerler: ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir. Ardından 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde aile tarafında yumuşama işaretleri görülür; 7. gün itibarıyla konuşmalarda net bir rahatlama ve dirençte kırılma olur. Süreç boyunca dışarıdan müdahale alınmaz, çalışma tek çizgide yürütülür.
-`.trim(),
-
-    past: (c) => `
-Daha önce ailesi “asla olmaz” diyerek duvar örmüş bir danışanımda bu düğüm çözüldüğünde, aile tarafı önce yumuşamış, ardından konuşmalar normalleşmiş ve süreç hayırla ilerlemişti. Bu tip aile engellerinde düğüm doğru yerden alındığında sonuç netleşir.
-`.trim(),
-
-    close: (c) => `
-Buradan sonrası kararlılık meselesidir. Siz niyetinizi net tutarsanız, biz de süreci sağlam şekilde yürütürüz. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.
-`.trim()
-  },
-
-  kismet_kapama: {
-    intro: (c) => `
-${c.isim} ${c.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İsim bilginiz ${c.isim} (anne: ${c.anne})${c.karsi ? `, muhatap: ${c.karsi} (anne: ${c.kAnne || "-"})` : ""}. Bu bakımda kısmet yolunun nereden kapandığı, niyet dağıtıcı düğümün nasıl çalıştığı netleştirildi.
-`.trim(),
-
-    daily: (c) => `
-Yapılan bakımda **Kısmet Kapama (Niyet Dağıtma) Büyüsü** tespit edildi. Bu büyü, taliplerin son anda geri çekilmesine, bir şeyler olur gibi olup olmamasına, konuşmaların bir noktada tıkanıp sönmesine sebep olur. Günlük hayattaki üç net görüntüsü şudur: “tam olacak” hissiyle başlayan süreçlerin sönmesi, sürekli erteleme ve belirsizlik, kişinin kendi içinde bile kararsızlığa itilmesi.
-`.trim(),
-
-    tie: (c) => `
-Konuşmada beliren "${(c.phrases && c.phrases.length ? c.phrases.join(", ") : (c.keywords && c.keywords.length ? c.keywords.slice(0,4).join(", ") : "kısmet, talip, bekleme, erteleme"))}" izleri, bu kapamanın günlük hayattaki en açık yansımalarıdır. Burada mesele kader değil; niyeti dağıtan bir düğüm var ve bu düğüm kısmet yolunu kapatıyor.
-`.trim(),
-
-    promise: (c) => `
-Allah’ın izniyle tespit edilen **Kısmet Kapama (Niyet Dağıtma) Büyüsü kesin ve kalıcı şekilde bozulacaktır.** Bozulma başladığında kısmet yolu açılır, konuşmalar netleşir, talipler geri çekilmez ve süreç hayırla ilerler. Buradaki hedef nettir: kısmetin açılması ve yolun berraklaşması.
-`.trim(),
-
-    process: (c) => `
-Süreç şu şekilde ilerler: ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir. Ardından 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde içsel rahatlama ve açılma başlar; 7. gün itibarıyla kısmet tarafında net bir hareket görülür. Süreç boyunca dışarıdan müdahale alınmaz, çalışma tek çizgide yürütülür.
-`.trim(),
-
-    past: (c) => `
-Daha önce yıllarca “olacak gibi olup sürekli bozulan” bir danışanımda bu kapama çözüldüğünde süreç hızla toparlanmış ve hayırlı bir yol açılmıştı. Kısmet kapamalarında doğru düğüm alındığında sonuç netleşir.
-`.trim(),
-
-    close: (c) => `
-Buradan sonrası kararlılık meselesidir. Siz niyetinizi net tutarsanız, biz de süreci sağlam şekilde yürütürüz. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.
-`.trim()
-  },
-
-  yol_evrak: {
-    intro: (c) => `
-${c.isim} ${c.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İsim bilginiz ${c.isim} (anne: ${c.anne})${c.karsi ? `, muhatap: ${c.karsi} (anne: ${c.kAnne || "-"})` : ""}. Bu bakımda özellikle dosya/evrak tarafındaki tıkanıklığın kaynağı netleştirildi.
-`.trim(),
-
-    daily: (c) => `
-Yapılan bakımda **Yol Bağlama (İş–Evrak Kilidi) Büyüsü** tespit edildi. Bu büyü; başvuruların sürüncemede kalmasına, haberin gelmemesine, dosyanın uzamasına ve işlerin tam sonuçlanacakken kilitlenmesine sebep olur. Günlük hayattaki üç net görüntüsü şudur: sürekli bekletilme, “evrak tamam ama haber yok” döngüsü, tam açılacak kapının son anda kapanması.
-`.trim(),
-
-    tie: (c) => `
-Konuşmanızda geçen "${(c.phrases && c.phrases.length ? c.phrases.join(", ") : (c.keywords && c.keywords.length ? c.keywords.slice(0,4).join(", ") : "dosya, evrak, haber yok, bekliyor"))}" izleri, bu kilidin günlük hayattaki en net yansımalarıdır. Burada mesele prosedür değil; işin üstüne çöken bir “yol kilidi” var.
-`.trim(),
-
-    promise: (c) => `
-Allah’ın izniyle tespit edilen **Yol Bağlama (İş–Evrak Kilidi) Büyüsü kesin ve kalıcı şekilde bozulacaktır.** Bozulma başladığında kilit çözülür, dosya tarafında hareket olur ve haber akışı açılır. Buradaki hedef nettir: dosyanın açılması, beklemenin bitmesi ve işin sonuçlanması.
-`.trim(),
-
-    process: (c) => `
-Süreç şu şekilde ilerler: ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir. Ardından 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde hareket ve haber işaretleri başlar; 7. gün itibarıyla net bir açılma görülür. Süreç boyunca dışarıdan müdahale alınmaz, çalışma tek çizgide yürütülür.
-`.trim(),
-
-    past: (c) => `
-Daha önce dosyası aylarca uzayan bir danışanımda bu kilit çözüldüğünde, beklenen haber kısa sürede gelmiş ve iş tarafı sonuçlanmıştı. Yol kilitlerinde düğüm doğru yerden alındığında süreç hızla açılır.
-`.trim(),
-
-    close: (c) => `
-Buradan sonrası kararlılık meselesidir. Siz niyetinizi net tutarsanız, biz de süreci sağlam şekilde yürütürüz. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.
-`.trim()
-  },
-
-  musallat: {
-    intro: (c) => `
-${c.isim} ${c.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İsim bilginiz ${c.isim} (anne: ${c.anne})${c.karsi ? `, muhatap: ${c.karsi} (anne: ${c.kAnne || "-"})` : ""}. Bu bakımda özellikle gece sıkışmaları, huzursuzluk ve ağır basan karanlık halin kaynağı netleştirildi.
-`.trim(),
-
-    daily: (c) => `
-Yapılan bakımda **Musallat ile Birleşmiş Kapama Büyüsü** tespit edildi. Bu tablo kişide gece kabus, iç daralması, ani uyanma, sebepsiz korku ve gün içinde ağır bir sıkıntı hali yapar. Ayrıca rızık ve ilişki tarafında da tıkanıklık oluşturabilir. Günlük hayattaki üç net görüntüsü şudur: uyku düzeninin bozulması, kalpte sıkışma ve huzursuzluk, sebepsiz karanlık düşünceler ve yön kaybı.
-`.trim(),
-
-    tie: (c) => `
-Konuşmanızdaki "${(c.phrases && c.phrases.length ? c.phrases.join(", ") : (c.keywords && c.keywords.length ? c.keywords.slice(0,4).join(", ") : "kabus, iç sıkıntı, uykusuzluk, daralma"))}" izleri bu tablonun yansımasıdır. Burada mesele moral bozukluğu değildir; ağır bir kapama ile birleşen musallat görüntüsü var ve kişiyi baskılıyor.
-`.trim(),
-
-    promise: (c) => `
-Allah’ın izniyle tespit edilen **Musallat ile Birleşmiş Kapama Büyüsü kesin ve kalıcı şekilde bozulacaktır.** Bozulma başladığında ağır hava kalkar, gece sıkışmaları kırılır, kalp rahatlar ve kişi yeniden huzur bulur. Buradaki hedef nettir: sıkıntının kökten kalkması ve yolun berraklaşması.
-`.trim(),
-
-    process: (c) => `
-Süreç şu şekilde ilerler: ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir. Ardından 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde gece huzuru ve rahatlama başlar; 7. gün itibarıyla net bir açılma ve ferahlama görülür. Süreç boyunca dışarıdan müdahale alınmaz, çalışma tek çizgide yürütülür.
-`.trim(),
-
-    past: (c) => `
-Daha önce gece kabusları ve ağır sıkıntı yaşayan bir danışanımda bu düğüm çözüldüğünde, uyku düzene girmiş ve iç daralması ciddi şekilde kırılmıştı. Bu tip ağır kapamalarda ana nokta doğru alındığında sonuç netleşir.
-`.trim(),
-
-    close: (c) => `
-Buradan sonrası kararlılık meselesidir. Siz niyetinizi net tutarsanız, biz de süreci sağlam şekilde yürütürüz. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.
-`.trim()
-  },
-
-  fitne: {
-    intro: (c) => `
-${c.isim} ${c.hitap}, verdiğiniz isimler üzerinden detaylı bir bakım yaptım. İsim bilginiz ${c.isim} (anne: ${c.anne})${c.karsi ? `, muhatap: ${c.karsi} (anne: ${c.kAnne || "-"})` : ""}. Bu bakımda özellikle araya giren söz, dedikodu ve yön saptıran düğümün kaynağı netleştirildi.
-`.trim(),
-
-    daily: (c) => `
-Yapılan bakımda **Fitne ve Soğutma Harmanı** tespit edildi. Bu büyü; iki kişi arasına üçüncü kişilerin sözüyle duvar örer, yanlış anlamayı büyütür, şüpheyi çoğaltır ve soğumayı hızlandırır. Günlük hayattaki üç net görüntüsü şudur: söz taşıma ve dedikodunun artması, bir anda fikir değişimi ve tersleşme, konuşmaların “anlaşamıyoruz” noktasına çekilmesi.
-`.trim(),
-
-    tie: (c) => `
-Konuşma akışında görülen "${(c.phrases && c.phrases.length ? c.phrases.join(", ") : (c.keywords && c.keywords.length ? c.keywords.slice(0,4).join(", ") : "fitne, dedikodu, araya giren söz, soğuma"))}" izleri bu tablonun yansımasıdır. Burada mesele sadece tartışma değil; araya atılan sözlerin yönü bozduğu bir düğüm var.
-`.trim(),
-
-    promise: (c) => `
-Allah’ın izniyle tespit edilen **Fitne ve Soğutma Harmanı kesin ve kalıcı şekilde bozulacaktır.** Bozulma başladığında araya giren sözlerin etkisi kırılır, yanlış anlama dağılır, iletişim yumuşar ve ilişki tekrar gerçek zeminine oturur. Buradaki hedef nettir: fitnenin kökten kalkması ve bağın yeniden toparlanması.
-`.trim(),
-
-    process: (c) => `
-Süreç şu şekilde ilerler: ilk gün temel uygulama yapılır ve önemli kısımlar video kaydıyla size gönderilir. Ardından 7 gün boyunca size özel okuma yürütülür. 3–5 gün içinde iletişimde yumuşama ve netleşme başlar; 7. gün itibarıyla fitnenin etkisi ciddi şekilde kırılır. Süreç boyunca dışarıdan müdahale alınmaz, çalışma tek çizgide yürütülür.
-`.trim(),
-
-    past: (c) => `
-Daha önce üçüncü kişi sözüyle dağılan bir ilişkide bu düğüm çözüldüğünde, iki taraf yeniden konuşmaya başlamış ve yanlış anlamalar kısa sürede dağılmıştı. Fitne düğümlerinde ana nokta doğru alındığında sonuç netleşir.
-`.trim(),
-
-    close: (c) => `
-Buradan sonrası kararlılık meselesidir. Siz niyetinizi net tutarsanız, biz de süreci sağlam şekilde yürütürüz. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.
-`.trim()
-  }
-};
-
-/* ---------- başka hocayla aynı anda olmama notu ---------- */
-function buildNoOtherHocaNote(){
-  return `
-Önemli bir dip not: Bu süreçte aynı anda başka bir hocayla görüşüp farklı uygulamalar almamanız gerekir. Çünkü farklı uygulamalar birbirine karıştığında toparlanma bozulur, okuma düzeni çakışır ve süreç gereksiz yere uzar. Bu iş tek niyetle, tek çizgide yürüdüğünde sonuç daha net ve hızlı gelir.
+Buradan sonrası kararlılık meselesidir. Niyetiniz netse süreç hızlanır. Siz net durduğunuzda, biz de süreci en sağlam şekilde yürütürüz. Çalışma tamamen meşru ve rahmani yollarla ilerler (kişiye özel hazırlıklar sebebiyle belirli bir bedel doğabilir). Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.
 `.trim();
+
 }
 
-/* ---------- enterprise: konuşmaya özel ekstra bölüm havuzu ---------- */
-const EXTRA_BLOCKS = [
-  `Sizde görünen tabloda en dikkat çeken şey, aynı döngünün tekrar etmesi: bir noktada umut doğuyor, ardından sebepsiz bir ağırlık çöküyor ve süreç yeniden duruyor. Bu, dış müdahale düğümlerinin klasik izidir. İnsan “ben mi yanlış yapıyorum” diye kendini sorgular ama mesele sizin hatanız değildir.`,
-  `Konuşma akışında bekleme ve belirsizlik arttıkça insanın içi daralır; bu da bazen acele karar almaya iter. Bu noktada önemli olan, düğümü doğru yerden çözmektir. Düğüm çözülünce konuşma dili değişir, tavır değişir, işlerin yönü değişir.`,
-  `Bu tip düğümlerde en büyük kayıp, kişinin “nasıl olsa olmuyor” deyip niyetinin düşmesidir. Niyet düştüğünde süreç daha çok uzar. Bu yüzden işi disiplinli götürmek, 7 günlük düzeni bozmamak ve odağı dağıtmamak gerekir.`,
-  `Şunu açık söyleyeyim: Bu tür düğümler bazen insanı hem maddi hem manevi yorar; uykuyu bozar, iştahı kaçırır, sabrı tüketir. Bu yüzden işin sadece “sonuç” değil, sizin iç huzurunuz kısmı da toparlanır.`,
-  `Bu süreçte sizden istenen tek şey, netlik ve istikrardır. Kararsızlık arttığında düğüm güçlenir. Netlik geldiğinde düğüm çözülür. Bu yüzden “ben ne istiyorum” sorusunu doğru yerde sabitlemek gerekir.`,
-  `Düğüm çözüldüğünde genelde ilk işaretler konuşma dilinde çıkar: daha yumuşak cümleler, daha az sertlik, daha az kaçınma, daha hızlı cevap gibi. Sonra olaylar toparlanır. Bu sıralama sık görülür.`,
-  `Süreç boyunca sizden gelen her küçük gelişmeyi not etmek önemlidir. Çünkü bazı değişimler küçük başlar ama devamı büyük gelir. Bu yüzden “ufak bir yumuşama oldu” bile değerlidir; süreç doğru yerde ilerliyor demektir.`,
-  `Bu çalışmanın mantığı şudur: Önce kilit çözülür, sonra yön sabitlenir. Kilit çözülmeden sabitleme olmaz; sabitleme olmadan da sonuç kalıcı olmaz. Bu yüzden adım adım yürümek şarttır.`
-];
-
-/* ---------- enterprise: min 5000+ karakter kilidi ---------- */
-function enforceMinChars(text, ctx){
-  const MIN = 5200; // güvenli olsun
-  let out = (text || "").trim();
-
-  // log’dan birkaç kelimeyi doğal cümle içinde geçir (teknik gibi durmasın)
-  const kw = (ctx.keywords || []).slice(0,4);
-  if(kw.length){
-    out += `\n\nKonuşmanızda öne çıkan bazı kelimeler şunlar: ${kw.join(", ")}. Bu kelimeler, yaşadığınız sürecin hangi yönden baskılandığını açıkça anlatır.`;
-  }
-
-  // 5000+ olmazsa ekstra bloklardan ekle
-  let i = 0;
-  while(out.length < MIN && i < 50){
-    out += `\n\n` + EXTRA_BLOCKS[i % EXTRA_BLOCKS.length];
-    i++;
-  }
-
-  // en sona yönlendirme + ücret belirtmeden hazırlık notu (genel, kısa)
-  out += `\n\nBuradan sonrası sizin niyetinizle şekillenecek. Niyetiniz netse, biz de süreci en sağlam şekilde yürütürüz; çalışma tamamen meşru ve rahmani yollarla ilerler (kişiye özel hazırlıklar sebebiyle belirli bir bedel doğabilir). Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
-
-  return out.trim();
-}
-
-/* ---------- metin üretim merkezi ---------- */
-function chooseTemplateKey(spellKey){
-  const exists = CARE_TEMPLATES[spellKey];
-  return exists ? spellKey : "sogutma_ayirma";
-}
-
-function buildCareText(ctx){
-  const key = chooseTemplateKey(ctx.spell.key);
-  const tpl = CARE_TEMPLATES[key];
-
-  const intro   = tpl.intro(ctx);
-  const daily   = tpl.daily(ctx);
-  const tie     = tpl.tie(ctx);
-  const promise = tpl.promise(ctx);
-  const process = tpl.process(ctx);
-  const past    = tpl.past(ctx);
-  const note    = buildNoOtherHocaNote();
-  const close   = tpl.close(ctx);
-
-  const full = [
-    intro,
-    daily,
-    tie,
-    promise,
-    process,
-    past,
-    note,
-    close
-  ].join("\n\n");
-
-  return enforceMinChars(full, ctx);
-}
-
-/* ---------- kopyalama ---------- */
-function copyText(){
-  const t = ($("out").innerText || "").trim();
-  if(!t) { alert("Önce metni oluşturun."); return; }
-  navigator.clipboard.writeText(t)
-    .then(()=> alert("Metin kopyalandı."))
-    .catch(()=> alert("Kopyalama başarısız. Tarayıcı izinlerini kontrol edin."));
-}
-
-/* ---------- WhatsApp gönder ---------- */
-function sendWhatsApp(){
-  const t = ($("out").innerText || "").trim();
-  if(!t) { alert("Önce metni oluşturun."); return; }
-
-  let no = cleanPhone($("tel").value);
-  const url = no
-    ? `https://wa.me/${no}?text=${encodeURIComponent(t)}`
-    : `https://wa.me/?text=${encodeURIComponent(t)}`;
-
-  window.open(url, "_blank", "noopener,noreferrer");
+function kopyala() {
+  navigator.clipboard.writeText(document.getElementById("metin").value);
+  alert("Bakım metni kopyalandı");
 }
 </script>
+
 </body>
 </html>
