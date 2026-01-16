@@ -1,142 +1,307 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Genel Bakım Sistemi – V10 Enterprise</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-:root{--bg:#0b1220;--card:#0f172a;--card2:#0b1220;--border:#1f2a44;--border2:#2b3a5f;--text:#e7eefc;--muted:#9bb0d3;--indigo:#4f46e5;--indigo2:#6366f1;--green:#16a34a;--green2:#22c55e}
-html,body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;-webkit-tap-highlight-color:transparent}
-.card{background:linear-gradient(180deg,#0f172a 0%,#0b1220 100%);border:1px solid var(--border);box-shadow:0 18px 60px rgba(0,0,0,.35)}
-.topbar{background:linear-gradient(90deg,var(--indigo) 0%,var(--indigo2) 100%);height:6px;border-radius:999px}
-.label{font-weight:800;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;display:block}
-.input{background:rgba(15,23,42,.8);border:1px solid var(--border2);color:var(--text);transition:.2s;border-radius:16px;padding:14px 16px;width:100%;outline:none;font-weight:700}
-.input:focus{border-color:rgba(99,102,241,.9);box-shadow:0 0 0 4px rgba(99,102,241,.15)}
-.chip{border:1px solid var(--border2);background:rgba(11,18,32,.65);padding:10px 12px;border-radius:16px;font-weight:800;font-size:.78rem;cursor:pointer;text-align:center}
-input[type=radio].sr-only:checked+.chip{border-color:rgba(129,140,248,.9);background:rgba(79,70,229,.95);color:#fff}
-.btn{width:100%;padding:16px;border-radius:18px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
-.btn-primary{background:linear-gradient(90deg,var(--indigo) 0%,var(--indigo2) 100%);color:#fff}
-.btn-green{background:linear-gradient(90deg,var(--green) 0%,var(--green2) 100%);color:#fff}
-.panel{background:rgba(11,18,32,.55);border:1px solid var(--border2);border-radius:18px;padding:14px}
-.hint{color:rgba(155,176,211,.75);font-weight:600;font-size:.85rem;line-height:1.45rem}
-.divider{border-top:1px solid rgba(43,58,95,.6);margin:18px 0}
-.output{white-space:pre-wrap;line-height:1.9rem;font-size:.95rem;font-weight:650;background:rgba(2,6,23,.65);border:1px solid rgba(43,58,95,.85);border-radius:18px;padding:16px}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
-.overlay-card{background:rgba(15,23,42,.95);border:1px solid rgba(43,58,95,.85);border-radius:22px;padding:18px;width:min(540px,100%)}
-.spinner{width:44px;height:44px;border-radius:999px;border:4px solid rgba(99,102,241,.2);border-top-color:rgba(99,102,241,.95);animation:spin .9s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Genel Bakım Sistemi – V10 Enterprise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #0f172a;
+      --border: #1f2a44;
+      --border2: #2b3a5f;
+      --text: #e7eefc;
+      --muted: #9bb0d3;
+      --indigo: #4f46e5;
+      --indigo2: #6366f1;
+      --green: #16a34a;
+      --green2: #22c55e;
+    }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(15,23,42,1) 0%, rgba(11,18,32,1) 100%);
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+    }
+    .topbar {
+      background: linear-gradient(90deg, var(--indigo) 0%, var(--indigo2) 100%);
+      height: 6px;
+      border-radius: 999px;
+    }
+    .label {
+      font-weight: 800;
+      font-size: 0.70rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .input {
+      background: rgba(15,23,42,0.8);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 16px;
+      width: 100%;
+      outline: none;
+      font-weight: 700;
+    }
+    .input:focus {
+      border-color: var(--indigo2);
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+    }
+    .chip {
+      border: 1px solid var(--border2);
+      background: rgba(11,18,32,0.65);
+      padding: 10px 12px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: 0.25s;
+      text-align: center;
+    }
+    input[type="radio"].sr-only:checked + .chip {
+      background: var(--indigo);
+      color: white;
+      border-color: var(--indigo2);
+    }
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 18px;
+      font-weight: 900;
+      text-transform: uppercase;
+      transition: 0.25s;
+    }
+    .btn-primary { background: linear-gradient(90deg, var(--indigo) 0%, var(--indigo2) 100%); color: white; }
+    .btn-green { background: linear-gradient(90deg, var(--green) 0%, var(--green2) 100%); color: white; }
+    .panel { background: rgba(11,18,32,0.55); border: 1px solid var(--border2); border-radius: 18px; padding: 14px; }
+    .hint { color: rgba(155,176,211,0.75); font-weight: 600; font-size: 0.85rem; }
+    .divider { border-top: 1px solid rgba(43,58,95,0.6); margin: 18px 0; }
+    .output { white-space: pre-wrap; line-height: 1.8rem; font-size: 0.95rem; font-weight: 600; background: rgba(2,6,23,0.65); border-radius: 18px; padding: 16px; }
+    
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; }
+    .spinner { width: 40px; height: 40px; border: 4px solid rgba(99,102,241,0.2); border-top-color: var(--indigo2); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-<div class="w-full max-w-3xl card rounded-3xl p-5 md:p-10 relative">
-<div class="topbar w-full mb-6"></div>
-<h1 class="text-xl md:text-2xl font-black text-center uppercase italic">Genel Bakım Analiz Sistemi</h1>
-<p class="hint text-center mt-2">Bilgileri girin, konuşmayı yapıştırın; sistem tek parça WhatsApp bakım metnini üretir.</p>
-<div class="divider"></div>
 
-<div class="grid grid-cols-2 gap-3">
-<div>
-<span class="label">Hitap</span>
-<div class="grid grid-cols-2 gap-3">
-<label><input class="sr-only" type="radio" name="hitap" value="Hanım" checked><div class="chip">KADIN (HANIM)</div></label>
-<label><input class="sr-only" type="radio" name="hitap" value="Bey"><div class="chip">ERKEK (BEY)</div></label>
-</div>
-</div>
-<div>
-<span class="label">Çıktı Modu</span>
-<select id="mode" class="input">
-<option value="short" selected>Kısa (≈2500–3200)</option>
-<option value="long">Uzun (≈4200–4800)</option>
-</select>
-</div>
-</div>
+  <div class="w-full max-w-3xl card rounded-3xl p-6 md:p-10">
+    <div class="topbar w-full mb-6"></div>
+    <h1 class="text-2xl font-black text-center uppercase italic">V10 Enterprise Bakım Paneli</h1>
+    <p class="hint text-center mt-2">Analiz sonrası tek parça, tekrardan arındırılmış ve akıcı WhatsApp metni üretilir.</p>
 
-<div class="divider"></div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div><span class="label">Danışan Adı</span><input id="isim" class="input uppercase" placeholder="Örn: Saadet"></div>
-<div><span class="label">Danışan Anne Adı</span><input id="anne" class="input uppercase" placeholder="Örn: Ayşe"></div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-<div><span class="label">Muhatap Adı</span><input id="karsi" class="input uppercase" placeholder="Örn: Edip"></div>
-<div><span class="label">Muhatap Anne Adı</span><input id="kAnne" class="input uppercase" placeholder="Örn: Mine"></div>
-</div>
+    <div class="divider"></div>
 
-<div class="divider"></div>
-<div>
-<span class="label">WhatsApp Konuşması / Belirtiler</span>
-<textarea id="log" rows="6" class="input"></textarea>
-</div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <span class="label">Hitap</span>
+        <div class="grid grid-cols-2 gap-2">
+          <label><input class="sr-only" type="radio" name="hitap" value="Hanım" checked><div class="chip">KADIN</div></label>
+          <label><input class="sr-only" type="radio" name="hitap" value="Bey"><div class="chip">ERKEK</div></label>
+        </div>
+      </div>
+      <div>
+        <span class="label">Çıktı Modu</span>
+        <select id="mode" class="input text-indigo-200">
+          <option value="enterprise_standard">Standart Analiz (~1800 Karakter)</option>
+          <option value="enterprise_deep" selected>Derinlemesine Analiz (~2500 Karakter)</option>
+        </select>
+      </div>
+    </div>
 
-<div class="divider"></div>
-<div class="panel">
-<span class="label text-green-300">WhatsApp Gönderim (Opsiyonel)</span>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<input id="tel" class="input text-center font-black" placeholder="5xx xxx xx xx">
-<button class="btn btn-green" type="button" onclick="sendWhatsApp()">WhatsApp ile Gönder</button>
-</div>
-</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+      <div><span class="label">Danışan Adı</span><input id="isim" class="input uppercase" placeholder="Ad"></div>
+      <div><span class="label">Danışan Anne Adı</span><input id="anne" class="input uppercase" placeholder="Anne Adı"></div>
+    </div>
 
-<div class="divider"></div>
-<button id="btnGenerate" class="btn btn-primary" type="button">Bakım Metnini Oluştur</button>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div><span class="label">Muhatap Adı</span><input id="karsi" class="input uppercase" placeholder="Ad"></div>
+      <div><span class="label">Muhatap Anne Adı</span><input id="kAnne" class="input uppercase" placeholder="Anne Adı"></div>
+    </div>
 
-<div id="resultWrap" class="mt-6 hidden">
-<div class="panel">
-<div class="flex items-center justify-between gap-3">
-<div class="font-black uppercase">Üretilen Metin</div>
-<button class="px-4 py-3 rounded-2xl font-black bg-slate-800" onclick="copyText()">Kopyala</button>
-</div>
-<div class="divider"></div>
-<div id="output" class="output"></div>
-</div>
-</div>
-</div>
+    <div class="divider"></div>
 
-<div id="overlay" class="overlay">
-<div class="overlay-card">
-<div class="flex items-center gap-4">
-<div class="spinner"></div>
-<div>
-<div class="font-black text-lg">Analiz yapılıyor...</div>
-<div class="hint">Bakım metni hazırlanıyor</div>
-</div>
-</div>
-</div>
-</div>
+    <div>
+      <span class="label">WhatsApp Konuşması / Belirtiler</span>
+      <textarea id="log" rows="5" class="input text-sm" placeholder="Buraya yapıştırın..."></textarea>
+    </div>
 
-<script>
-const $=id=>document.getElementById(id);
-const safe=v=>(v||"").toString().trim();
-const titleTr=s=>{s=safe(s);if(!s)return"";const l=s.toLocaleLowerCase('tr-TR');return l[0].toLocaleUpperCase('tr-TR')+l.slice(1)};
-const getHitap=()=>document.querySelector('input[name="hitap"]:checked')?.value||"Hanım";
+    <div class="divider"></div>
 
-function normalizePhone(raw){const n=(raw||"").replace(/\D/g,"");if(!n)return"";if(n.startsWith("90"))return n;if(n.startsWith("0"))return"90"+n.slice(1);return"90"+n}
-function openWa(phone,text){const url=phone?`https://wa.me/${phone}?text=${encodeURIComponent(text)}`:`https://wa.me/?text=${encodeURIComponent(text)}`;window.open(url,"_blank")}
-function sendWhatsApp(){const t=safe($('output').innerText);if(!t)return alert('Önce metni oluşturun');openWa(normalizePhone($('tel').value),t)}
-function copyText(){const t=safe($('output').innerText);if(!t)return;navigator.clipboard.writeText(t);alert('Kopyalandı')}
+    <div class="panel mb-6">
+      <span class="label text-green-300">WhatsApp Gönderim</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input id="tel" class="input text-center font-bold" placeholder="5xx xxx xx xx">
+        <button class="btn btn-green" onclick="sendWhatsApp()">WhatsApp'a Aktar</button>
+      </div>
+    </div>
 
-function analyzeLog(raw){const l=safe(raw).toLowerCase();return{family:/aile|anne|baba|abla|abi|karşı/.test(l),money:/para|borç|iş|rızık|bereket/.test(l),cooling:/soğud|ayr|terk|engell/.test(l),indecision:/kararsız|gelgit|net değil/.test(l)}}
-function decideSpell(a){if(a.money)return"Rızık Kapama ve Bereket Düğümü";if(a.family)return"Ev–Eşik Serpiştirme (Aile Engeli)";if(a.cooling)return"Ayırma ve Soğutma";return"Karar Zayıflatma"}
+    <button id="btnGenerate" class="btn btn-primary" onclick="generate()">Bakımı Başlat</button>
 
-function buildCareText(ctx){const a=analyzeLog(ctx.log);const spell=decideSpell(a);
-let text=[
-`${ctx.isim} ${ctx.hitap}, verdiğiniz isimler üzerinden yaptığım bakımda ana düğüm netleşti.`,
-`Tespit edilen durum ${spell} kaynaklıdır ve günlük hayatta belirgin etkiler oluşturur.`,
-`Allah’ın izniyle bu düğüm kesin ve kalıcı şekilde bozulacaktır.`,
-`İlk gün uygulama yapılır ve video ile paylaşılır. 7 gün okuma yürütülür. 3–5 gün içinde yumuşama, 7. gün net toparlanma görülür.`,
-`Bu süreç tek niyetle yürütülür. Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`
-].join("\n\n");
-return enforceLen(text,ctx.mode)}
+    <div id="resultWrap" class="mt-8 hidden">
+      <div class="panel">
+        <div class="flex justify-between items-center mb-4">
+          <span class="font-black uppercase tracking-widest text-indigo-300">Analiz Sonucu</span>
+          <button class="bg-slate-800 px-4 py-2 rounded-lg text-xs font-bold" onclick="copyText()">Kopyala</button>
+        </div>
+        <div id="output" class="output"></div>
+      </div>
+    </div>
+  </div>
 
-function enforceLen(t,mode){const min=mode==='long'?4200:2400;let o=t;while(o.length<min){o+="\n\nBu süreçte istikrar korunur ve dış müdahale alınmaz."}return o}
+  <div id="overlay" class="overlay">
+    <div class="bg-slate-900 p-8 rounded-3xl border border-slate-700 flex flex-col items-center gap-4">
+      <div class="spinner"></div>
+      <div id="overlayMsg" class="font-bold text-indigo-100">Analiz Ediliyor...</div>
+    </div>
+  </div>
 
-$('btnGenerate').onclick=()=>{
-const ctx={isim:titleTr($('isim').value)||'Danışan',anne:titleTr($('anne').value),karsi:titleTr($('karsi').value),kAnne:titleTr($('kAnne').value),hitap:getHitap(),mode:$('mode').value,log:safe($('log').value)};
-if(!ctx.anne||!ctx.log)return alert('Gerekli alanları doldurun');
-$('overlay').style.display='flex';
-setTimeout(()=>{const t=buildCareText(ctx);$('output').innerText=t;$('resultWrap').classList.remove('hidden');$('overlay').style.display='none'},600)
-}
-</script>
+  <script>
+    const $ = id => document.getElementById(id);
+
+    function toTitle(s) {
+      if (!s) return "";
+      const low = s.trim().toLocaleLowerCase("tr-TR");
+      return low.charAt(0).toLocaleUpperCase("tr-TR") + low.slice(1);
+    }
+
+    function generate() {
+      const isim = toTitle($("isim").value);
+      const anne = toTitle($("anne").value);
+      const karsi = toTitle($("karsi").value);
+      const kAnne = toTitle($("kAnne").value);
+      const log = $("log").value.trim();
+      const hitap = document.querySelector('input[name="hitap"]:checked').value;
+      const mode = $("mode").value;
+
+      if (!isim || !anne || !log) {
+        alert("Lütfen isim, anne adı ve konuşma içeriğini girin.");
+        return;
+      }
+
+      $("overlay").style.display = "flex";
+      
+      setTimeout(() => {
+        const result = buildContent({ isim, anne, karsi, kAnne, log, hitap, mode });
+        $("output").innerText = result;
+        $("resultWrap").classList.remove("hidden");
+        $("overlay").style.display = "none";
+        $("resultWrap").scrollIntoView({ behavior: "smooth" });
+      }, 1500);
+    }
+
+    function buildContent(ctx) {
+      const themes = analyze(ctx.log);
+      const spell = decideSpell(themes);
+      
+      let blocks = [];
+      
+      // 1. Giriş
+      blocks.push(`${ctx.isim} ${ctx.hitap}, verdiğiniz bilgiler (Danışan: ${ctx.isim} - Anne Adı: ${ctx.anne}${ctx.karsi !== "" ? `, Muhatap: ${ctx.karsi} - Anne Adı: ${ctx.kAnne}` : ""}) doğrultusunda detaylı bir bakım ve enerji analizi gerçekleştirdim.`);
+
+      // 2. Tespit
+      blocks.push(`Yapılan derin taramada üzerinizde ve ilişkinizin temelinde **${spell.name}** adı verilen, niyetleri dağıtan ve frekansı aşağı çeken bir kilitlenme tespit edildi. Bu basit bir şanssızlık değil; doğrudan enerjinizi daraltan bir düğümdür.`);
+
+      // 3. Yaşam Yansıması
+      blocks.push(`Sizin paylaştığınız belirtilerde de görüldüğü üzere; ${themes.join(", ")} gibi durumlar bu düğümün doğal yansımalarıdır. Kişi ne kadar çabalarsa çabalasın, bu düğüm çözülmeden atılan adımlar ya havada kalır ya da karşı tarafta beklenen etkiyi yaratmaz.`);
+
+      // 4. Detaylı Gözlem (Enterprise Ek)
+      blocks.push(`Bu tür vakalarda en büyük sorun 'aynı döngünün tekrar etmesi' hissidir. Tam düzeldi derken bir anda gelen soğukluk, sebepsiz geri çekilmeler ve iletişimin tıkanması, enerjinin bir noktada kilitlendiğini kanıtlıyor. Siz niyetinizi ne kadar temiz tutarsanız tutun, dışarıdan gelen bu negatif baskı süreci sürekli sabote ediyor.`);
+
+      // 5. Müdahale ve Söz
+      blocks.push(`Allah’ın izniyle tespit edilen bu **${spell.name}** çalışmamızla birlikte kesin ve kalıcı olarak bozulacaktır. Bu bozma işlemiyle birlikte üzerinizdeki o ağır yük kalkacak, karşı tarafla olan frekansınız yeniden senkronize edilecektir.`);
+
+      // 6. Süreç (Sabit ve Net)
+      blocks.push(`Çalışma programımız şu şekilde ilerleyecektir: İlk gün temel enerji temizliği yapılır ve uygulama kayıtları size iletilir. Ardından 7 gün sürecek olan özel okuma ve niyet sabitleme döngüsüne geçilir. 3. günden itibaren ilk yumuşama belirtilerini hissetmeye başlarsınız; 7. günün sonunda ise bağ tamamen sağlamlaşır.`);
+
+      // 7. Uyarı
+      blocks.push(`Önemli bir not: Süreç boyunca başka bir yerden müdahale almamalı ve niyetinizi tek bir kanalda sabit tutmalısınız. Farklı enerjilerin çakışması toparlanmayı geciktirir.`);
+
+      // 8. Kapanış
+      blocks.push(`Buradan sonrası sizin kararlılığınızla ilgilidir. Ben süreci en profesyonel ve disiplinli şekilde yürütmeye hazırım. Devam etmek ve bu kilidi beraber çözmek isterseniz bilgilendirmeniz yeterlidir. (Hazırlıklar kişiye özel olduğu için belirli bir bedel oluşmaktadır.)`);
+
+      // Karakter Sayısı Kontrolü ve Akıllı Genişletme
+      let finalMetin = blocks.join("\n\n");
+      const minLimit = ctx.mode === "enterprise_deep" ? 2200 : 1500;
+
+      if (finalMetin.length < minLimit) {
+        finalMetin += "\n\n" + buildExtraAdvice(minLimit - finalMetin.length);
+      }
+
+      return cleanRepeats(finalMetin);
+    }
+
+    function analyze(log) {
+      const low = log.toLowerCase();
+      const themes = [];
+      if (/soğuma|istem|uzak|engel|mesaj/.test(low)) themes.push("iletişimde kopukluk ve kalbi soğuma");
+      if (/para|borç|iş|bereket/.test(low)) themes.push("rızık kapılarında daralma");
+      if (/aile|anne|baba|karşı/.test(low)) themes.push("ailevi baskı ve hane içi huzursuzluk");
+      if (/uyku|kabus|daral|ağlama/.test(low)) themes.push("ruhsal daralma ve uyku düzensizliği");
+      return themes.length ? themes : ["genel bir enerji tıkanıklığı ve yön kaybı"];
+    }
+
+    function decideSpell(themes) {
+      const t = themes.join(" ");
+      if (t.includes("iletişim")) return { name: "Fitne ve Soğutma Düğümü" };
+      if (t.includes("rızık")) return { name: "Rızık Kapama ve Bereket Kilidi" };
+      if (t.includes("aile")) return { name: "Hane Direnci ve Söz Kesme Büyüsü" };
+      return { name: "Niyet Dağıtma ve Yol Bağlama Büyüsü" };
+    }
+
+    function buildExtraAdvice(needed) {
+      const advices = [
+        "Unutmayın ki enerji dünyasında boşluk yoktur; bir yerdeki negatiflik temizlenmediği sürece yerine yenisi eklenir. Bu yüzden ertelemek sadece sorunun kökleşmesine neden olur.",
+        "Süreçte sabırlı olmak ve teslimiyet göstermek, sonucun kalitesini doğrudan artırır. Panik enerjisi düğümü sıkılaştırırken, güven enerjisi düğümü gevşetir.",
+        "Daha önce benzer tıkanıklıklar yaşayan birçok danışanımda gördüğüm şudur: Doğru zamanda yapılan doğru müdahale, aylarca süren acıyı birkaç günde dindirir.",
+        "Kendi içinizde hissettiğiniz o 'git-gel'ler aslında ruhunuzun bu negatif baskıya verdiği bir tepkidir. Temizlik bittiğinde bu huzursuzluk yerini dinginliğe bırakacaktır."
+      ];
+      let res = "";
+      let i = 0;
+      while (res.length < needed && i < advices.length) {
+        res += advices[i] + " ";
+        i++;
+      }
+      return res.trim();
+    }
+
+    function cleanRepeats(text) {
+      // Çok basit bir cümle bazlı de-duplication
+      const sents = text.split(". ");
+      const unique = [];
+      sents.forEach(s => {
+        if (!unique.some(u => u.substring(0, 20) === s.substring(0, 20))) {
+          unique.push(s);
+        }
+      });
+      return unique.join(". ").replace(/\n{3,}/g, "\n\n");
+    }
+
+    function copyText() {
+      const t = $("output").innerText;
+      navigator.clipboard.writeText(t);
+      alert("Metin kopyalandı!");
+    }
+
+    function sendWhatsApp() {
+      const t = $("output").innerText;
+      let tel = $("tel").value.replace(/\D/g, "");
+      if (tel && !tel.startsWith("90")) tel = "90" + tel;
+      const url = tel ? `https://wa.me/${tel}?text=${encodeURIComponent(t)}` : `https://wa.me/?text=${encodeURIComponent(t)}`;
+      window.open(url, "_blank");
+    }
+  </script>
 </body>
 </html>
