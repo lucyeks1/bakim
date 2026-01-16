@@ -1,176 +1,385 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Manevi Analiz ve Teşhis Paneli</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background: #0f172a; color: #f1f5f9; font-family: 'Montserrat', sans-serif; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-        .card { background: #111827; border: 1px solid #1f2937; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-        .input-field { background: #1f2937; border: 1px solid #374151; color: white; transition: 0.3s; }
-        .input-field:focus { border-color: #6366f1; outline: none; box-shadow: 0 0 15px rgba(99, 102, 241, 0.3); }
-        label { font-weight: 700; font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; display: block; }
-        .section-title { color: #818cf8; font-size: 0.75rem; font-weight: 800; border-bottom: 1px solid #1f2937; padding-bottom: 8px; margin-bottom: 15px; text-transform: uppercase; }
-        .gender-btn { flex: 1; padding: 12px; border: 1px solid #374151; border-radius: 12px; text-align: center; cursor: pointer; font-size: 0.75rem; font-weight: 800; transition: 0.3s; }
-        input[type="radio"]:checked + .gender-btn { background: #4f46e5; border-color: #818cf8; color: white; }
-        select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Genel Manevi Bakım Analiz Sistemi (V2)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body { background:#0f172a; color:#f1f5f9; font-family:'Montserrat',sans-serif; -webkit-tap-highlight-color:transparent; }
+    .card { background:#111827; border:1px solid #1f2937; }
+    .input-field { background:#1f2937; border:1px solid #374151; color:white; transition:.2s; }
+    .input-field:focus { border-color:#6366f1; outline:none; }
+    label { font-weight:700; font-size:.65rem; color:#94a3b8; text-transform:uppercase; letter-spacing:.1em; display:block; margin-bottom:5px; }
+    .chip { border:1px solid #334155; background:#0b1220; color:#cbd5e1; padding:8px 10px; border-radius:999px; font-weight:800; font-size:.75rem; }
+    .gender-btn { flex:1; padding:12px; border:1px solid #374151; border-radius:12px; text-align:center; cursor:pointer; font-size:.75rem; font-weight:800; transition:.3s; }
+    input[type="radio"]:checked + .gender-btn { background:#4f46e5; border-color:#818cf8; color:white; }
+    .badge { padding:8px 10px; border-radius:999px; font-weight:900; font-size:.75rem; display:inline-flex; align-items:center; gap:8px; }
+    .badge-ok { background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:#86efac; }
+    .badge-mid { background:rgba(234,179,8,.12); border:1px solid rgba(234,179,8,.35); color:#fde68a; }
+    .badge-hi { background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.35); color:#fecaca; }
+  </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-3 md:p-8 bg-slate-950">
 
-    <div class="w-full max-w-2xl card rounded-3xl p-6 md:p-10 relative">
-        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600"></div>
+<body class="min-h-screen flex items-center justify-center p-4 bg-slate-950">
+  <div class="w-full max-w-2xl card rounded-3xl p-6 md:p-10 relative">
+    <div class="absolute top-0 left-0 w-full h-1.5 bg-indigo-600"></div>
 
-        <h1 class="text-2xl font-black text-center text-white mb-2 tracking-tighter uppercase italic">Manevi Analiz Sistemi</h1>
-        <p class="text-center text-[10px] text-slate-500 mb-8 uppercase tracking-[0.3em] font-bold">Gerçekçi Teşhis ve Çözüm Paneli</p>
-        
-        <div class="space-y-6">
-            <div class="flex gap-3 mb-4">
-                <label class="flex-1 cursor-pointer">
-                    <input type="radio" name="hitap" value="Hanım" class="sr-only" checked>
-                    <div class="gender-btn">KADIN (HANIM)</div>
-                </label>
-                <label class="flex-1 cursor-pointer">
-                    <input type="radio" name="hitap" value="Bey" class="sr-only">
-                    <div class="gender-btn">ERKEK (BEY)</div>
-                </label>
-            </div>
+    <h1 class="text-xl font-black text-center text-white mb-2 uppercase italic">
+      Genel Manevi Bakım Analizi (V2)
+    </h1>
+    <p class="text-center text-slate-400 text-xs mb-6 font-semibold">
+      WhatsApp konuşmasına göre otomatik tespit + tek parça WhatsApp metni üretir.
+    </p>
 
-            <div>
-                <div class="section-title">1. Danışan Bilgileri</div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div><label>Ad Soyad</label><input id="isim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="İsim"></div>
-                    <div><label>Anne Adı</label><input id="anneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı"></div>
-                </div>
-            </div>
+    <div class="space-y-6">
+      <!-- Hitap -->
+      <div class="flex gap-3">
+        <label class="flex-1 cursor-pointer">
+          <input type="radio" name="hitap" value="Hanım" class="sr-only" checked>
+          <div class="gender-btn">KADIN (HANIM)</div>
+        </label>
+        <label class="flex-1 cursor-pointer">
+          <input type="radio" name="hitap" value="Bey" class="sr-only">
+          <div class="gender-btn">ERKEK (BEY)</div>
+        </label>
+      </div>
 
-            <div>
-                <div class="section-title">2. İstenen İşlem (Çözüm)</div>
-                <select id="islemTuru" class="w-full p-4 rounded-xl input-field font-bold text-indigo-300">
-                    <option value="kismet_acma">Kısmet Açma (Evlilik / Yuva)</option>
-                    <option value="geri_getirme">Geri Getirme Çalışması</option>
-                    <option value="baglama">Bağlama Çalışması</option>
-                    <option value="gonul_kilidi">Gönül Kilidi Açma</option>
-                    <option value="rizik_acma">Rızık / Bereket Açma (İş / Para)</option>
-                    <option value="aile_engeli">Aile Engeli Kaldırma</option>
-                </select>
-            </div>
-
-            <div>
-                <div class="section-title">3. Durum ve WhatsApp Kayıtları</div>
-                <textarea id="hikayeLog" rows="5" placeholder="Danışanın durumunu veya mesajlarını buraya yapıştırın. Sistem analizi buna göre yapacaktır..." class="w-full p-4 rounded-xl input-field text-sm font-normal leading-relaxed"></textarea>
-            </div>
-
-            <div class="p-6 bg-slate-900 rounded-2xl border border-green-500/20">
-                <label class="text-green-400">Gönderilecek WhatsApp Numarası</label>
-                <input id="telNo" type="tel" placeholder="5xx xxx xx xx" class="w-full p-4 rounded-xl input-field text-center font-black tracking-widest text-2xl bg-slate-950 border-green-500/30">
-            </div>
-            
-            <button onclick="analiziBaslat()" id="btnAnaliz" class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition shadow-xl uppercase tracking-widest text-sm">Analizi Başlat</button>
+      <!-- Mod -->
+      <div class="flex items-center justify-between gap-3 p-4 bg-slate-900 rounded-2xl border border-slate-700">
+        <div>
+          <div class="text-white font-black text-sm">Dil Modu</div>
+          <div class="text-slate-400 text-xs font-semibold">Metnin tonu daha net / daha yumuşak olabilir.</div>
         </div>
+        <select id="mod" class="p-3 rounded-xl input-field font-black text-indigo-200">
+          <option value="net">NET (kanıta dayalı, direkt)</option>
+          <option value="yumusak">YUMUŞAK (daha sakin)</option>
+        </select>
+      </div>
 
-        <div id="sonucAlani" class="mt-10 hidden border-t border-slate-800 pt-8">
-            <div id="analizMetni" class="text-sm text-slate-300 leading-7 p-6 bg-slate-950 rounded-2xl border border-slate-700 whitespace-pre-wrap font-medium"></div>
-            <button onclick="whatsappPaylas()" class="w-full mt-6 py-5 bg-green-600 hover:bg-green-500 text-white font-black rounded-2xl transition uppercase flex items-center justify-center gap-3 shadow-2xl">
-                <span>ANALİZİ WHATSAPP İLE GÖNDER</span>
-            </button>
+      <!-- İsimler -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label>Danışan Adı</label>
+          <input id="isim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Ad">
         </div>
+        <div>
+          <label>Anne Adı</label>
+          <input id="anneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label>Muhatap Adı</label>
+          <input id="ekIsim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Eş / Partner">
+        </div>
+        <div>
+          <label>Muhatap Anne Adı</label>
+          <input id="ekAnneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı">
+        </div>
+      </div>
+
+      <!-- Hedef -->
+      <div>
+        <label>Talep / Hedef</label>
+        <select id="hedef" class="w-full p-4 rounded-xl input-field font-bold text-indigo-300">
+          <option value="iliski">İlişki / Yuva</option>
+          <option value="geri">Geri Dönüş / Barışma</option>
+          <option value="aile">Aile Engeli</option>
+          <option value="rizik">Rızık / Borç / Bereket</option>
+          <option value="zihin">Kafada Dağınıklık / Kararsızlık</option>
+        </select>
+      </div>
+
+      <!-- WhatsApp -->
+      <div>
+        <label>WhatsApp Konuşmaları / Yaşananlar</label>
+        <textarea id="log" rows="5"
+          placeholder="Konuşmaları buraya yapıştırın. (Ne kadar gerçek metin, o kadar iyi analiz)"
+          class="w-full p-4 rounded-xl input-field text-sm"></textarea>
+      </div>
+
+      <!-- Telefon -->
+      <div class="p-4 bg-slate-900 rounded-2xl border border-green-500/20">
+        <label class="text-green-400">Danışan Telefonu</label>
+        <input id="telNo" type="tel" placeholder="5xx xxx xx xx"
+               class="w-full p-4 rounded-xl input-field text-center font-black tracking-widest text-2xl bg-slate-950">
+      </div>
+
+      <button onclick="analiziBaslat()"
+        class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition uppercase text-sm">
+        Analizi Oluştur
+      </button>
     </div>
 
-    <script>
-        const BUYU_MANTIGI = {
-            "kismet": {
-                ad: "kısmet bağlama büyüsü",
-                etki: "evlilik yolunuzun kapanmasına, karşınıza çıkan taliplerin sebepsizce geri çekilmesine ve yuva kurma niyetinizin her seferinde manevi bir engel tarafından engellenmesine",
-                yanstma: "“kısmetim kapalı”, “evlenmek istiyorum ama olmuyor”"
-            },
-            "gonul": {
-                ad: "gönül kilidi büyüsü",
-                etki: "karşı tarafın size karşı duygusu olmasına rağmen net bir adım atamamasına, sürekli içsel kararsızlık yaşamasına ve duygusal bir tutukluk içinde kalmasına",
-                yanstma: "“bir gün iyi bir gün uzak”, “netlik yok”"
-            },
-            "rizik": {
-                ad: "rızık kapama / rızık daraltma büyüsü",
-                etki: "işlerinizin tam olacakken bozulmasına, nasip kapılarınızın mühürlenmesine ve kazandığınız paranın bereketsizleşmesine",
-                yanstma: "“para geliyor ama durmuyor”, “hep son anda bozuluyor”"
-            },
-            "soogutma": {
-                ad: "iğne-sabun (evden soğutma) büyüsü",
-                etki: "haneye girdiğinde göğsünde ağırlık hissetmesine, evde durmak yerine sürekli dışarı kaçma isteği duymasına ve size karşı tahammülsüzleşmesine",
-                yanstma: "“eve gelince daralıyorum”, “evden kaçıyor”"
-            },
-            "aile": {
-                ad: "ev-eşik serpiştirme (aile engeli) büyüsü",
-                etki: "aile büyüklerinin veya dış şahısların iradeye müdahale ederek evliliğe karşı duvar örmesine ve araya sürekli soğukluk sokmasına",
-                yanstma: "“annem izin vermiyor”, “aile engeli bitmiyor”"
-            }
-        };
+    <!-- Sonuç -->
+    <div id="sonucAlani" class="mt-8 hidden border-t border-slate-800 pt-6 space-y-4">
+      <div class="flex flex-wrap gap-2" id="ozetChips"></div>
+      <div id="analizMetni" class="text-sm text-slate-200 leading-7 p-6 bg-slate-950 rounded-2xl border border-slate-700 whitespace-pre-wrap font-medium shadow-inner"></div>
+      <button onclick="whatsappPaylas()"
+        class="w-full py-5 bg-green-600 hover:bg-green-500 text-white font-black rounded-2xl transition uppercase">
+        WhatsApp Üzerinden Gönder
+      </button>
+    </div>
+  </div>
 
-        const AMAC_MANTIGI = {
-            "kismet_acma": "kapalı olan kısmet yolunuz açılacak ve hayırlı bir yuva kurmanızın önündeki engeller kaldırılacaktır",
-            "geri_getirme": "kalbin yönü yeniden size sabitlenecek ve kopan bağlar geri kurulacaktır",
-            "baglama": "kurulan bağ manevi olarak sabitlenecek ve kararsızlık son bulacaktır",
-            "gonul_kilidi": "kalpteki kilit sökülecek ve karşı tarafın iradesi üzerindeki baskı kalkacaktır",
-            "rizik_acma": "maddi kapılarınızdaki mühür sökülecek ve rızık damarlarınız açılacaktır",
-            "aile_engeli": "aile içi direnç ve dış müdahaleler tamamen ortadan kaldırılacaktır"
-        };
+<script>
+/* =========================
+   V2 KARAR MOTORU (Puanlama)
+   ========================= */
 
-        function analiziBaslat() {
-            const isim = document.getElementById('isim').value.trim();
-            const anne = document.getElementById('anneAdi').value.trim();
-            const log = document.getElementById('hikayeLog').value.toLowerCase();
-            const tur = document.getElementById('islemTuru').value;
-            const hitap = document.querySelector('input[name="hitap"]:checked').value;
+const PATTERNS = [
+  {
+    key: "sogutma_ayirma",
+    title: "Soğuma / Kopuş",
+    weight: 0,
+    patterns: [
+      { re: /soğud|soğudum|soğudun|içimden gelmiyor|bitti|nefret|istemiyorum|sevmiyorum|tiksin/i, score: 4 },
+      { re: /ayrıl|ayrıldık|boşan|terk etti|evi terk|gitti geri gelmedi/i, score: 4 },
+      { re: /uzaklaştı|mesafe|umursamıyor|ilgilenmiyor|görüşmek istemiyor/i, score: 3 },
+      { re: /blok|engelledi|numaramı sildi|mesajlara bakmıyor/i, score: 3 }
+    ],
+    diagnosis: {
+      ad: "soğutma ve kopuş odaklı manevi blokaj",
+      etki: "iletişimin soğumasına, araya duvar girmesine ve geri adımın zorlaşmasına"
+    }
+  },
+  {
+    key: "kararsizlik_kilit",
+    title: "Kararsızlık / Gelgit",
+    weight: 0,
+    patterns: [
+      { re: /kararsız|gelgit|bir var bir yok|bugün iyi yarın kötü/i, score: 4 },
+      { re: /net değil|kafası karışık|ne istediğini bilmiyor/i, score: 3 },
+      { re: /adım atmıyor|söz verip yapmıyor|oyalıyor/i, score: 3 }
+    ],
+    diagnosis: {
+      ad: "karar zayıflığı ve yön dağınıklığı",
+      etki: "net bir adım çıkmamasına, sürekli ertelenmeye ve belirsizliğin uzamasına"
+    }
+  },
+  {
+    key: "aile_baski",
+    title: "Aile Baskısı",
+    weight: 0,
+    patterns: [
+      { re: /annesi|babası|abisi|ablası|aile|ev halkı/i, score: 3 },
+      { re: /karşı çık|istemiyorlar|izin yok|baskı yapıyorlar|engel oluyorlar/i, score: 4 },
+      { re: /evlenmemize|nişan|düğün|kız isteme/i, score: 2 }
+    ],
+    diagnosis: {
+      ad: "aile baskısı ve ev–eşik kaynaklı direnç",
+      etki: "aile tarafının sertleşmesine, kararın gecikmesine ve sürekli engel çıkarılmasına"
+    }
+  },
+  {
+    key: "rizik_borc",
+    title: "Rızık / Borç",
+    weight: 0,
+    patterns: [
+      { re: /borç|kredi|icra|ödeyemiyorum|faiz/i, score: 4 },
+      { re: /iş yok|iş bulamıyorum|kovuldum|gelir yok/i, score: 4 },
+      { re: /bereket yok|para tutmuyor|kazanç düştü|sürekli masraf/i, score: 3 },
+      { re: /vize|vatandaşlık|evrak|dosya|mahkeme|başvuru/i, score: 2 }
+    ],
+    diagnosis: {
+      ad: "rızık tıkanıklığı ve maddi baskı kaynaklı daralma",
+      etki: "işlerin sürekli sürüncemede kalmasına, paranın tutunmamasına ve stresin artmasına"
+    }
+  },
+  {
+    key: "hane_huzursuz",
+    title: "Hane Huzursuzluğu",
+    weight: 0,
+    patterns: [
+      { re: /evde huzur yok|sürekli kavga|tartışma|bağırma/i, score: 4 },
+      { re: /eve gelmiyor|evde durmuyor|dışarı kaçıyor/i, score: 3 },
+      { re: /çocuk|çocuğum|huysuz|ağlıyor|uyku/i, score: 2 }
+    ],
+    diagnosis: {
+      ad: "hane içi huzursuzluk ve gerilim döngüsü",
+      etki: "ev içinde gerginliğin artmasına, tahammülün düşmesine ve kopuşların hızlanmasına"
+    }
+  }
+];
 
-            if(!isim || !anne || !log) return alert("Bilgileri eksiksiz doldurun!");
+const HEDEF_CUMLE = {
+  iliski: "ilişki tarafında konuşmaların yeniden toparlanması ve sağlıklı bir zemin oluşması",
+  geri: "iletişimin yeniden açılması ve barışmaya giden yolun netleşmesi",
+  aile: "aile içi sertliğin yumuşaması ve kararın önünün açılması",
+  rizik: "maddi baskının hafiflemesi, iş–evrak akışının toparlanması",
+  zihin: "kararsızlık ve zihinsel dağınıklığın toparlanması"
+};
 
-            const btn = document.getElementById('btnAnaliz');
-            const sonucAlani = document.getElementById('sonucAlani');
-            const sonucMetni = document.getElementById('analizMetni');
+const SUREC_SETI = {
+  low: "İlk gün konuşmadaki ana düğümleri netleştirip size kısa bir yön haritası çıkarırım, 7 gün boyunca düzenli okuma ve takip yapılır, 3–5 gün içinde rahatlama belirtileri görülür, 7. gün itibarıyla belirgin bir netleşme oluşur.",
+  mid: "İlk gün tespit edilen ana düğüm noktaları için okuma başlatılır, 7 gün boyunca her gün takip edilir, 3–5 gün içinde ilk yumuşama görülür, 7. gün itibarıyla konuşma/iletişim tarafında belirgin değişim beklenir.",
+  high:"İlk gün ana blokaj netleştirilir ve takip başlatılır, 7 gün boyunca disiplinli şekilde yürütülür, 3–5 gün içinde ilk kırılmalar görülür, 7. gün itibarıyla somut bir yön değişimi hedeflenir."
+};
 
-            btn.innerText = "TEŞHİS YAPILIYOR...";
-            btn.disabled = true;
+/* =========================
+   Yardımcı Fonksiyonlar
+   ========================= */
 
-            setTimeout(() => {
-                // ANALİZ MANTIĞI: İşlem türü öncelikli
-                let secilen = BUYU_MANTIGI["gonul"];
+function normalizeText(t){
+  return (t || "").replace(/\r/g,"\n").replace(/[ \t]+/g," ").trim();
+}
 
-                if (tur === "kismet_acma" || log.includes("kısmet") || log.includes("evlilik") || log.includes("talip")) {
-                    secilen = BUYU_MANTIGI["kismet"];
-                } else if (tur === "rizik_acma" || log.includes("para") || log.includes("iş") || log.includes("bereket")) {
-                    secilen = BUYU_MANTIGI["rizik"];
-                } else if (log.includes("ev") || log.includes("soğuk") || log.includes("gelmiyor")) {
-                    secilen = BUYU_MANTIGI["soogutma"];
-                } else if (log.includes("aile") || log.includes("anne")) {
-                    secilen = BUYU_MANTIGI["aile"];
-                }
+function extractQuotes(text){
+  const lines = normalizeText(text).split("\n").map(s=>s.trim()).filter(Boolean);
+  // En “anlamlı” satırları seçmek için kısa filtre: 12-140 karakter
+  const candidates = lines.filter(l => l.length >= 12 && l.length <= 140);
+  // Çoksa ilk 2-3
+  return candidates.slice(0,3);
+}
 
-                const dIsim = isim.charAt(0).toUpperCase() + isim.slice(1).toLowerCase();
-                const amac = AMAC_MANTIGI[tur];
+function extractKeywords(text){
+  const t = normalizeText(text).toLowerCase();
+  const words = (t.match(/[a-zA-ZğüşıöçĞÜŞİÖÇ]{5,}/g) || []).map(w=>w.toLowerCase());
+  const stop = new Set(["hocam","selam","merhaba","bakım","durum","inşallah","allah","kardeşim","abi","abla","tamam","peki","şimdi"]);
+  const freq = {};
+  for (const w of words){
+    if (stop.has(w)) continue;
+    freq[w] = (freq[w]||0)+1;
+  }
+  const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+  return sorted.slice(0,4);
+}
 
-                // TAM BAKIM YAZISI ŞABLONU
-                const metin = `${dIsim} ${hitap}, isimleriniz ve anne adlarınız üzerinden yaptığım detaylı bakıma göre sizle karşı taraf arasında uzun süredir etkisini sürdüren bir ${secilen.ad} bulunuyor. Bu büyü, ${secilen.etki} neden olmuş. WhatsApp konuşmalarınızda veya durumunuzda gözlemlediğim ${secilen.yanstma} ifadeleri bu kilidin günlük hayattaki en net yansımalarıdır. Bu durum sizin davranışlarınızdan değil, dışarıdan yapılmış niyeti bozucu bir müdahaleden kaynaklanmaktadır. Allah’ın izniyle bu ${secilen.ad} tamamen ortadan kaldırılacak ve ${amac}. Çalışmaya başlandığında ilk gün uygulamanın önemli kısımları video kaydıyla size gönderilir, ardından 7 gün boyunca size özel okuma yapılır, 3–5 gün içinde karşı tarafta yumuşama başlar ve 7. gün itibarıyla netlik oluşur. Bu süreçte başka bir hocayla aynı anda görüşülmemesi gerekir; farklı uygulamalar süreci karıştırır ve sonucu geciktirir. Daha önce benzer bir durumda olan danışanlarımda bu kilit Allah’ın izniyle tamamen çözülmüş ve kalıcı sonuç alınmıştır. Buradan sonrası sizin niyetinizle şekillenecek; niyetiniz netse biz de üzerimize düşeni en sağlam şekilde yaparız, çalışma tamamen rahmani usullerle yürütülür (uygulama için gerekli hazırlıklar sebebiyle belirli bir bedel oluşur). Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
+function scoreLog(log){
+  const txt = log.toLowerCase();
+  const scored = PATTERNS.map(p=>{
+    let s = 0;
+    for (const r of p.patterns){
+      if (r.re.test(txt)) s += r.score;
+    }
+    return { ...p, weight: s };
+  }).sort((a,b)=>b.weight - a.weight);
 
-                sonucMetni.innerText = metin.trim();
-                sonucAlani.classList.remove('hidden');
-                btn.innerText = "Analizi Başlat";
-                btn.disabled = false;
-                sonucAlani.scrollIntoView({ behavior: 'smooth' });
-            }, 1500);
-        }
+  const top = scored[0];
+  const second = scored[1];
 
-        function whatsappPaylas() {
-            const t = document.getElementById('analizMetni').innerText;
-            let no = document.getElementById('telNo').value.replace(/\D/g, ''); 
-            if (no.length < 10) {
-                window.open(`https://wa.me/?text=${encodeURIComponent(t)}`, '_blank');
-            } else {
-                if (!no.startsWith('90')) no = '90' + (no.startsWith('0') ? no.substring(1) : no);
-                window.open(`https://wa.me/${no}?text=${encodeURIComponent(t)}`, '_blank');
-            }
-        }
-    </script>
+  // Şiddet seviyesi
+  const totalTop = top.weight;
+  const sev = totalTop >= 8 ? "high" : totalTop >= 4 ? "mid" : "low";
+
+  // Yardımcı başlıklar: ikinci skor anlamlıysa ekle
+  const helpers = [];
+  if (second && second.weight >= 4) helpers.push(second.title);
+  // ayrıca 3. varsa
+  if (scored[2] && scored[2].weight >= 4) helpers.push(scored[2].title);
+
+  return { top, sev, helpers, all: scored };
+}
+
+function badgeForSev(sev){
+  if (sev==="high") return { cls:"badge badge-hi", txt:"Yoğun" };
+  if (sev==="mid") return { cls:"badge badge-mid", txt:"Orta" };
+  return { cls:"badge badge-ok", txt:"Hafif" };
+}
+
+function capitalizeName(n){
+  n = (n||"").trim();
+  if (!n) return "";
+  return n.charAt(0).toUpperCase() + n.slice(1).toLowerCase();
+}
+
+/* =========================
+   Ana Üretim
+   ========================= */
+
+function analiziBaslat(){
+  const isim = document.getElementById("isim").value.trim();
+  const anneAdi = document.getElementById("anneAdi").value.trim();
+  const ekIsim = document.getElementById("ekIsim").value.trim();
+  const ekAnne = document.getElementById("ekAnneAdi").value.trim();
+  const hitap = document.querySelector('input[name="hitap"]:checked').value;
+  const hedef = document.getElementById("hedef").value;
+  const mod = document.getElementById("mod").value;
+
+  const logRaw = document.getElementById("log").value;
+  const log = normalizeText(logRaw);
+
+  if (!isim || !log){
+    alert("Danışan adı ve WhatsApp konuşmaları zorunludur.");
+    return;
+  }
+
+  const dIsim = capitalizeName(isim);
+  const sc = scoreLog(log);
+  const diag = sc.top.diagnosis;
+
+  const quotes = extractQuotes(log);
+  const kws = extractKeywords(log);
+
+  const badge = badgeForSev(sc.sev);
+
+  // UI chips
+  const chips = [];
+  chips.push(`<span class="${badge.cls}">Seviye: ${badge.txt}</span>`);
+  chips.push(`<span class="chip">Ana Başlık: ${sc.top.title}</span>`);
+  if (sc.helpers.length) chips.push(`<span class="chip">Ek: ${sc.helpers.join(" + ")}</span>`);
+  if (kws.length) chips.push(`<span class="chip">Ana Kelimeler: ${kws.join(", ")}</span>`);
+
+  document.getElementById("ozetChips").innerHTML = chips.join("");
+
+  // Metin dili
+  const girisNet = `${dIsim} ${hitap}, paylaştığınız WhatsApp konuşmalarını dikkatle inceledim; yazdıklarınızın içindeki tekrar eden cümleler ve duygusal kırılmalar üzerinden genel bir bakım analizi çıkardım.`;
+  const girisYumusak = `${dIsim} ${hitap}, paylaştığınız WhatsApp konuşmalarını okudum; yazdıklarınızdaki tekrar eden noktalar ve yaşanan süreç üzerinden size genel bir bakım analizi hazırladım.`;
+  const giris = (mod==="yumusak") ? girisYumusak : girisNet;
+
+  const kimlikSatiri = `İsim bilgileri: ${dIsim} (anne: ${anneAdi||"—"}), muhatap: ${ekIsim||"—"} (anne: ${ekAnne||"—"}).`;
+
+  const tespit = `Konuşma içeriğinde en baskın görünen problem başlığı: ${sc.top.title}. Bu, pratikte ${diag.etki} yol açan bir blokaj tablosu olarak kendini gösteriyor.`;
+
+  const alintiBolumu = quotes.length
+    ? `Özellikle mesajlarda geçen ${quotes.map(q=>`"${q}"`).join(", ")} ifadeleri bu başlığın en net göstergeleri.`
+    : `Konuşmadaki tekrar eden kalıplar ve duygu iniş-çıkışları bu başlığın net şekilde öne çıktığını gösteriyor.`;
+
+  const hedefCumle = `Sizin talep ettiğiniz hedef ise: ${HEDEF_CUMLE[hedef]}. Bu hedefe giden yol, önce ana düğümü doğru yerden çözmekle açılır.`;
+
+  const surec = `Süreç düzeni şu şekilde yürür: ${SUREC_SETI[sc.sev]} Bu süreçte aynı anda farklı kişilerden farklı uygulamalar alınması, odağı dağıtır ve toparlanmayı geciktirir; bu yüzden tek çizgide ilerlemek önemlidir.`;
+
+  const vakaOrnek = (mod==="yumusak")
+    ? `Daha önce benzer konuşma örüntülerinde; doğru takip ve düzenle, iletişimin yeniden açıldığı ve tarafların daha sakin bir zemine döndüğü çok vaka gördüm.`
+    : `Bu tarz konuşma örüntülerinde; ana düğüm doğru yerden alındığında sürecin hızla toparlandığını ve tarafların yeniden iletişime geçtiğini defalarca gördüm.`;
+
+  const kapanis = (mod==="yumusak")
+    ? `Bundan sonrası sizin niyetiniz ve istikrarınızla şekillenir. İsterseniz konuşmadaki ana düğüme göre net bir yol haritası çıkarıp adım adım ilerleyebiliriz. Nasıl ilerlemek istediğinizi söylemeniz yeterli.`
+    : `Bundan sonrası kararlılık meselesi. Konuşmadaki ana düğümü netleştirdim; isterseniz buna göre yol haritasını belirleyip disiplinli şekilde ilerleriz. Nasıl ilerlemek istediğinizi söylemeniz yeterli.`;
+
+  // Tek parça WhatsApp metni (tek satır)
+  const finalText = [
+    giris,
+    kimlikSatiri,
+    tespit,
+    alintiBolumu,
+    (kws.length ? `Konuşmada öne çıkan ana kelimeler: ${kws.join(", ")}.` : ""),
+    hedefCumle,
+    surec,
+    vakaOrnek,
+    kapanis
+  ].filter(Boolean).join(" ");
+
+  document.getElementById("analizMetni").innerText = finalText.trim();
+  document.getElementById("sonucAlani").classList.remove("hidden");
+  document.getElementById("sonucAlani").scrollIntoView({ behavior: "smooth" });
+}
+
+function whatsappPaylas(){
+  const t = document.getElementById("analizMetni").innerText;
+  let no = document.getElementById("telNo").value.replace(/\D/g, "");
+  if (no.length >= 10) {
+    if (!no.startsWith("90")) no = "90" + (no.startsWith("0") ? no.substring(1) : no);
+    window.open(`https://wa.me/${no}?text=${encodeURIComponent(t)}`, "_blank");
+  } else {
+    window.open(`https://wa.me/?text=${encodeURIComponent(t)}`, "_blank");
+  }
+}
+</script>
 </body>
 </html>
