@@ -3,177 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Manevi Analiz ve Teşhis Paneli</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Manevi Analiz Sistemi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #0f172a; color: #e2e8f0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .input-field { background: #1e293b; border: 1px solid #334155; color: white; font-weight: 500; transition: all 0.3s; }
-        .input-field:focus { border-color: #6366f1; outline: none; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
-        label { font-weight: 700; font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; display: block; }
-        .section-header { border-bottom: 1px solid #334155; padding-bottom: 8px; margin-bottom: 16px; margin-top: 15px; }
-        .section-title { color: #818cf8; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; }
+        body { background: #0f172a; color: #f1f5f9; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        .card { background: #111827; border: 1px solid #1f2937; }
+        .input-field { background: #1f2937; border: 1px solid #374151; color: white; transition: 0.3s; }
+        .input-field:focus { border-color: #6366f1; outline: none; }
+        label { font-weight: 700; font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 5px; }
+        .section-title { color: #818cf8; font-size: 0.75rem; font-weight: 800; border-bottom: 1px solid #1f2937; padding-bottom: 8px; margin-bottom: 15px; text-transform: uppercase; }
         select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-3 md:p-6 bg-slate-950">
+<body class="min-h-screen flex items-center justify-center p-3 md:p-8 bg-slate-950">
 
-    <div class="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl relative">
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500"></div>
+    <div class="w-full max-w-2xl card rounded-3xl p-6 md:p-10 relative">
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-indigo-600"></div>
 
-        <h1 class="text-xl md:text-2xl font-black text-center text-white mb-2 tracking-tighter uppercase italic">Manevi Analiz Merkezi</h1>
-        <p class="text-center text-[10px] text-slate-500 mb-8 uppercase tracking-[0.2em] font-bold">Gelişmiş Teşhis ve İşlem Algoritması</p>
+        <h1 class="text-2xl font-black text-center text-white mb-2 tracking-tighter uppercase italic">Manevi Analiz Sistemi</h1>
+        <p class="text-center text-[10px] text-slate-500 mb-10 uppercase tracking-[0.3em] font-bold">Profesyonel Teşhis Algoritması</p>
         
         <div class="space-y-6">
             <div>
-                <div class="section-header"><h3 class="section-title">1. DANIŞAN BİLGİLERİ</h3></div>
+                <div class="section-title">1. Danışan Bilgileri</div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label>İsim</label><input id="isim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="İsim"></div>
-                    <div><label>Anne Adı</label><input id="anneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı"></div>
+                    <div><label>Ad Soyad</label><input id="isim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="İSİM"></div>
+                    <div><label>Anne Adı</label><input id="anneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="ANNE ADI"></div>
                 </div>
             </div>
 
             <div>
-                <div class="section-header"><h3 class="section-title">2. MUHATAP BİLGİLERİ</h3></div>
+                <div class="section-header"><h3 class="section-title">2. Muhatap Bilgileri</h3></div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label>Muhatap İsim</label><input id="ekIsim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Eş / Sevgili"></div>
-                    <div><label>Anne Adı</label><input id="ekAnneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="Anne Adı"></div>
+                    <div><label>Muhatap Adı</label><input id="ekIsim" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="MUHATAP"></div>
+                    <div><label>Anne Adı</label><input id="ekAnneAdi" type="text" class="w-full p-4 rounded-xl input-field uppercase" placeholder="ANNE ADI"></div>
                 </div>
             </div>
 
             <div>
-                <div class="section-header"><h3 class="section-title">3. YAPILACAK ANALİZ / İŞLEM TÜRÜ</h3></div>
+                <div class="section-title">3. Çözüm Yolu (İşlem)</div>
                 <select id="islemTuru" class="w-full p-4 rounded-xl input-field font-bold text-indigo-300">
-                    <option value="genel">Genel Bakım ve Aura Taraması</option>
-                    <option value="geri_getirme">Geri Getirme ve Pişman Etme</option>
-                    <option value="buyu_bozma">Ağır Büyü Bozma (Papaz/Domuz Yağı)</option>
-                    <option value="kismet_acma">Kısmet ve Yıldız Yükseltme</option>
-                    <option value="rizik_acma">Rızık ve Bereket Kilidi Açma</option>
-                    <option value="baglama">Muhabbet ve Sadakat Bağlama</option>
+                    <option value="geri_getirme">Geri Getirme Çalışması</option>
+                    <option value="baglama">Bağlama Çalışması</option>
+                    <option value="gonul_kilidi">Gönül Kilidi Açma</option>
+                    <option value="kismet_acma">Rızık / Kısmet Açma</option>
+                    <option value="aile_engeli">Aile Engeli Kaldırma</option>
                 </select>
             </div>
 
             <div>
-                <div class="section-header"><h3 class="section-title">4. DURUM VE WHATSAPP KAYITLARI</h3></div>
-                <textarea id="hikayeLog" rows="5" placeholder="Danışanın anlattıklarını veya mesajları buraya yapıştırın..." class="w-full p-4 rounded-xl input-field text-sm font-normal leading-relaxed"></textarea>
+                <div class="section-title">4. WhatsApp Kayıtları / Belirtiler</div>
+                <textarea id="hikayeLog" rows="5" placeholder="Danışanın mesajlarını buraya yapıştırın. Sistem 'soğukluk', 'evden kaçma' gibi belirtileri buradan yakalayacaktır..." class="w-full p-4 rounded-xl input-field text-sm font-normal leading-relaxed"></textarea>
             </div>
 
-            <div class="p-5 bg-slate-800/50 rounded-2xl border border-green-500/20">
-                <label class="text-green-400">WhatsApp Numarası (Müşterinin Numarası)</label>
-                <input id="telNo" type="tel" placeholder="5xx xxx xx xx" class="w-full p-4 rounded-xl input-field text-center font-bold tracking-widest text-xl bg-slate-900 border-green-500/30">
-                <p class="text-[10px] text-slate-500 mt-2 text-center uppercase tracking-widest italic">Analiz sonucu bu numaraya iletilecektir.</p>
+            <div class="p-6 bg-slate-900 rounded-2xl border border-green-500/20">
+                <label class="text-green-400">Gönderilecek WhatsApp Numarası</label>
+                <input id="telNo" type="tel" placeholder="5xx xxx xx xx" class="w-full p-4 rounded-xl input-field text-center font-black tracking-widest text-2xl bg-slate-950 border-green-500/30">
             </div>
             
-            <button onclick="analiziBaslat()" id="btnAnaliz" class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-black rounded-2xl transition shadow-xl shadow-indigo-500/20 uppercase tracking-widest">Analizi Başlat ve Teşhis Koy</button>
+            <button onclick="analiziBaslat()" id="btnAnaliz" class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition shadow-xl uppercase tracking-widest text-sm">Analizi Başlat</button>
         </div>
 
-        <div id="sonucAlani" class="mt-10 hidden border-t border-slate-800 pt-8 animate-fade-in">
-            <div id="analizMetni" class="text-xs md:text-sm text-slate-300 leading-7 p-6 bg-slate-950/50 rounded-2xl border border-slate-700 whitespace-pre-wrap font-medium shadow-inner italic"></div>
-            
-            <button onclick="whatsappPaylas()" class="w-full mt-6 py-5 bg-green-600 hover:bg-green-500 active:scale-95 text-white font-black rounded-2xl transition uppercase flex items-center justify-center gap-3 shadow-2xl">
+        <div id="sonucAlani" class="mt-10 hidden border-t border-slate-800 pt-8">
+            <div id="analizMetni" class="text-sm text-slate-300 leading-7 p-6 bg-slate-950 rounded-2xl border border-slate-700 whitespace-pre-wrap font-medium"></div>
+            <button onclick="whatsappPaylas()" class="w-full mt-6 py-5 bg-green-600 hover:bg-green-500 text-white font-black rounded-2xl transition uppercase flex items-center justify-center gap-3 shadow-2xl">
                 <span>ANALİZİ WHATSAPP İLE GÖNDER</span>
             </button>
         </div>
     </div>
 
     <script>
-        const MODUL_VERILERI = {
-            genel: {
-                teshis: "AĞIR NAZAR VE YILDIZ DÜŞÜKLÜĞÜ",
-                icerik: "Genel aura taramanızda, enerjinizin tamamen sömürüldüğünü ve üzerinizde katmanlaşmış bir nazar tabakası olduğunu görüyorum. Bu durum sizde sürekli bir yorgunluk, kafa karışıklığı ve 'her şey ters gidiyor' hissi yaratıyor. Yıldızınız o kadar düşük ki, her türlü negatif frekansı sünger gibi çekiyorsunuz. Bu blokaj temizlenmeden hayatınızdaki düğümler çözülmez."
+        // Cinsiyet Tespit Fonksiyonu
+        function getHitap(isim) {
+            const kadinEkleri = ['a', 'e', 'i', 'u', 'ü'];
+            const kadinIsimleri = ['zeynep','elif','meryem','ayşe','fatma','hatice','emel','canan','özlem','nihal','gül','nisa','su','nur'];
+            const temizIsim = isim.toLowerCase().trim();
+            const sonHarf = temizIsim.slice(-1);
+            if(kadinIsimleri.some(k => temizIsim.includes(k)) || kadinEkleri.includes(sonHarf)) return "Hanım";
+            return "Bey";
+        }
+
+        // Büyü Türleri ve Belirtileri (Senin Listen)
+        const BUYU_DATABASE = [
+            {
+                id: "gonul_kilidi",
+                anahtar: ["uzak", "soğu", "adım", "kararsız", "netlik"],
+                buyuAdi: "gönül kilidi büyüsü",
+                etki: "karşı tarafın size karşı duygusu olmasına rağmen net bir adım atamamasına, bir gün yakın bir gün tamamen uzak davranmasına ve sürekli içsel kararsızlık yaşamasına",
+                yanstma: "“istiyorum ama yapamıyorum”, “bir şey tutuyor gibi”"
             },
-            geri_getirme: {
-                teshis: "İRADE BAĞLAMA VE PAPAZ BÜYÜSÜ",
-                icerik: "WhatsApp konuşmalarınızda karşı tarafın sergilediği o ani soğukluk ve anlamsız nefret, normal bir ayrılık değil. Karşı tarafın iradesi üzerine 'Papaz Büyüsü' dediğimiz çok ağır bir perdeleme yapılmış. Kişi aslında sizi seviyor ama manevi bir kilit yüzünden size adım atamıyor, ayakları geri gidiyor. Bu mühür sökülmeden o kişinin kendi iradesiyle size dönmesi imkansızdır."
+            {
+                id: "igne_sabun",
+                anahtar: ["eve", "kaçıyor", "gelmek", "huzursuz", "duramıyor"],
+                buyuAdi: "iğne-sabun (evden soğutma) büyüsü",
+                etki: "karşı tarafın haneye girdiği anda daralmasına, mekândan soğumasına, huzursuzluk hissetmesine ve evden kaçma dürtüsü yaşamasına",
+                yanstma: "“eve gelince daralıyorum”, “dışarıda daha iyiyim”"
             },
-            buyu_bozma: {
-                teshis: "DOMUZ YAĞI VE SABUN BÜYÜSÜ",
-                icerik: "Evinizdeki huzursuzluğun ve aranızdaki tahammülsüzlüğün sebebi, haneye sürülmüş olan 'Domuz Yağı' işlemidir. Bu işlem haneyi soğutmak, kişileri birbirinden iğrendirmek için yapılmış. Göğsünüzde hissettiğiniz o sebepsiz daralma ve evden kaçma isteği tamamen bu kara enerjinin sonucudur. Çok acil bir manevi arınma ve koruma kalkanı şart."
+            {
+                id: "rizik",
+                anahtar: ["iş", "para", "bereket", "borç", "kısmet"],
+                buyuAdi: "rızık kapama / rızık daraltma büyüsü",
+                etki: "işlerinizin tam olacakken bozulmasına, nasip kapılarınızın mühürlenmesine ve elinize geçen paranın bereketsizleşmesine",
+                yanstma: "“para geliyor ama durmuyor”, “hep son anda bozuluyor”"
             },
-            kismet_acma: {
-                teshis: "KISMET KİLİDİ VE YILDIZNAME ENGELİ",
-                icerik: "Yıldızname haritanızda, kısmet damarlarınızın 'Düğümlü İşlem' ile bağlandığını tespit ettim. Tam olacak denilen işlerin son anda bozulması, ikili ilişkilerde hep aynı noktada tıkanmanız bu kilidin sonucudur. Sizin nasip kapınızın önünde manevi bir duvar örülmüş. Bu duvar yıkılmadan ne yaparsanız yapın sonuç hep aynı hüsran olacaktır."
-            },
-            rizik_acma: {
-                teshis: "BEREKET KİLİDİ VE RIZIK BAĞLAMA",
-                icerik: "Elinize geçen paranın bereketsizleşmesi ve rızkınızın bıçak gibi kesilmesi, doğrudan iş ve kazanç kapınıza yapılan bir 'Bağlama' işleminden kaynaklanıyor. Çevrenizdeki haset enerjisi o kadar yoğun ki, rızık damarlarınızı manevi olarak tıkamış. Bu işlem sadece maddi değil, manevi olarak da sizi çökertmeye odaklı yapılmış."
-            },
-            baglama: {
-                teshis: "MUHABBET SOĞUKLUĞU VE FİTNE İŞLEMİ",
-                icerik: "Aranızdaki o eski sıcaklığın yerini sessizliğe ve kavgaya bırakması, araya sokulan 'Fitne ve Soğutma' harmanından kaynaklanıyor. İsimlerinizin arasındaki muhabbet frekansı dışarıdan gelen negatif bir parazitle bozulmuş. Sadakat bağlarınız gevşetilmiş. Karşı tarafın aklı ve kalbi manevi bir baskı altında dağıtılmış."
+            {
+                id: "aile",
+                anahtar: ["anne", "baba", "aile", "izin", "karışıyor"],
+                buyuAdi: "ev-eşik serpiştirme (aile engeli) büyüsü",
+                etki: "aile içi baskı ve direncin artmasına, üçüncü şahısların iradeye müdahale ederek araya duvar örmesine",
+                yanstma: "“annem istemiyor”, “aile engeli bitmiyor”"
             }
+        ];
+
+        // İşlem Amacı Eşleşmesi
+        const AMAC_DATABASE = {
+            "geri_getirme": "kalbin yönü yeniden size sabitlenecektir",
+            "baglama": "kurulan bağ sabitlenecek ve kararsızlık son bulacaktır",
+            "gonul_kilidi": "kalpteki kilit açılacak ve iradesi serbest kalacaktır",
+            "kismet_acma": "kapalı olan rızık ve kısmet yolunuz açılacaktır",
+            "aile_engeli": "aile içi direnç ve blokaj tamamen kaldırılacaktır"
         };
 
         function analiziBaslat() {
             const isim = document.getElementById('isim').value.trim();
             const anne = document.getElementById('anneAdi').value.trim();
-            const ekIsim = document.getElementById('ekIsim').value.trim();
-            const log = document.getElementById('hikayeLog').value.trim();
+            const log = document.getElementById('hikayeLog').value.toLowerCase();
             const tur = document.getElementById('islemTuru').value;
 
-            if(!isim || !anne || !log) return alert("Lütfen Danışan İsim, Anne Adı ve Durum metnini giriniz!");
+            if(!isim || !anne || !log) return alert("Eksik bilgi girmeyiniz!");
 
             const btn = document.getElementById('btnAnaliz');
             const sonucAlani = document.getElementById('sonucAlani');
             const sonucMetni = document.getElementById('analizMetni');
-            
-            sonucAlani.classList.add('hidden');
-            btn.innerText = "YILDIZNAME VE EBCED ANALİZİ YAPILIYOR...";
+
+            btn.innerText = "YILDIZNAME ANALİZİ YAPILIYOR...";
             btn.disabled = true;
 
             setTimeout(() => {
-                const data = MODUL_VERILERI[tur];
-                const dIsim = isim.toUpperCase();
-                const mIsim = ekIsim ? ekIsim.toUpperCase() : "MUHATAP";
+                // Algoritma: En uygun büyüyü seç
+                let buyu = BUYU_DATABASE[0]; // Varsayılan
+                for (let b of BUYU_DATABASE) {
+                    if (b.anahtar.some(k => log.includes(k))) { buyu = b; break; }
+                }
 
-                const finalMetin = `
-KONTROL ŞABLONU VE MANEVİ TESPİT RAPORU
+                const hitap = getHitap(isim);
+                const dIsim = isim.charAt(0).toUpperCase() + isim.slice(1).toLowerCase();
+                const amac = AMAC_DATABASE[tur];
 
-DANIŞAN: ${dIsim} (Anne: ${anne.toUpperCase()})
-MUHATAP: ${mIsim}
-İŞLEM TÜRÜ: ${document.getElementById('islemTuru').options[document.getElementById('islemTuru').selectedIndex].text}
+                // SENİN VERDİĞİN ÖRNEK METİN YAPISI
+                const finalMetin = `${dIsim} ${hitap}, isimleriniz ve anne adlarınız üzerinden yaptığım detaylı bakıma göre sizle karşı taraf arasında uzun süredir etkisini sürdüren bir ${buyu.buyuAdi} bulunuyor. Bu büyü, ${buyu.etki} neden olmuş. WhatsApp konuşmalarınızda sıkça geçen ${buyu.yanstma} ifadeleri bu kilidin günlük hayattaki en net yansımalarıdır. Bu durum sizin davranışlarınızdan değil, dışarıdan yapılmış niyeti bozucu bir müdahaleden kaynaklanmaktadır. Allah’ın izniyle bu ${buyu.buyuAdi} tamamen ortadan kaldırılacak ve ${amac}. Çalışmaya başlandığında ilk gün uygulamanın önemli kısımları video kaydıyla size gönderilir, ardından 7 gün boyunca size özel okuma yapılır, 3–5 gün içinde karşı tarafta yumuşama başlar ve 7. gün itibarıyla netlik oluşur. Bu süreçte başka bir hocayla aynı anda görüşülmemesi gerekir; farklı uygulamalar süreci karıştırır ve sonucu geciktirir. Daha önce benzer bir durumda olan danışanlarımda bu kilit Allah’ın izniyle tamamen çözülmüş ve kalıcı sonuç alınmıştır. Buradan sonrası sizin niyetinizle şekillenecek; niyetiniz netse biz de üzerimize düşeni en sağlam şekilde yaparız, çalışma tamamen rahmani usullerle yürütülür (uygulama için gerekli hazırlıklar sebebiyle belirli bir bedel oluşur). Nasıl ilerlemek istediğinizi söylemeniz yeterlidir.`;
 
-GÖZLEMLER VE ANALİZ:
-Gönderdiğiniz WhatsApp kayıtlarını ve verdiğiniz bilgileri Ebced hesabı ile yıldızname üzerinden derinlemesine taradım. Çıkan tablo maalesef beklediğimden daha ciddi.
-
-TESPİT EDİLEN DURUM: **${data.teshis}**
-
-${data.icerik}
-
-WhatsApp konuşmalarınızdaki o tavırlar, duraksamalar ve sebepsiz çıkışlar bu manevi baskının günlük hayattaki yansımalarıdır. Bu sizin hatanız değil, tamamen dışarıdan gelen kirli bir niyetin sonucudur. Sert konuşuyorum çünkü durum pembe tablo çizecek kadar basit değil; üzerinizdeki bu ağırlık temizlenmeden huzur bulmanız mümkün görünmüyor.
-
-MANEVİ REÇETE VE ÇÖZÜM:
-Allah’ın izniyle bu durumu tamamen ortadan kaldırmak mümkündür. Yapılacak çalışma doğrudan bu ${data.teshis.toLowerCase()} etkisini bozmaya ve enerjinizi koruma altına almaya odaklıdır. 
-
-Süreç Şöyledir:
-- İlk gün uygulamanın önemli kısımları video ile tarafınıza iletilir.
-- 7 gün boyunca size özel okuma ve frekans sabitleme yapılır.
-- 3. günden itibaren etkiler görülmeye başlar, 7. günde netice sabitlenir.
-
-Bu süreçte başka kimseyle görüşmemeniz ve süreci karıştırmamanız elzemdir. Niyetiniz netse, biz de üzerimize düşeni en sağlam şekilde yaparız. Rahmani usullerle çalışılır. Nasıl ilerlemek istediğinizi söylemeniz kafidir.
-`;
-
-                sonucMetni.innerText = finalMetin.trim();
+                sonucMetni.innerText = finalMetin;
                 sonucAlani.classList.remove('hidden');
-                btn.innerText = "Analizi Başlat ve Teşhis Koy";
+                btn.innerText = "Analizi Başlat";
                 btn.disabled = false;
-                
-                // Sayfayı sonuca kaydır
                 sonucAlani.scrollIntoView({ behavior: 'smooth' });
-
-            }, 2500);
+            }, 2000);
         }
 
         function whatsappPaylas() {
             const t = document.getElementById('analizMetni').innerText;
             let no = document.getElementById('telNo').value.replace(/\D/g, ''); 
-
             if (no.length < 10) {
                 window.open(`https://wa.me/?text=${encodeURIComponent(t)}`, '_blank');
             } else {
-                if (!no.startsWith('90')) {
-                    no = '90' + (no.startsWith('0') ? no.substring(1) : no);
-                }
+                if (!no.startsWith('90')) no = '90' + (no.startsWith('0') ? no.substring(1) : no);
                 window.open(`https://wa.me/${no}?text=${encodeURIComponent(t)}`, '_blank');
             }
         }
