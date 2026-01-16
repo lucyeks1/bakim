@@ -454,13 +454,15 @@
     /* ============================================================
        V10 ENTERPRISE - MIN LENGTH ENFORCER
     ============================================================ */
-    function enforceMinChars(text, mode){
-      const min = (mode === "enterprise_max") ? 7000 : 5200;
-      let out = safeTrim(text);
-      if(out.length < min){
-        const need = min - out.length;
-        out += "\n\n" + buildEnterpriseExtension(need);
-      }
+   function enforceMinChars(text, mode){
+  const min = (mode === "enterprise_max") ? 3800 : 2600; // KISA & NET
+  let out = text.trim();
+  if(out.length < min){
+    const need = min - out.length;
+    out += "\n\n" + buildEnterpriseExtension(Math.min(need, 600)); // ek blok sınırlı
+  }
+  return out.replace(/\n{3,}/g, "\n\n").trim();
+}
       out = out.replace(/\n{3,}/g, "\n\n").trim();
       return out;
     }
@@ -469,10 +471,6 @@
       const blocks = [];
       blocks.push("Şunu da net söyleyeyim: Bu tür düğümler insanın sabrını ve psikolojisini yorar; kişi bir yandan sonucu isterken bir yandan da ‘neden olmuyor’ diye kendini yıpratır. Burada önemli olan, düğümü doğru yerden çözmek ve süreci disiplinli yürütmektir. Disiplin bozulduğunda düğüm kendini tekrar eder; disiplin korununca çözüm hızlanır.");
       blocks.push("Süreçte çoğu kişi şu hataya düşer: Bir gün umutlanır, ertesi gün morali bozulur; bu gelgit niyeti zayıflatır. Oysa böyle vakalarda en hızlı ilerleme, niyetin tek çizgide sabit kalmasıyla gelir. Siz net kaldığınızda karşı taraftaki tavır da netleşmeye başlar; çünkü düğüm çözülürken ilk değişim genelde konuşma dilinde olur.");
-      blocks.push("Etkiler başladığında genelde şu sıralama görülür: önce sertlik azalır, sonra kaçınma düşer, ardından konuşmalar uzar ve cevaplar hızlanır. Son aşamada ise ‘kırgınlık’ dili çözülür ve daha yapıcı bir iletişim başlar. Bu sıralama, düğümün çözülmesinin doğal işaretidir.");
-      blocks.push("Bu çalışmada hedef yalnızca bir mesaj atılması değildir; hedef, bağın tekrar sağlam zemine oturması ve aynı döngünün bir daha kendini tekrar etmemesidir. Yani sonuç kalıcı olsun diye süreç adım adım yürütülür. Kalıcılık, işi yarım bırakmamakla ve dışarıdan karışıklık almamakla sağlanır.");
-      blocks.push("Bu yüzden, sürecin her gününde küçük bir değişim bile değerlidir. ‘Ufak bir yumuşama oldu’ dediğiniz an, düğümün doğru yerden çözüldüğünü anlarız. Sonrası zaten hızlanır. Sizden istenen tek şey, istikrarı korumak ve gelişmeleri geciktirmeden bildirmektir.");
-
       let out = "";
       let i = 0;
       while(out.length < Math.max(needChars, 1200) && i < 30){
@@ -764,8 +762,8 @@
       ];
 
       // Enterprise “life reflection” block insertion (meaningful)
-      blocks.splice(3, 0, buildLifeReflection(ctx, analysis, tplKey));
-
+if(ctx.mode === "enterprise_max"){
+  blocks.splice(3, 0, buildLifeReflection(ctx, analysis, tplKey));
       const merged = blocks.join("\n\n");
       return enforceMinChars(merged, ctx.mode);
     }
@@ -932,3 +930,4 @@
 
 </body>
 </html>
+
