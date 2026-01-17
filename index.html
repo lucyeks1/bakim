@@ -3,327 +3,304 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Genel Bakım Sistemi – V10 Enterprise</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>V10 Enterprise Apex Elite – Bakım Oluşturma</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --bg: #0b1220;
-      --card: #0f172a;
-      --border: #1f2a44;
-      --border2: #2b3a5f;
-      --text: #e7eefc;
-      --muted: #9bb0d3;
-      --indigo: #4f46e5;
-      --indigo2: #6366f1;
-      --green: #16a34a;
-      --green2: #22c55e;
+      --bg-deep: #020617;
+      --bg-card: #0b1120;
+      --indigo-glow: #6366f1;
+      --indigo-soft: rgba(99, 102, 241, 0.1);
+      --border-color: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
     }
-    html, body {
-      background: var(--bg);
-      color: var(--text);
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-main);
       font-family: 'Montserrat', sans-serif;
-      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
     }
-    .card {
-      background: linear-gradient(180deg, rgba(15,23,42,1) 0%, rgba(11,18,32,1) 100%);
-      border: 1px solid var(--border);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+
+    .glass-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
     }
-    .topbar {
-      background: linear-gradient(90deg, var(--indigo) 0%, var(--indigo2) 100%);
-      height: 6px;
-      border-radius: 999px;
+
+    .terminal-font { font-family: 'JetBrains Mono', monospace; }
+
+    .apex-input {
+      background: rgba(2, 6, 23, 0.9);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .label {
-      font-weight: 800;
-      font-size: 0.70rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 6px;
-      display: block;
-    }
-    .input {
-      background: rgba(15,23,42,0.8);
-      border: 1px solid var(--border2);
-      color: var(--text);
-      border-radius: 16px;
-      padding: 14px 16px;
-      width: 100%;
+
+    .apex-input:focus {
+      border-color: var(--indigo-glow);
+      box-shadow: 0 0 25px var(--indigo-soft);
       outline: none;
-      font-weight: 700;
     }
-    .input:focus {
-      border-color: var(--indigo2);
-      box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+
+    .apex-btn {
+      background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
     }
-    .chip {
-      border: 1px solid var(--border2);
-      background: rgba(11,18,32,0.65);
-      padding: 10px 12px;
-      border-radius: 16px;
-      font-weight: 800;
-      font-size: 0.78rem;
-      cursor: pointer;
-      transition: 0.25s;
-      text-align: center;
+
+    .apex-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
     }
-    input[type="radio"].sr-only:checked + .chip {
-      background: var(--indigo);
-      color: white;
-      border-color: var(--indigo2);
+
+    .log-console {
+      background: #000;
+      border: 1px solid #1e293b;
+      height: 100px;
+      overflow-y: auto;
+      padding: 12px;
+      font-size: 11px;
+      color: #6366f1;
+      line-height: 1.5;
     }
-    .btn {
-      width: 100%;
-      padding: 16px;
-      border-radius: 18px;
-      font-weight: 900;
-      text-transform: uppercase;
-      transition: 0.25s;
+
+    .output-container {
+      background: #020617;
+      border-left: 4px solid var(--indigo-glow);
     }
-    .btn-primary { background: linear-gradient(90deg, var(--indigo) 0%, var(--indigo2) 100%); color: white; }
-    .btn-green { background: linear-gradient(90deg, var(--green) 0%, var(--green2) 100%); color: white; }
-    .panel { background: rgba(11,18,32,0.55); border: 1px solid var(--border2); border-radius: 18px; padding: 14px; }
-    .hint { color: rgba(155,176,211,0.75); font-weight: 600; font-size: 0.85rem; }
-    .divider { border-top: 1px solid rgba(43,58,95,0.6); margin: 18px 0; }
-    .output { white-space: pre-wrap; line-height: 1.8rem; font-size: 0.95rem; font-weight: 600; background: rgba(2,6,23,0.65); border-radius: 18px; padding: 16px; }
-    
-    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; }
-    .spinner { width: 40px; height: 40px; border: 4px solid rgba(99,102,241,0.2); border-top-color: var(--indigo2); border-radius: 50%; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
   </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen py-12 px-4">
 
-  <div class="w-full max-w-3xl card rounded-3xl p-6 md:p-10">
-    <div class="topbar w-full mb-6"></div>
-    <h1 class="text-2xl font-black text-center uppercase italic">V10 Enterprise Bakım Paneli</h1>
-    <p class="hint text-center mt-2">WhatsApp konuşmasını analiz ederek kişiye özel büyü tespit metni hazırlar.</p>
+  <div class="max-w-4xl mx-auto space-y-10">
+    
+    <header class="text-center space-y-4">
+      <h1 class="text-4xl font-black uppercase tracking-tighter text-indigo-400 italic">
+        Bakım Oluşturma Sistemi
+      </h1>
+      <div class="w-20 h-1 bg-indigo-500 mx-auto rounded-full opacity-50"></div>
+    </header>
 
-    <div class="divider"></div>
+    <div class="glass-panel rounded-[2rem] p-8 md:p-12 relative overflow-hidden">
+      
+      <div class="space-y-10">
+        
+        <!-- Kimlik Alanları -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <section class="space-y-6">
+            <h3 class="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Danışan Bilgisi</h3>
+            <div class="grid grid-cols-1 gap-4">
+              <input id="isim" class="apex-input w-full p-5 rounded-xl text-sm font-bold uppercase" placeholder="İsim">
+              <input id="anne" class="apex-input w-full p-5 rounded-xl text-sm font-bold uppercase" placeholder="Anne Adı">
+            </div>
+            
+            <div class="space-y-4">
+              <div class="flex p-1 bg-slate-950 rounded-xl border border-border-color">
+                <button onclick="setHitap('Hanım')" id="btnHanım" class="hitap-btn flex-1 py-3 rounded-lg text-[10px] font-black transition-all bg-indigo-600 text-white">KADIN (HANIM)</button>
+                <button onclick="setHitap('Bey')" id="btnBey" class="hitap-btn flex-1 py-3 rounded-lg text-[10px] font-black transition-all text-slate-500">ERKEK (BEY)</button>
+              </div>
 
-    <div class="mb-6">
-      <span class="label">Danışan Hitap Şekli</span>
-      <div class="grid grid-cols-2 gap-4">
-        <label><input class="sr-only" type="radio" name="hitap" value="Hanım" checked><div class="chip">KADIN (HANIM)</div></label>
-        <label><input class="sr-only" type="radio" name="hitap" value="Bey"><div class="chip">ERKEK (BEY)</div></label>
-      </div>
-    </div>
+              <!-- WhatsApp Bölümü (Büyütüldü ve Taşındı) -->
+              <div class="space-y-2">
+                <label class="text-[10px] font-black text-indigo-400 uppercase tracking-widest ml-1">WhatsApp Numara Ekleme</label>
+                <input id="tel" class="apex-input w-full p-6 rounded-xl text-center font-bold text-lg tracking-[0.2em] text-indigo-200" placeholder="5xx xxx xx xx">
+              </div>
+            </div>
+          </section>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-      <div><span class="label">Danışan Adı</span><input id="isim" class="input uppercase" placeholder="Ad"></div>
-      <div><span class="label">Danışan Anne Adı</span><input id="anne" class="input uppercase" placeholder="Anne Adı"></div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-      <div><span class="label">Muhatap Adı</span><input id="karsi" class="input uppercase" placeholder="Ad"></div>
-      <div><span class="label">Muhatap Anne Adı</span><input id="kAnne" class="input uppercase" placeholder="Anne Adı"></div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div>
-      <span class="label">WhatsApp Konuşması / Belirtiler (Analiz Buradan Yapılır)</span>
-      <textarea id="log" rows="5" class="input text-sm" placeholder="Buraya yapıştırın..."></textarea>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="panel mb-6">
-      <span class="label text-green-300">WhatsApp Gönderim</span>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input id="tel" class="input text-center font-bold" placeholder="5xx xxx xx xx">
-        <button class="btn btn-green" onclick="sendWhatsApp()">WhatsApp'a Aktar</button>
-      </div>
-    </div>
-
-    <button id="btnGenerate" class="btn btn-primary" onclick="generate()">Analizi Başlat</button>
-
-    <div id="resultWrap" class="mt-8 hidden">
-      <div class="panel">
-        <div class="flex justify-between items-center mb-4">
-          <span class="font-black uppercase tracking-widest text-indigo-300">Bakım Sonucu</span>
-          <button class="bg-slate-800 px-4 py-2 rounded-lg text-xs font-bold" onclick="copyText()">Kopyala</button>
+          <section class="space-y-6">
+            <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Karşı Taraf</h3>
+            <div class="grid grid-cols-1 gap-4">
+              <input id="karsi" class="apex-input w-full p-5 rounded-xl text-sm font-bold uppercase" placeholder="Muhatap İsmi">
+              <input id="kAnne" class="apex-input w-full p-5 rounded-xl text-sm font-bold uppercase" placeholder="Muhatap Anne Adı">
+            </div>
+            <div class="p-6 bg-slate-950/30 border border-dashed border-slate-800 rounded-xl h-[120px] flex items-center justify-center text-center">
+              <p class="text-[10px] text-slate-600 italic leading-relaxed">Muhatap bilgisi yoksa <br>bu alanları boş bırakabilirsiniz.</p>
+            </div>
+          </section>
         </div>
-        <div id="output" class="output"></div>
+
+        <!-- Süreç Alanı -->
+        <section class="space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Durum ve Belirtiler</h3>
+            <span id="charCount" class="text-[9px] terminal-font text-slate-600">0 CHAR</span>
+          </div>
+          <textarea id="log" rows="6" class="apex-input w-full p-6 rounded-2xl text-sm font-semibold leading-relaxed" 
+            placeholder="Analiz edilmesi gereken olayları veya mesajları buraya aktarın..."></textarea>
+        </section>
+
+        <!-- Analiz Butonu -->
+        <section class="space-y-6">
+          <div class="log-console terminal-font rounded-lg" id="systemLog">
+            > Ready for maintenance analysis...
+          </div>
+          
+          <div class="flex flex-col md:flex-row gap-4">
+            <button onclick="runAdvancedAnalysis()" class="apex-btn flex-1 py-6 rounded-2xl font-black text-xs tracking-[0.3em] flex items-center justify-center gap-3">
+              <span>BAKIM OLUŞTUR VE ANALİZ ET</span>
+            </button>
+            <button onclick="shareWhatsApp()" class="px-8 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-lg flex items-center justify-center">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </button>
+          </div>
+        </section>
+
       </div>
     </div>
+
+    <section id="resultZone" class="hidden opacity-0 transform translate-y-10 transition-all duration-1000">
+      <div class="glass-panel rounded-[2rem] p-10 md:p-14 overflow-hidden relative">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-10 mb-12">
+          <div class="space-y-3">
+            <div class="text-indigo-400 text-[10px] font-black uppercase tracking-[0.3em]">Manevi Teşhis</div>
+            <h2 class="text-3xl font-black italic">Bakım Kararnamesi</h2>
+          </div>
+          <div class="flex gap-4">
+            <button onclick="speakVerdict()" id="btnSpeak" class="px-6 py-4 bg-indigo-900/40 border border-indigo-500/30 text-indigo-300 rounded-xl font-black text-[10px] uppercase hover:bg-indigo-500 hover:text-white transition-all">SESLİ DİNLE</button>
+            <button onclick="copyVerdict()" class="px-10 py-4 bg-white text-black rounded-xl font-black text-[10px] uppercase hover:bg-indigo-500 hover:text-white transition-all">KOPYALA</button>
+          </div>
+        </div>
+        <div id="verdictOutput" class="output-container p-8 md:p-12 text-slate-300 text-lg md:text-xl leading-[2.2] font-medium italic border-indigo-500/50"></div>
+      </div>
+    </section>
+
   </div>
 
-  <div id="overlay" class="overlay">
-    <div class="bg-slate-900 p-8 rounded-3xl border border-slate-700 flex flex-col items-center gap-4">
-      <div class="spinner"></div>
-      <div id="overlayMsg" class="font-bold text-indigo-100">Konuşma Analiz Ediliyor...</div>
-    </div>
+  <div id="globalOverlay" class="fixed inset-0 bg-slate-950/98 z-[100] hidden flex-col items-center justify-center text-center p-10">
+    <div class="w-32 h-32 mb-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
+    <div id="loaderStatus" class="text-2xl font-black italic text-indigo-100 uppercase tracking-tighter mb-2">Bakım Yapılıyor...</div>
+    <div class="text-indigo-500/60 terminal-font text-[10px] uppercase tracking-widest">Neural Link Active</div>
   </div>
 
   <script>
-    const $ = id => document.getElementById(id);
+    const apiKey = "";
+    const state = { hitap: "Hanım" };
 
-    function toTitle(s) {
-      if (!s) return "";
-      const low = s.trim().toLocaleLowerCase("tr-TR");
-      return low.charAt(0).toLocaleUpperCase("tr-TR") + low.slice(1);
-    }
-
-    function generate() {
-      const isim = toTitle($("isim").value);
-      const anne = toTitle($("anne").value);
-      const karsi = toTitle($("karsi").value);
-      const kAnne = toTitle($("kAnne").value);
-      const log = $("log").value.trim();
-      const hitapInput = document.querySelector('input[name="hitap"]:checked');
-      const hitap = hitapInput ? hitapInput.value : "Hanım";
-
-      if (!isim || !anne || !log) {
-        alert("Lütfen isim, anne adı ve konuşma içeriğini girin.");
-        return;
-      }
-
-      $("overlay").style.display = "flex";
-      
-      setTimeout(() => {
-        const result = buildContent({ isim, anne, karsi, kAnne, log, hitap });
-        $("output").innerText = result;
-        $("resultWrap").classList.remove("hidden");
-        $("overlay").style.display = "none";
-        $("resultWrap").scrollIntoView({ behavior: "smooth" });
-      }, 1500);
-    }
-
-    function buildContent(ctx) {
-      const analysis = analyzeDeep(ctx.log);
-      const spell = decideSpell(analysis.themes);
-      
-      let blocks = [];
-      
-      // 1. Giriş
-      blocks.push(`${ctx.isim} ${ctx.hitap}, verdiğiniz bilgiler (Danışan: ${ctx.isim} - Anne Adı: ${ctx.anne}${ctx.karsi !== "" ? `, Muhatap: ${ctx.karsi} - Anne Adı: ${ctx.kAnne}` : ""}) doğrultusunda detaylı bir bakım ve konuşma analizi gerçekleştirdim.`);
-
-      // 2. Analiz Vurgusu (WhatsApp Logu ile Bağlantı Kurma)
-      blocks.push(`İlettiğiniz konuşma akışını ve yaşadığınız süreci incelediğimde; özellikle **${analysis.highlights.join(", ")}** gibi durumlar, sıradan bir anlaşmazlığın çok ötesinde bir negatif müdahalenin işaretidir.`);
-
-      // 3. Tespit
-      blocks.push(`Yapılan taramada, ${ctx.karsi !== "" ? "aranızdaki bağı koparmak" : "yolunuzu kapatmak"} amacıyla yapılmış olan **${spell.name}** adı verilen ağır bir büyü işlemi tespit edildi. Bu büyü, kişinin iradesini baskılar ve kalbindeki muhabbeti soğutarak mantıksız geri çekilmelere neden olur.`);
-
-      // 4. Detaylı Gözlem (Konuşmaya Göre Şekillenen Kısım)
-      let customObservation = `Konuşmalarda beliren o ani değişimler, ${analysis.themes.includes("iletişimde kopukluk") ? "cevap vermeme veya engelleme gibi tavırlar" : "maddi ve manevi yöndeki ani tıkanmalar"} tamamen bu işlemin frekansınızı bozmasından kaynaklanıyor. Siz ne kadar yapıcı olmaya çalışırsanız çalışın, karşıdaki kişi büyü etkisi altında olduğu için gerçekleri göremiyor.`;
-      blocks.push(customObservation);
-
-      // 5. Müdahale ve Söz
-      blocks.push(`Allah’ın izniyle tespit edilen bu **${spell.name}** çalışmamızla birlikte kesin ve kalıcı olarak bozulacaktır. Bu bozma işlemiyle birlikte üzerinizdeki o ağır yük kalkacak, büyü etkisi temizlenecek ve ${ctx.karsi !== "" ? "muhatabınızın size karşı olan kalbi yeniden açılacaktır" : "hayatınızdaki tıkanıklıklar giderilecektir"}.`);
-
-      // 6. Süreç (Sabit ve Net)
-      blocks.push(`Programımız şu şekilde ilerleyecektir: İlk gün temel enerji temizliği yapılır ve büyü bozma işleminin kayıtları size iletilir. Ardından 7 gün sürecek olan özel okuma ve niyet sabitleme döngüsüne geçilir. 3. günden itibaren büyü etkisinin dağılmasıyla birlikte karşı tarafta yumuşama ve iletişime geçme isteği başlar; 7. günün sonunda ise bağ tamamen sağlamlaşır.`);
-
-      // 7. Uyarı
-      blocks.push(`Önemli bir not: Bu 7 günlük süreçte başka bir hocadan veya yerden müdahale almamalı, süreci sadece bizim kanalımızda sabit tutmalısınız. Farklı enerjilerin çakışması işlemin toparlanmasını geciktirebilir.`);
-
-      // 8. Kapanış
-      blocks.push(`Buradan sonrası kararlılık meselesidir. Ben bu büyüyü kökten bozmaya ve sizi feraha ulaştırmaya hazırım. Devam etmek isterseniz bilgilendirmeniz yeterlidir. (Hazırlıklar kişiye özel olduğu için belirli bir bedel oluşmaktadır.)`);
-
-      let finalMetin = blocks.join("\n\n");
-      const minLimit = 2200; 
-
-      if (finalMetin.length < minLimit) {
-        finalMetin += "\n\n" + buildExtraAdvice(minLimit - finalMetin.length);
-      }
-
-      return cleanRepeats(finalMetin);
-    }
-
-    function analyzeDeep(log) {
-      const low = log.toLowerCase();
-      const themes = [];
-      const highlights = [];
-
-      if (/engell|mesaj at|cevap verm|yazmıy/.test(low)) {
-          themes.push("iletişimde kopukluk");
-          highlights.push("iletişimin bir anda kesilmesi ve engellenme hali");
-      }
-      if (/soğud|istem|uzak|bitsin|sevmiy/.test(low)) {
-          themes.push("kalbi soğuma");
-          highlights.push("duygulardaki ani değişim ve sebepsiz soğuma");
-      }
-      if (/başka biri|aldat|kadın|erkek|üçüncü/.test(low)) {
-          themes.push("üçüncü şahıs müdahalesi");
-          highlights.push("araya giren dış etkiler ve niyet bozan kişiler");
-      }
-      if (/aile|anne|baba|izin verm|karşı/.test(low)) {
-          themes.push("aile baskısı");
-          highlights.push("aile tarafındaki sertleşme ve hane direnci");
-      }
-      if (/para|borç|iş|bereket|icra/.test(low)) {
-          themes.push("rızık daralması");
-          highlights.push("maddi kapılardaki ani kapanma ve bereket kaybı");
-      }
-      if (/uyku|kabus|daral|ağlama|sıkıntı/.test(low)) {
-          themes.push("ruhsal daralma");
-          highlights.push("gece gelen huzursuzluklar ve üzerinizdeki ağır baskı");
-      }
-
-      if (themes.length === 0) {
-          themes.push("genel tıkanıklık");
-          highlights.push("hayatın genel akışındaki ani duraksama");
-      }
-
-      return { themes, highlights };
-    }
-
-    function decideSpell(themes) {
-      const t = themes.join(" ");
-      if (t.includes("iletişim") || t.includes("soğuma")) return { name: "Ayırma ve Soğutma Büyüsü" };
-      if (t.includes("şahıs")) return { name: "Fitne ve Niyet Dağıtma Büyüsü" };
-      if (t.includes("rızık")) return { name: "Rızık Kapama ve Kısmet Bağlama Büyüsü" };
-      if (t.includes("aile")) return { name: "Hane Direnci ve Yuva Dağıtma Büyüsü" };
-      return { name: "Niyet Dağıtma ve Yol Bağlama Büyüsü" };
-    }
-
-    function buildExtraAdvice(needed) {
-      const advices = [
-        "Unutmayın ki büyü yoluyla gelen negatiflik temizlenmediği sürece ruhunuzu ve hayatınızı daha çok saracaktır.",
-        "Süreçte teslimiyet göstermek ve zihni olumsuz senaryolardan temizlemek, bozma işleminin hızını doğrudan etkiler.",
-        "Bu durum sadece sizin başınıza gelen bir şanssızlık değil, doğrudan iradenize ve mutluluğunuza yapılmış bir saldırıdır.",
-        "Kendi içinizde hissettiğiniz o sebepsiz korkular ve gel-gitler aslında bu negatif frekansın ruhunuza yaptığı baskının sonucudur.",
-        "Doğru zamanda yapılan müdahale, aylarca hatta yıllarca sürebilecek bir acıyı kısa sürede sonlandırabilir."
-      ];
-      let res = "";
-      let i = 0;
-      while (res.length < Math.max(needed, 800) && i < advices.length) {
-        res += advices[i] + " ";
-        i++;
-      }
-      return res.trim();
-    }
-
-    function cleanRepeats(text) {
-      const sents = text.split(". ");
-      const unique = [];
-      sents.forEach(s => {
-        if (!unique.some(u => u.substring(0, 25) === s.substring(0, 25))) {
-          unique.push(s);
-        }
+    function setHitap(h) {
+      state.hitap = h;
+      document.querySelectorAll('.hitap-btn').forEach(b => {
+        b.classList.remove('bg-indigo-600', 'text-white');
+        b.classList.add('text-slate-500');
       });
-      return unique.join(". ").replace(/\n{3,}/g, "\n\n");
+      event.target.classList.add('bg-indigo-600', 'text-white');
+      event.target.classList.remove('text-slate-500');
     }
 
-    function copyText() {
-      const t = $("output").innerText;
-      if(!t) return;
-      navigator.clipboard.writeText(t);
-      alert("Metin kopyalandı!");
+    function writeLog(msg) {
+      const console = document.getElementById('systemLog');
+      console.innerHTML += `<br>> ${msg}`;
+      console.scrollTop = console.scrollHeight;
     }
 
-    function sendWhatsApp() {
-      const t = $("output").innerText;
-      if(!t) { alert("Önce metni oluşturun."); return; }
-      let tel = $("tel").value.replace(/\D/g, "");
+    async function callGemini(prompt, isTTS = false) {
+      let retries = 0;
+      const payload = isTTS 
+        ? { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } } }, model: "gemini-2.5-flash-preview-tts" }
+        : { contents: [{ parts: [{ text: prompt }] }] };
+
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${isTTS ? 'gemini-2.5-flash-preview-tts' : 'gemini-2.5-flash-preview-09-2025'}:generateContent?key=${apiKey}`;
+
+      while (retries < 5) {
+        try {
+          const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          const result = await response.json();
+          if (response.ok) return result;
+        } catch (e) {}
+        await new Promise(r => setTimeout(r, Math.pow(2, retries) * 1000));
+        retries++;
+      }
+    }
+
+    async function runAdvancedAnalysis() {
+      const isim = document.getElementById('isim').value;
+      const anne = document.getElementById('anne').value;
+      const karsi = document.getElementById('karsi').value;
+      const kAnne = document.getElementById('kAnne').value;
+      const log = document.getElementById('log').value;
+
+      if(!isim || !anne || !log) { alert("Lütfen gerekli alanları doldurun."); return; }
+
+      document.getElementById('globalOverlay').classList.remove('hidden');
+      document.getElementById('globalOverlay').classList.add('flex');
+      writeLog("Maintenance sequence started...");
+
+      const systemPrompt = `Sen profesyonel bir manevi bakım uzmanısın. Danışanın durumunu analiz et ve sonuç bildir. 
+      KURALLAR:
+      1. Mutlaka bir büyü ismi (Papaz, Sabun, Kaşık, Kilit, Domuz Yağı vb.) tespit et.
+      2. Bu büyünün kesinlikle ve geri dönüşü olmayacak şekilde bozulacağını vurgula. 
+      3. Otoriter, manevi ve güven veren bir dil kullan.
+      4. Metin uzun olsun (en az 5-6 paragraf). 
+      5. Teknik terimler kullanma.
+      6. 7 günlük bir süreçten bahset.`;
+
+      const userPrompt = `Danışan: ${isim} (Anne: ${anne}). Karşı Taraf: ${karsi} (Anne: ${kAnne}). Durum: ${log}. Hitap: ${state.hitap}.`;
+
+      try {
+        const result = await callGemini(`${systemPrompt}\n\n${userPrompt}`);
+        const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "Bağlantı kesildi.";
+        displayResult(text);
+      } catch (e) {
+        alert("Sistem yoğunluğu nedeniyle hata oluştu.");
+      } finally {
+        document.getElementById('globalOverlay').classList.add('hidden');
+      }
+    }
+
+    function displayResult(text) {
+      document.getElementById('verdictOutput').innerText = text;
+      const zone = document.getElementById('resultZone');
+      zone.classList.remove('hidden');
+      setTimeout(() => {
+        zone.classList.remove('opacity-0', 'translate-y-10');
+        zone.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+
+    async function speakVerdict() {
+      const text = document.getElementById('verdictOutput').innerText;
+      if(!text) return;
+      const btn = document.getElementById('btnSpeak');
+      btn.innerText = "OKUNUYOR...";
+      try {
+        const result = await callGemini(`Mistik bir sesle oku: ${text.substring(0, 1000)}`, true);
+        const pcmData = result.candidates[0].content.parts[0].inlineData.data;
+        const audioBlob = pcmToWav(pcmData, 24000);
+        const audio = new Audio(URL.createObjectURL(audioBlob));
+        audio.play();
+      } catch (e) {} finally { btn.innerText = "SESLİ DİNLE"; }
+    }
+
+    function pcmToWav(base64, sampleRate) {
+      const binaryString = atob(base64), len = binaryString.length, bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
+      const buffer = new ArrayBuffer(44 + bytes.length), view = new DataView(buffer);
+      const writeStr = (o, s) => { for (let i = 0; i < s.length; i++) view.setUint8(o + i, s.charCodeAt(i)); };
+      writeStr(0, 'RIFF'); view.setUint32(4, 36 + bytes.length, true); writeStr(8, 'WAVE'); writeStr(12, 'fmt ');
+      view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+      view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true);
+      view.setUint16(32, 2, true); view.setUint16(34, 16, true); writeStr(36, 'data'); view.setUint32(40, bytes.length, true);
+      new Uint8Array(buffer, 44).set(bytes);
+      return new Blob([buffer], { type: 'audio/wav' });
+    }
+
+    function copyVerdict() { navigator.clipboard.writeText(document.getElementById('verdictOutput').innerText); alert("Kopyalandı."); }
+    function shareWhatsApp() {
+      const t = document.getElementById('verdictOutput').innerText;
+      let tel = document.getElementById('tel').value.replace(/\D/g, "");
       if (tel && !tel.startsWith("90")) tel = "90" + tel;
-      const url = tel ? `https://wa.me/${tel}?text=${encodeURIComponent(t)}` : `https://wa.me/?text=${encodeURIComponent(t)}`;
-      window.open(url, "_blank");
+      window.open(tel ? `https://wa.me/${tel}?text=${encodeURIComponent(t)}` : `https://wa.me/?text=${encodeURIComponent(t)}`, "_blank");
     }
+    document.getElementById('log').addEventListener('input', (e) => { document.getElementById('charCount').innerText = `${e.target.value.length} CHAR`; });
   </script>
 </body>
 </html>
