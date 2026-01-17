@@ -16,6 +16,7 @@
       --border-color: #1e293b;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      --danger: #ef4444;
     }
 
     body {
@@ -75,6 +76,16 @@
       border-left: 4px solid var(--indigo-glow);
     }
 
+    /* Modal Styling */
+    .status-box {
+      background: #111827;
+      border: 1px solid var(--indigo-glow);
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
   </style>
@@ -109,7 +120,7 @@
                 <button onclick="setHitap('Bey')" id="btnBey" class="hitap-btn flex-1 py-3 rounded-lg text-[10px] font-black transition-all text-slate-500">ERKEK (BEY)</button>
               </div>
 
-              <!-- WhatsApp Bölümü (Büyütüldü ve Taşındı) -->
+              <!-- WhatsApp Bölümü -->
               <div class="space-y-2">
                 <label class="text-[10px] font-black text-indigo-400 uppercase tracking-widest ml-1">WhatsApp Numara Ekleme</label>
                 <input id="tel" class="apex-input w-full p-6 rounded-xl text-center font-bold text-lg tracking-[0.2em] text-indigo-200" placeholder="5xx xxx xx xx">
@@ -146,13 +157,14 @@
           </div>
           
           <div class="flex flex-col md:flex-row gap-4">
-            <button onclick="runAdvancedAnalysis()" class="apex-btn flex-1 py-6 rounded-2xl font-black text-xs tracking-[0.3em] flex items-center justify-center gap-3">
+            <button onclick="runAdvancedAnalysis()" id="mainActionButton" class="apex-btn flex-1 py-6 rounded-2xl font-black text-xs tracking-[0.3em] flex items-center justify-center gap-3">
               <span>BAKIM OLUŞTUR VE ANALİZ ET</span>
             </button>
             <button onclick="shareWhatsApp()" class="px-8 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-lg flex items-center justify-center">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             </button>
           </div>
+          <div id="statusMessage" class="status-box text-xs font-bold text-center"></div>
         </section>
 
       </div>
@@ -198,27 +210,69 @@
 
     function writeLog(msg) {
       const console = document.getElementById('systemLog');
-      console.innerHTML += `<br>> ${msg}`;
-      console.scrollTop = console.scrollHeight;
+      if (console) {
+        console.innerHTML += `<br>> ${msg}`;
+        console.scrollTop = console.scrollHeight;
+      }
     }
 
-    async function callGemini(prompt, isTTS = false) {
+    function showStatus(msg, isError = false) {
+      const box = document.getElementById('statusMessage');
+      box.style.display = 'block';
+      box.style.color = isError ? '#ef4444' : '#6366f1';
+      box.style.borderColor = isError ? '#ef4444' : '#6366f1';
+      box.innerText = msg;
+      setTimeout(() => { box.style.display = 'none'; }, 5000);
+    }
+
+    async function callGemini(userPrompt, systemPrompt = "", isTTS = false) {
       let retries = 0;
+      const maxRetries = 5;
+      
       const payload = isTTS 
-        ? { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } } }, model: "gemini-2.5-flash-preview-tts" }
-        : { contents: [{ parts: [{ text: prompt }] }] };
+        ? { 
+            contents: [{ parts: [{ text: userPrompt }] }], 
+            generationConfig: { 
+              responseModalities: ["AUDIO"], 
+              speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } } 
+            } 
+          }
+        : { 
+            contents: [{ parts: [{ text: userPrompt }] }],
+            systemInstruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined
+          };
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${isTTS ? 'gemini-2.5-flash-preview-tts' : 'gemini-2.5-flash-preview-09-2025'}:generateContent?key=${apiKey}`;
+      const modelName = isTTS ? 'gemini-2.5-flash-preview-tts' : 'gemini-2.5-flash-preview-09-2025';
+      const endpoint = isTTS ? 'generateContent' : 'generateContent';
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:${endpoint}?key=${apiKey}`;
 
-      while (retries < 5) {
+      while (retries < maxRetries) {
         try {
-          const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-          const result = await response.json();
-          if (response.ok) return result;
-        } catch (e) {}
-        await new Promise(r => setTimeout(r, Math.pow(2, retries) * 1000));
+          const response = await fetch(url, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(payload) 
+          });
+          
+          if (response.ok) {
+            return await response.json();
+          }
+          
+          if (response.status === 429 || response.status >= 500) {
+            // Server error or rate limit, proceed to retry
+          } else {
+            const errData = await response.json();
+            throw new Error(errData.error?.message || "İstek başarısız oldu.");
+          }
+        } catch (e) {
+          if (retries === maxRetries - 1) throw e;
+        }
+        
+        const delay = Math.pow(2, retries) * 1000;
+        await new Promise(r => setTimeout(r, delay));
         retries++;
       }
+      throw new Error("Bağlantı zaman aşımına uğradı.");
     }
 
     async function runAdvancedAnalysis() {
@@ -227,11 +281,16 @@
       const karsi = document.getElementById('karsi').value;
       const kAnne = document.getElementById('kAnne').value;
       const log = document.getElementById('log').value;
+      const btn = document.getElementById('mainActionButton');
 
-      if(!isim || !anne || !log) { alert("Lütfen gerekli alanları doldurun."); return; }
+      if(!isim || !anne || !log) { 
+        showStatus("Lütfen isim, anne adı ve belirtileri eksiksiz doldurun.", true);
+        return; 
+      }
 
       document.getElementById('globalOverlay').classList.remove('hidden');
       document.getElementById('globalOverlay').classList.add('flex');
+      btn.disabled = true;
       writeLog("Maintenance sequence started...");
 
       const systemPrompt = `Sen profesyonel bir manevi bakım uzmanısın. Danışanın durumunu analiz et ve sonuç bildir. 
@@ -246,13 +305,22 @@
       const userPrompt = `Danışan: ${isim} (Anne: ${anne}). Karşı Taraf: ${karsi} (Anne: ${kAnne}). Durum: ${log}. Hitap: ${state.hitap}.`;
 
       try {
-        const result = await callGemini(`${systemPrompt}\n\n${userPrompt}`);
-        const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "Bağlantı kesildi.";
-        displayResult(text);
+        const result = await callGemini(userPrompt, systemPrompt);
+        const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        if (text) {
+          displayResult(text);
+          writeLog("Analysis completed successfully.");
+        } else {
+          throw new Error("Yanıt alınamadı.");
+        }
       } catch (e) {
-        alert("Sistem yoğunluğu nedeniyle hata oluştu.");
+        console.error(e);
+        showStatus("Sistem şu an çok yoğun. Lütfen 30 saniye sonra tekrar deneyin.", true);
+        writeLog("Error: " + e.message);
       } finally {
         document.getElementById('globalOverlay').classList.add('hidden');
+        btn.disabled = false;
       }
     }
 
@@ -270,14 +338,25 @@
       const text = document.getElementById('verdictOutput').innerText;
       if(!text) return;
       const btn = document.getElementById('btnSpeak');
+      const originalText = btn.innerText;
       btn.innerText = "OKUNUYOR...";
+      btn.disabled = true;
+      
       try {
-        const result = await callGemini(`Mistik bir sesle oku: ${text.substring(0, 1000)}`, true);
-        const pcmData = result.candidates[0].content.parts[0].inlineData.data;
-        const audioBlob = pcmToWav(pcmData, 24000);
-        const audio = new Audio(URL.createObjectURL(audioBlob));
-        audio.play();
-      } catch (e) {} finally { btn.innerText = "SESLİ DİNLE"; }
+        const result = await callGemini(`Mistik bir sesle oku: ${text.substring(0, 1000)}`, "", true);
+        const pcmData = result.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+        
+        if (pcmData) {
+          const audioBlob = pcmToWav(pcmData, 24000);
+          const audio = new Audio(URL.createObjectURL(audioBlob));
+          audio.play();
+        }
+      } catch (e) {
+        showStatus("Ses dosyası oluşturulamadı.", true);
+      } finally { 
+        btn.innerText = originalText; 
+        btn.disabled = false;
+      }
     }
 
     function pcmToWav(base64, sampleRate) {
@@ -293,14 +372,28 @@
       return new Blob([buffer], { type: 'audio/wav' });
     }
 
-    function copyVerdict() { navigator.clipboard.writeText(document.getElementById('verdictOutput').innerText); alert("Kopyalandı."); }
+    function copyVerdict() { 
+      const text = document.getElementById('verdictOutput').innerText;
+      if (!text) return;
+      navigator.clipboard.writeText(text); 
+      showStatus("Bakım metni başarıyla kopyalandı."); 
+    }
+
     function shareWhatsApp() {
       const t = document.getElementById('verdictOutput').innerText;
       let tel = document.getElementById('tel').value.replace(/\D/g, "");
       if (tel && !tel.startsWith("90")) tel = "90" + tel;
-      window.open(tel ? `https://wa.me/${tel}?text=${encodeURIComponent(t)}` : `https://wa.me/?text=${encodeURIComponent(t)}`, "_blank");
+      const url = tel ? `https://wa.me/${tel}?text=${encodeURIComponent(t)}` : `https://wa.me/?text=${encodeURIComponent(t)}`;
+      window.open(url, "_blank");
     }
-    document.getElementById('log').addEventListener('input', (e) => { document.getElementById('charCount').innerText = `${e.target.value.length} CHAR`; });
+
+    const logTextarea = document.getElementById('log');
+    if (logTextarea) {
+      logTextarea.addEventListener('input', (e) => { 
+        const charCount = document.getElementById('charCount');
+        if (charCount) charCount.innerText = `${e.target.value.length} CHAR`; 
+      });
+    }
   </script>
 </body>
 </html>
