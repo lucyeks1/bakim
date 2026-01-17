@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Bakım Oluşturma Sistemi</title>
+  <title>V10 Enterprise Apex Elite – Bakım Oluşturma</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -76,15 +76,6 @@
       border-left: 4px solid var(--indigo-glow);
     }
 
-    .status-box {
-      background: #111827;
-      border: 1px solid var(--indigo-glow);
-      padding: 1rem;
-      border-radius: 1rem;
-      margin-top: 1rem;
-      display: none;
-    }
-
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
   </style>
@@ -120,7 +111,7 @@
                 <button onclick="setHitap('Bey')" id="btnBey" class="hitap-btn flex-1 py-3 rounded-lg text-[10px] font-black transition-all text-slate-500">ERKEK (BEY)</button>
               </div>
 
-              <!-- WhatsApp Bölümü (Kadın/Erkek Altına Taşındı ve Büyütüldü) -->
+              <!-- WhatsApp Bölümü -->
               <div class="space-y-2">
                 <label class="text-[10px] font-black text-indigo-400 uppercase tracking-widest ml-1">WhatsApp Numara Ekleme</label>
                 <input id="tel" class="apex-input w-full p-6 rounded-xl text-center font-bold text-lg tracking-[0.2em] text-indigo-200" placeholder="5xx xxx xx xx">
@@ -157,14 +148,13 @@
           </div>
           
           <div class="flex flex-col md:flex-row gap-4">
-            <button onclick="runAdvancedAnalysis()" id="mainActionButton" class="apex-btn flex-1 py-6 rounded-2xl font-black text-xs tracking-[0.3em] flex items-center justify-center gap-3">
+            <button onclick="runLocalAnalysis()" id="mainActionButton" class="apex-btn flex-1 py-6 rounded-2xl font-black text-xs tracking-[0.3em] flex items-center justify-center gap-3">
               <span>BAKIM OLUŞTUR VE ANALİZ ET</span>
             </button>
             <button onclick="shareWhatsApp()" class="px-8 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-lg flex items-center justify-center">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             </button>
           </div>
-          <div id="statusMessage" class="status-box text-xs font-bold text-center"></div>
         </section>
 
       </div>
@@ -179,7 +169,6 @@
             <h2 class="text-3xl font-black italic">Bakım Kararnamesi</h2>
           </div>
           <div class="flex gap-4">
-            <button onclick="speakVerdict()" id="btnSpeak" class="px-6 py-4 bg-indigo-900/40 border border-indigo-500/30 text-indigo-300 rounded-xl font-black text-[10px] uppercase hover:bg-indigo-500 hover:text-white transition-all">SESLİ DİNLE</button>
             <button onclick="copyVerdict()" class="px-10 py-4 bg-white text-black rounded-xl font-black text-[10px] uppercase hover:bg-indigo-500 hover:text-white transition-all">KOPYALA</button>
           </div>
         </div>
@@ -189,14 +178,14 @@
 
   </div>
 
+  <!-- Overlay -->
   <div id="globalOverlay" class="fixed inset-0 bg-slate-950/98 z-[100] hidden flex-col items-center justify-center text-center p-10">
     <div class="w-32 h-32 mb-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
     <div id="loaderStatus" class="text-2xl font-black italic text-indigo-100 uppercase tracking-tighter mb-2">Bakım Yapılıyor...</div>
-    <div class="text-indigo-500/60 terminal-font text-[10px] uppercase tracking-widest">Neural Link Active</div>
+    <div class="text-indigo-500/60 terminal-font text-[10px] uppercase tracking-widest">Neural Logic Apex V10</div>
   </div>
 
   <script>
-    const apiKey = ""; // Bu alan platform tarafından otomatik doldurulur.
     const state = { hitap: "Hanım" };
 
     function setHitap(h) {
@@ -217,154 +206,150 @@
       }
     }
 
-    function showStatus(msg, isError = false) {
-      const box = document.getElementById('statusMessage');
-      if (!box) return;
-      box.style.display = 'block';
-      box.style.color = isError ? '#ef4444' : '#6366f1';
-      box.style.borderColor = isError ? '#ef4444' : '#6366f1';
-      box.innerText = msg;
-      setTimeout(() => { box.style.display = 'none'; }, 5000);
-    }
-
-    async function callGemini(userPrompt, systemPrompt = "", isTTS = false) {
-      let retries = 0;
-      const maxRetries = 5;
-      
-      const payload = isTTS 
-        ? { 
-            contents: [{ parts: [{ text: userPrompt }] }], 
-            generationConfig: { 
-              responseModalities: ["AUDIO"], 
-              speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } } 
-            } 
-          }
-        : { 
-            contents: [{ parts: [{ text: userPrompt }] }],
-            systemInstruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined
-          };
-
-      const modelName = isTTS ? 'gemini-2.5-flash-preview-tts' : 'gemini-2.5-flash-preview-09-2025';
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-
-      while (retries < maxRetries) {
-        try {
-          const response = await fetch(url, { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify(payload) 
-          });
-          
-          if (response.ok) {
-            return await response.json();
-          }
-          
-          // Retryable errors
-          if (response.status === 429 || response.status >= 500) {
-            retries++;
-          } else {
-            const errData = await response.json();
-            throw new Error(errData.error?.message || "İstek başarısız.");
-          }
-        } catch (e) {
-          if (retries === maxRetries - 1) throw e;
-          retries++;
+    /* ============================================================
+       ENHANCED LOCAL ENGINE - SCORING SYSTEM
+    ============================================================ */
+    const DATABASE = {
+      spells: [
+        { 
+          id: "papaz", 
+          name: "7 MÜHÜRLÜ KARANLIK PAPAZ BÜYÜSÜ", 
+          keywords: ["papaz", "ölüm", "kuyu", "hristiyan", "kilise", "ibranice", "süryanice", "kara büyü", "zifiri"],
+          observation: "iradenin tamamen prangalanması ve kalbin mühürlenmesi",
+          intensity: "ZİFİRİ / MUTLAK" 
+        },
+        { 
+          id: "sabun", 
+          name: "ERİTME VE TÜKETME SABUN BÜYÜSÜ", 
+          keywords: ["sabun", "erime", "iğne", "zayıfla", "eriyorum", "halsiz", "su", "lavabo"],
+          observation: "bedensel ve ruhsal enerjinin günden güne tükenmesi",
+          intensity: "HAYATİ / TEHLİKELİ" 
+        },
+        { 
+          id: "kasik", 
+          name: "TERS BAĞLANMIŞ KAŞIK AYIRMA BÜYÜSÜ", 
+          keywords: ["kaşık", "tahta", "mutfak", "yemek", "sırt sırta", "yüz yüze", "ayırma", "bağlama"],
+          observation: "en yakın canların bile birbirine tahammül edememesi",
+          intensity: "KESKİN / EBEDİ" 
+        },
+        { 
+          id: "domuz", 
+          name: "DOMUZ YAĞI VE NECASET SOĞUTMA BÜYÜSÜ", 
+          keywords: ["domuz", "yağ", "leke", "tiksin", "eşik", "kapı", "koku", "soğuma", "soğuk"],
+          observation: "haneye ve ilişkiye sirayet eden o derin tiksinti hissi",
+          intensity: "NECASET / AĞIR" 
+        },
+        { 
+          id: "kilit", 
+          name: "7 KİLİTLİ KISMET VE YOL BAĞLAMA BÜYÜSÜ", 
+          keywords: ["kilit", "mühür", "bağlı", "kapalı", "anahtar", "düğüm", "kısmet", "açılmıyor"],
+          observation: "atılan her adımın sanki bir duvara çarpıp geri dönmesi",
+          intensity: "MÜHÜRLÜ / KUVVETLİ" 
+        },
+        { 
+          id: "mezarlik", 
+          name: "ÖLÜ TOPRAĞI MÜHÜRLÜ AYIRMA TERTİBİ", 
+          keywords: ["toprak", "mezar", "ölü", "gece", "kefen", "musalla", "kabir", "korku"],
+          observation: "üzerinize çöken o ağır ölü toprağı ve yaşamdan kopma hissi",
+          intensity: "AĞIR / MEZARLIK" 
         }
-        await new Promise(r => setTimeout(r, Math.pow(2, retries) * 1000));
+      ],
+      blocks: {
+        intro: [
+          (c) => `${c.isim} ${state.hitap}, paylaştığınız manevi izler (Danışan: ${c.isim} - Anne: ${c.anne}${c.karsi ? `, Muhatap: ${c.karsi}` : ""}) doğrultusunda yaptığım manevi inceleme sonucunda hayatınızı ve yolunuzu mühürleyen karanlığın asıl kaynağına mutlak bir netlikle ulaştım.`,
+          (c) => `${c.isim} ${state.hitap}, ferasetimle yaptığım inceleme neticesinde üzerinizdeki o ağır perdenin ve bu tıkanıklığın tesadüf değil, doğrudan bir büyü işlemi olduğunu bizzat müşahede ettim.`
+        ],
+        detection: [
+          (s, c) => `Maneviyat alemindeki taramamda, ${c.karsi ? "aranızdaki kutsal bağı parçalayıp karşı tarafı sizden soğutmak" : "hayat yolunuzu mühürlemek"} amacıyla hazırlanmış, ${s.intensity} seviyesinde bir **${s.name}** tüm karanlığıyla karşımda durmaktadır.`,
+          (s, c) => `Üzerinizdeki bu ağırlık, doğrudan saadetine kasteden ve ${s.intensity} bir hükümle hazırlanan **${s.name}** adlı zifiri şer işlemidir.`
+        ],
+        observation: [
+          (obs) => `Özellikle belirttiğiniz belirtilerde görülen **${obs}** hali, bu büyü mühürlerinin fiziksel dünyadaki acı verici yansımalarıdır. Karşı tarafın o anlaşılmaz tavırları aslında kendi iradesiyle değil, bu baskının yönlendirmesiyle oluşmaktadır.`,
+          (obs) => `Maneviyat alemindeki bu kilitlenme, hayatınıza **${obs}** olarak sirayet etmiştir. Bu mühürler kırılmadığı sürece karşı tarafın hür iradesiyle size dönmesi imkansızdır.`
+        ],
+        verdict: [
+          (s) => `Şunu iyi bilin ki; tespit ettiğim bu **${s.name} mühürleri, Allah’ın izni ve ilmimizin sarsılmaz gücüyle bu andan itibaren hükümsüz kılınacaktır.** Bu büyünün hükmü bitmiş, mühürleri çatlamıştır. Bozma işlemimizle birlikte bu karanlığın üzerinizde barınma şansı kalmamıştır.`,
+          (s) => `Bu **${s.name} denilen şer düğümü, mutlak bir manevi otorite ile kökünden sökülüp atılacaktır.** Mühürler birer birer patlatılacak, üzerinizdeki zifiri karanlık yerini ebedi bir ferahlığa bırakacaktır.`
+        ],
+        process: [
+          () => `Yol haritamız mutlak bir disiplinle ilerleyecektir: İlk gün ana mühürlerin kırılma işlemi gerçekleştirilir ve bu bozma anına dair görüntüler doğrudan size iletilir. Ardından 7 gün sürecek olan özel okuma ve niyet sabitleme safhasına geçilir.`,
+          () => `Programımız sarsılmazdır: İlk 24 saat içinde büyünün ana damarları kesilir. 3. günden itibaren o ağır yükün kalktığını ve karşı tarafta karşı konulamaz bir yumuşama başladığını bizzat müşahede edeceksiniz.`
+        ],
+        closing: [
+          (s) => `Artık karar vaktidir. Ben bu **${s.name}** karanlığını hayatınızdan sonsuza dek söküp atmaya hazırım. Niyetinizi kesin bir dille belirtmeniz yeterlidir. (Hazırlıklar sebebiyle belirli bir bedel doğmaktadır.) Selametle.`,
+          (s) => `Siz niyetinizi sağlam tutarsanız, biz de bu mühürleri ilimle parçalarız. Bu karanlıktan kurtulmak için niyetinizi bildirmeniz kafidir. Selametle.`
+        ]
       }
-      throw new Error("Bağlantı hatası.");
-    }
+    };
 
-    async function runAdvancedAnalysis() {
-      const isim = document.getElementById('isim').value;
-      const anne = document.getElementById('anne').value;
-      const karsi = document.getElementById('karsi').value;
-      const kAnne = document.getElementById('kAnne').value;
-      const log = document.getElementById('log').value;
-      const btn = document.getElementById('mainActionButton');
+    function runLocalAnalysis() {
+      const isim = document.getElementById('isim').value.trim();
+      const anne = document.getElementById('anne').value.trim();
+      const karsi = document.getElementById('karsi').value.trim();
+      const kAnne = document.getElementById('kAnne').value.trim();
+      const log = document.getElementById('log').value.toLowerCase();
 
       if(!isim || !anne || !log) { 
-        showStatus("Lütfen gerekli alanları doldurun.", true);
+        alert("Lütfen isim, anne adı ve süreci doldurun."); 
         return; 
       }
 
       document.getElementById('globalOverlay').classList.remove('hidden');
       document.getElementById('globalOverlay').classList.add('flex');
-      btn.disabled = true;
-      writeLog("Manevi tarama başlatıldı...");
+      writeLog("Contextual Analyzer: Extracting patterns...");
 
-      const systemPrompt = `Sen profesyonel bir manevi bakım uzmanısın. 
-      KURALLAR:
-      1. Mutlaka spesifik bir büyü ismi tespit et.
-      2. Bu büyünün kesinlikle bozulacağını vurgula. 
-      3. 7 günlük bir süreçten bahset.
-      4. Teknik terim kullanma.`;
+      setTimeout(() => {
+        // SCORING ENGINE
+        let bestSpell = DATABASE.spells[4]; // Default to Kilit
+        let highestScore = 0;
 
-      const userPrompt = `Danışan: ${isim}, Anne: ${anne}. Muhatap: ${karsi}, Muhatap Anne: ${kAnne}. Durum: ${log}. Hitap: ${state.hitap}.`;
+        DATABASE.spells.forEach(s => {
+          let score = 0;
+          s.keywords.forEach(k => {
+            if (log.includes(k)) {
+              score += 10;
+              // Context boost: if multiple keywords from same spell exist
+              score += log.split(k).length - 1; 
+            }
+          });
+          
+          if (score > highestScore) {
+            highestScore = score;
+            bestSpell = s;
+          }
+        });
 
-      try {
-        const result = await callGemini(userPrompt, systemPrompt);
-        const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+        writeLog(`Pattern detected: ${bestSpell.id.toUpperCase()}`);
         
-        if (text) {
-          document.getElementById('verdictOutput').innerText = text;
-          const zone = document.getElementById('resultZone');
-          zone.classList.remove('hidden');
-          setTimeout(() => {
-            zone.classList.remove('opacity-0', 'translate-y-10');
-            zone.scrollIntoView({ behavior: 'smooth' });
-          }, 50);
-          writeLog("Bakım başarıyla tamamlandı.");
-        }
-      } catch (e) {
-        showStatus("Bağlantı hatası. Lütfen bir an bekleyip tekrar deneyin.", true);
-        writeLog("Hata: " + e.message);
-      } finally {
+        // Context
+        const ctx = { isim, anne, karsi, kAnne, log };
+        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+        
+        const finalMetin = [
+          pick(DATABASE.blocks.intro)(ctx),
+          pick(DATABASE.blocks.detection)(bestSpell, ctx),
+          pick(DATABASE.blocks.observation)(bestSpell.observation),
+          pick(DATABASE.blocks.verdict)(bestSpell),
+          pick(DATABASE.blocks.process)(),
+          pick(DATABASE.blocks.closing)(bestSpell)
+        ].join("\n\n");
+
+        document.getElementById('verdictOutput').innerText = finalMetin;
         document.getElementById('globalOverlay').classList.add('hidden');
-        btn.disabled = false;
-      }
-    }
-
-    async function speakVerdict() {
-      const text = document.getElementById('verdictOutput').innerText;
-      if(!text) return;
-      const btn = document.getElementById('btnSpeak');
-      btn.innerText = "HAZIRLANIYOR...";
-      btn.disabled = true;
-      
-      try {
-        const result = await callGemini(`Mistik bir sesle oku: ${text.substring(0, 1000)}`, "", true);
-        const pcmData = result.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-        if (pcmData) {
-          const audioBlob = pcmToWav(pcmData, 24000);
-          new Audio(URL.createObjectURL(audioBlob)).play();
-        }
-      } catch (e) {
-        showStatus("Ses oluşturulamadı.", true);
-      } finally { 
-        btn.innerText = "SESLİ DİNLE"; 
-        btn.disabled = false;
-      }
-    }
-
-    function pcmToWav(base64, sampleRate) {
-      const binaryString = atob(base64), len = binaryString.length, bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
-      const buffer = new ArrayBuffer(44 + bytes.length), view = new DataView(buffer);
-      const writeStr = (o, s) => { for (let i = 0; i < s.length; i++) view.setUint8(o + i, s.charCodeAt(i)); };
-      writeStr(0, 'RIFF'); view.setUint32(4, 36 + bytes.length, true); writeStr(8, 'WAVE'); writeStr(12, 'fmt ');
-      view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
-      view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true);
-      view.setUint16(32, 2, true); view.setUint16(34, 16, true); writeStr(36, 'data'); view.setUint32(40, bytes.length, true);
-      new Uint8Array(buffer, 44).set(bytes);
-      return new Blob([buffer], { type: 'audio/wav' });
+        
+        const zone = document.getElementById('resultZone');
+        zone.classList.remove('hidden');
+        setTimeout(() => {
+          zone.classList.remove('opacity-0', 'translate-y-10');
+          zone.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+        writeLog("Spiritual decree generated.");
+      }, 1500);
     }
 
     function copyVerdict() { 
-      const text = document.getElementById('verdictOutput').innerText;
-      if (!text) return;
-      navigator.clipboard.writeText(text); 
-      showStatus("Kopyalandı."); 
+      navigator.clipboard.writeText(document.getElementById('verdictOutput').innerText); 
+      alert("Kopyalandı."); 
     }
 
     function shareWhatsApp() {
