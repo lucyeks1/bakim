@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>V10 Enterprise Apex Elite – Bakım Oluşturma</title>
+  <title>Bakım Oluşturma Sistemi</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -76,7 +76,6 @@
       border-left: 4px solid var(--indigo-glow);
     }
 
-    /* Modal Styling */
     .status-box {
       background: #111827;
       border: 1px solid var(--indigo-glow);
@@ -115,12 +114,13 @@
             </div>
             
             <div class="space-y-4">
+              <!-- Cinsiyet Seçimi -->
               <div class="flex p-1 bg-slate-950 rounded-xl border border-border-color">
                 <button onclick="setHitap('Hanım')" id="btnHanım" class="hitap-btn flex-1 py-3 rounded-lg text-[10px] font-black transition-all bg-indigo-600 text-white">KADIN (HANIM)</button>
                 <button onclick="setHitap('Bey')" id="btnBey" class="hitap-btn flex-1 py-3 rounded-lg text-[10px] font-black transition-all text-slate-500">ERKEK (BEY)</button>
               </div>
 
-              <!-- WhatsApp Bölümü -->
+              <!-- WhatsApp Bölümü (Kadın/Erkek Altına Taşındı ve Büyütüldü) -->
               <div class="space-y-2">
                 <label class="text-[10px] font-black text-indigo-400 uppercase tracking-widest ml-1">WhatsApp Numara Ekleme</label>
                 <input id="tel" class="apex-input w-full p-6 rounded-xl text-center font-bold text-lg tracking-[0.2em] text-indigo-200" placeholder="5xx xxx xx xx">
@@ -170,6 +170,7 @@
       </div>
     </div>
 
+    <!-- Sonuç Bölümü -->
     <section id="resultZone" class="hidden opacity-0 transform translate-y-10 transition-all duration-1000">
       <div class="glass-panel rounded-[2rem] p-10 md:p-14 overflow-hidden relative">
         <div class="flex flex-col md:flex-row justify-between items-center gap-10 mb-12">
@@ -182,7 +183,7 @@
             <button onclick="copyVerdict()" class="px-10 py-4 bg-white text-black rounded-xl font-black text-[10px] uppercase hover:bg-indigo-500 hover:text-white transition-all">KOPYALA</button>
           </div>
         </div>
-        <div id="verdictOutput" class="output-container p-8 md:p-12 text-slate-300 text-lg md:text-xl leading-[2.2] font-medium italic border-indigo-500/50"></div>
+        <div id="verdictOutput" class="output-container p-8 md:p-12 text-slate-300 text-lg md:text-xl leading-[2.4] font-medium italic border-indigo-500/50"></div>
       </div>
     </section>
 
@@ -195,7 +196,7 @@
   </div>
 
   <script>
-    const apiKey = "";
+    const apiKey = ""; // Bu alan platform tarafından otomatik doldurulur.
     const state = { hitap: "Hanım" };
 
     function setHitap(h) {
@@ -218,6 +219,7 @@
 
     function showStatus(msg, isError = false) {
       const box = document.getElementById('statusMessage');
+      if (!box) return;
       box.style.display = 'block';
       box.style.color = isError ? '#ef4444' : '#6366f1';
       box.style.borderColor = isError ? '#ef4444' : '#6366f1';
@@ -243,8 +245,7 @@
           };
 
       const modelName = isTTS ? 'gemini-2.5-flash-preview-tts' : 'gemini-2.5-flash-preview-09-2025';
-      const endpoint = isTTS ? 'generateContent' : 'generateContent';
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:${endpoint}?key=${apiKey}`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
       while (retries < maxRetries) {
         try {
@@ -258,21 +259,20 @@
             return await response.json();
           }
           
+          // Retryable errors
           if (response.status === 429 || response.status >= 500) {
-            // Server error or rate limit, proceed to retry
+            retries++;
           } else {
             const errData = await response.json();
-            throw new Error(errData.error?.message || "İstek başarısız oldu.");
+            throw new Error(errData.error?.message || "İstek başarısız.");
           }
         } catch (e) {
           if (retries === maxRetries - 1) throw e;
+          retries++;
         }
-        
-        const delay = Math.pow(2, retries) * 1000;
-        await new Promise(r => setTimeout(r, delay));
-        retries++;
+        await new Promise(r => setTimeout(r, Math.pow(2, retries) * 1000));
       }
-      throw new Error("Bağlantı zaman aşımına uğradı.");
+      throw new Error("Bağlantı hatası.");
     }
 
     async function runAdvancedAnalysis() {
@@ -284,77 +284,65 @@
       const btn = document.getElementById('mainActionButton');
 
       if(!isim || !anne || !log) { 
-        showStatus("Lütfen isim, anne adı ve belirtileri eksiksiz doldurun.", true);
+        showStatus("Lütfen gerekli alanları doldurun.", true);
         return; 
       }
 
       document.getElementById('globalOverlay').classList.remove('hidden');
       document.getElementById('globalOverlay').classList.add('flex');
       btn.disabled = true;
-      writeLog("Maintenance sequence started...");
+      writeLog("Manevi tarama başlatıldı...");
 
-      const systemPrompt = `Sen profesyonel bir manevi bakım uzmanısın. Danışanın durumunu analiz et ve sonuç bildir. 
+      const systemPrompt = `Sen profesyonel bir manevi bakım uzmanısın. 
       KURALLAR:
-      1. Mutlaka bir büyü ismi (Papaz, Sabun, Kaşık, Kilit, Domuz Yağı vb.) tespit et.
-      2. Bu büyünün kesinlikle ve geri dönüşü olmayacak şekilde bozulacağını vurgula. 
-      3. Otoriter, manevi ve güven veren bir dil kullan.
-      4. Metin uzun olsun (en az 5-6 paragraf). 
-      5. Teknik terimler kullanma.
-      6. 7 günlük bir süreçten bahset.`;
+      1. Mutlaka spesifik bir büyü ismi tespit et.
+      2. Bu büyünün kesinlikle bozulacağını vurgula. 
+      3. 7 günlük bir süreçten bahset.
+      4. Teknik terim kullanma.`;
 
-      const userPrompt = `Danışan: ${isim} (Anne: ${anne}). Karşı Taraf: ${karsi} (Anne: ${kAnne}). Durum: ${log}. Hitap: ${state.hitap}.`;
+      const userPrompt = `Danışan: ${isim}, Anne: ${anne}. Muhatap: ${karsi}, Muhatap Anne: ${kAnne}. Durum: ${log}. Hitap: ${state.hitap}.`;
 
       try {
         const result = await callGemini(userPrompt, systemPrompt);
         const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
         
         if (text) {
-          displayResult(text);
-          writeLog("Analysis completed successfully.");
-        } else {
-          throw new Error("Yanıt alınamadı.");
+          document.getElementById('verdictOutput').innerText = text;
+          const zone = document.getElementById('resultZone');
+          zone.classList.remove('hidden');
+          setTimeout(() => {
+            zone.classList.remove('opacity-0', 'translate-y-10');
+            zone.scrollIntoView({ behavior: 'smooth' });
+          }, 50);
+          writeLog("Bakım başarıyla tamamlandı.");
         }
       } catch (e) {
-        console.error(e);
-        showStatus("Sistem şu an çok yoğun. Lütfen 30 saniye sonra tekrar deneyin.", true);
-        writeLog("Error: " + e.message);
+        showStatus("Bağlantı hatası. Lütfen bir an bekleyip tekrar deneyin.", true);
+        writeLog("Hata: " + e.message);
       } finally {
         document.getElementById('globalOverlay').classList.add('hidden');
         btn.disabled = false;
       }
     }
 
-    function displayResult(text) {
-      document.getElementById('verdictOutput').innerText = text;
-      const zone = document.getElementById('resultZone');
-      zone.classList.remove('hidden');
-      setTimeout(() => {
-        zone.classList.remove('opacity-0', 'translate-y-10');
-        zone.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    }
-
     async function speakVerdict() {
       const text = document.getElementById('verdictOutput').innerText;
       if(!text) return;
       const btn = document.getElementById('btnSpeak');
-      const originalText = btn.innerText;
-      btn.innerText = "OKUNUYOR...";
+      btn.innerText = "HAZIRLANIYOR...";
       btn.disabled = true;
       
       try {
         const result = await callGemini(`Mistik bir sesle oku: ${text.substring(0, 1000)}`, "", true);
         const pcmData = result.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-        
         if (pcmData) {
           const audioBlob = pcmToWav(pcmData, 24000);
-          const audio = new Audio(URL.createObjectURL(audioBlob));
-          audio.play();
+          new Audio(URL.createObjectURL(audioBlob)).play();
         }
       } catch (e) {
-        showStatus("Ses dosyası oluşturulamadı.", true);
+        showStatus("Ses oluşturulamadı.", true);
       } finally { 
-        btn.innerText = originalText; 
+        btn.innerText = "SESLİ DİNLE"; 
         btn.disabled = false;
       }
     }
@@ -376,24 +364,19 @@
       const text = document.getElementById('verdictOutput').innerText;
       if (!text) return;
       navigator.clipboard.writeText(text); 
-      showStatus("Bakım metni başarıyla kopyalandı."); 
+      showStatus("Kopyalandı."); 
     }
 
     function shareWhatsApp() {
       const t = document.getElementById('verdictOutput').innerText;
       let tel = document.getElementById('tel').value.replace(/\D/g, "");
       if (tel && !tel.startsWith("90")) tel = "90" + tel;
-      const url = tel ? `https://wa.me/${tel}?text=${encodeURIComponent(t)}` : `https://wa.me/?text=${encodeURIComponent(t)}`;
-      window.open(url, "_blank");
+      window.open(`https://wa.me/${tel}?text=${encodeURIComponent(t)}`, "_blank");
     }
 
-    const logTextarea = document.getElementById('log');
-    if (logTextarea) {
-      logTextarea.addEventListener('input', (e) => { 
-        const charCount = document.getElementById('charCount');
-        if (charCount) charCount.innerText = `${e.target.value.length} CHAR`; 
-      });
-    }
+    document.getElementById('log').addEventListener('input', (e) => { 
+      document.getElementById('charCount').innerText = `${e.target.value.length} CHAR`; 
+    });
   </script>
 </body>
 </html>
